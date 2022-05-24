@@ -1,0 +1,25 @@
+﻿<Window x:Class="Hranilka.AddNewDataWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hranilka"
+        mc:Ignorable="d"
+        Title="AddNewDataWindow" Height="450" Width="700">
+    <Grid>
+        <Button x:Name="SaveButton" Content="Сохранить" HorizontalAlignment="Center" Margin="0,385,0,0" VerticalAlignment="Top" Click="SaveButton_Click"/>
+        <TextBox x:Name="NewDataBox" HorizontalAlignment="Left" Margin="86,120,0,0" Text="Новый текст" TextWrapping="Wrap" VerticalAlignment="Top" Width="295" Height="207"/>
+        <TextBox x:Name="DescriptionBox" HorizontalAlignment="Left" Margin="235,59,0,0" Text="Описание" TextWrapping="Wrap" VerticalAlignment="Top" Width="247"/>
+        <RichTextBox x:Name="AddDataRichTextBox" Margin="413,99,52,72">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Button Content="Сохранить рич" HorizontalAlignment="Left" Margin="470,375,0,0" VerticalAlignment="Top" Click="SaveRTBContent"/>
+        <Button x:Name="ChooseSaveWayButton" Content="Папка для сохранения" HorizontalAlignment="Left" Margin="520,59,0,0" VerticalAlignment="Top" Click="ChooseSaveWayButton_Click"/>
+        <TextBlock x:Name="TB1" HorizontalAlignment="Left" Margin="539,34,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
