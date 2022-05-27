@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32407.337
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hranilka", "Hranilka.csproj", "{99A1762B-BCDC-4D22-B8C6-0577148CA326}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hranilka", "Hranilka.csproj", "{99A1762B-BCDC-4D22-B8C6-0577148CA326}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{33D11131-06B0-4737-8D0C-264BA739DA38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HranilkaCons", "..\HranilkaCons\HranilkaCons.csproj", "{F809AC0D-6AA2-4D94-9703-A2798C3091FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HranilkaTest", "..\HranilkaTest\HranilkaTest.csproj", "{A171E99F-D40B-4263-AE3A-C4C72AE303C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,21 @@ Global
 		{99A1762B-BCDC-4D22-B8C6-0577148CA326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A1762B-BCDC-4D22-B8C6-0577148CA326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99A1762B-BCDC-4D22-B8C6-0577148CA326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F809AC0D-6AA2-4D94-9703-A2798C3091FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F809AC0D-6AA2-4D94-9703-A2798C3091FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F809AC0D-6AA2-4D94-9703-A2798C3091FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F809AC0D-6AA2-4D94-9703-A2798C3091FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A171E99F-D40B-4263-AE3A-C4C72AE303C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A171E99F-D40B-4263-AE3A-C4C72AE303C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A171E99F-D40B-4263-AE3A-C4C72AE303C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A171E99F-D40B-4263-AE3A-C4C72AE303C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F809AC0D-6AA2-4D94-9703-A2798C3091FC} = {33D11131-06B0-4737-8D0C-264BA739DA38}
+		{A171E99F-D40B-4263-AE3A-C4C72AE303C0} = {33D11131-06B0-4737-8D0C-264BA739DA38}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EB3CDEFC-8A58-4E17-8F0D-27F7A34E5AB2}
