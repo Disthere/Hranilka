@@ -7,9 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hranilka", "Hranilka.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{33D11131-06B0-4737-8D0C-264BA739DA38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HranilkaCons", "..\HranilkaCons\HranilkaCons.csproj", "{F809AC0D-6AA2-4D94-9703-A2798C3091FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HranilkaCons", "..\HranilkaCons\HranilkaCons.csproj", "{F809AC0D-6AA2-4D94-9703-A2798C3091FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HranilkaTest", "..\HranilkaTest\HranilkaTest.csproj", "{A171E99F-D40B-4263-AE3A-C4C72AE303C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HranilkaTest", "..\HranilkaTest\HranilkaTest.csproj", "{A171E99F-D40B-4263-AE3A-C4C72AE303C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitFiles", "GitFiles", "{91CCAF95-043F-4885-AD17-3C7C6203027E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
