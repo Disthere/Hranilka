@@ -11,9 +11,44 @@ using System.Windows.Media;
 
 namespace Hranilka
 {
-    public partial class SaveLoadPrintRTB : Page
+    internal class DataFile
     {
-        
+        public string FileDirectory { get; set; }
+        public string FileNameAndDirectory { get; set; }
+
+        public DataContainer Sample { get; set; }
+
+        public DataFile(DataContainer sample)
+        {
+            this.Sample = sample;
+            this.FileDirectory = GetFileDirectory(sample);
+        }
+
+
+        private string GetFileDirectory(DataContainer sample)
+        {
+            var location = AppDomain.CurrentDomain.BaseDirectory;
+            location = location + @"\rtf file storage\" + sample.Category;
+
+
+            string fileSaveWay = location + @"\" + sample.Description;
+            return fileSaveWay.ToString().Replace(@"\", @"\\");
+        }
+
+        private void CheckAndCreateDirectory(string fileDirectory)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(fileDirectory);
+            if (!directoryInfo.Exists)
+            {
+                directoryInfo.Create();
+            }
+
+            string fileSaveWay = fileDirectory + @"\" + this.Sample.Description;
+            fileSaveWay = fileSaveWay.ToString().Replace(@"\", @"\\");
+            this.FileNameAndDirectory = fileSaveWay;
+
+        }
+
         void SaveRTBContent(Object sender, RoutedEventArgs args)
         {
 
@@ -37,20 +72,21 @@ namespace Hranilka
         }
 
         // Save XAML in RichTextBox to a file specified by _fileName
-        public void SaveXamlPackage(string fileName, RichTextBox rtb)
+        public void SaveFileRTF(RichTextBox rtb)
         {
+            CheckAndCreateDirectory(FileDirectory);
             TextRange range;
             FileStream fStream;
             range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            fStream = new FileStream(fileName, FileMode.Create);
+            fStream = new FileStream(this.FileNameAndDirectory, FileMode.Create);
             range.Save(fStream, DataFormats.Rtf);
             fStream.Close();
         }
 
         // Load XAML into RichTextBox from a file specified by _fileName
-       public void LoadXamlPackage(string fileName, RichTextBox rtb)
+        public void LoadFileRTF(string fileName, RichTextBox rtb)
         {
-            
+
             TextRange range;
             FileStream fStream;
             if (File.Exists(fileName))
@@ -60,6 +96,7 @@ namespace Hranilka
                 range.Load(fStream, DataFormats.Rtf);
                 fStream.Close();
             }
+            else rtb.AppendText("ERROR: File not found!");
         }
 
         // Print RichTextBox content
@@ -74,16 +111,16 @@ namespace Hranilka
         //    }
         //}
 
-        public void LoadTextDocument(string fileName, RichTextBox rtb)
-        {
-            System.IO.StreamReader objReader = new StreamReader(fileName);
+        //public void LoadTextDocument(string fileName, RichTextBox rtb)
+        //{
+        //    System.IO.StreamReader objReader = new StreamReader(fileName);
 
-            if (File.Exists(fileName))
-            {
-                rtb.AppendText(objReader.ReadToEnd());
-            }
-            else rtb.AppendText("ERROR: File not found!");
-            objReader.Close();
-        }
+        //    if (File.Exists(fileName))
+        //    {
+        //        rtb.AppendText(objReader.ReadToEnd());
+        //    }
+        //    else rtb.AppendText("ERROR: File not found!");
+        //    objReader.Close();
+        //}
     }
 }

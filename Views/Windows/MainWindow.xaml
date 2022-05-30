@@ -30,7 +30,7 @@
         <TabControl>
             <TabItem Header="Вкладка 1">
                 <Grid>
-        <Button
+                    <Button
             x:Name="AddButton"
             Width="90"
             Height="30"
@@ -39,13 +39,13 @@
             VerticalAlignment="Top"
             Click="AddButton_Click"
             Content="Добавить" />
-        <ListBox
+                    <ListBox
             x:Name="MainListBox"
             Margin="10,80,1100,10"
             Cursor="Hand"
             RenderTransformOrigin="0.274,0.502"
             SelectionChanged="MainListBox_SelectionChanged" />
-        <Button
+                    <Button
             x:Name="RefreshButton"
             Width="90"
             Height="30"
@@ -54,28 +54,28 @@
             VerticalAlignment="Top"
             Click="RefreshButton_Click"
             Content="Обновить" />
-        <TextBlock
+                    <TextBlock
             x:Name="DateTextBlock"
             Width="154"
             Height="23"
-            Margin="317,53,0,0"
+            Margin="479,40,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             TextWrapping="Wrap" />
-        <RichTextBox x:Name="MainPageRichTextBox" Margin="650,125,10,10">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox" />
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
-        <Button
+                    <RichTextBox x:Name="MainPageRichTextBox" Margin="650,125,10,10">
+                        <FlowDocument>
+                            <Paragraph>
+                                <Run Text="RichTextBox" />
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
+                    <Button
             Margin="555,178,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="LoadRTBContent"
             Content="Button" />
-        <TextBox
+                    <TextBox
             x:Name="DescriptionTextBox"
             Width="940"
             Height="57"
@@ -84,11 +84,21 @@
             VerticalAlignment="Top"
             Text="TextBox"
             TextWrapping="Wrap" />
-
-    </Grid>
+                    <ComboBox HorizontalAlignment="Left" Height="25" Width="200" Margin="10,40,0,0" VerticalAlignment="Top">
+                        <ComboBoxItem>Собеседование</ComboBoxItem>
+                        <ComboBoxItem>C# основы</ComboBoxItem>
+                        <ComboBoxItem>Базы данных, SQL</ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock HorizontalAlignment="Left" Margin="10" Text="Категория" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <ComboBox HorizontalAlignment="Left" Height="25" Width="200" Margin="250,40,0,0" VerticalAlignment="Top">
+                        <ComboBoxItem>Дата</ComboBoxItem>
+                        <ComboBoxItem>Размер</ComboBoxItem>
+                        <ComboBoxItem>Алфавит</ComboBoxItem>
+                    </ComboBox>
+                </Grid>
             </TabItem>
             <TabItem Header="Ссылки">Другой текст</TabItem>
         </TabControl>
     </DockPanel>
-    
+
 </Window>

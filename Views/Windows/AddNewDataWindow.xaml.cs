@@ -52,8 +52,8 @@ namespace Hranilka
 
         private void SaveRTBContent(object sender, RoutedEventArgs e)
         {
-            SaveLoadPrintRTB sv = new SaveLoadPrintRTB();
-            sv.SaveXamlPackage(FileSaveWay, AddDataRichTextBox);
+            DataFile sv = new DataFile();
+            sv.SaveFileRTF(FileSaveWay, AddDataRichTextBox);
         }
 
         private void ChooseSaveWayButton_Click(object sender, RoutedEventArgs e)

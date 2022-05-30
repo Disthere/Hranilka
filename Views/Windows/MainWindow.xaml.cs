@@ -32,8 +32,8 @@ namespace Hranilka
 
         private void AddTestsValue()
         {
-            DataContainer d1 = new() { Category = "REt", Description = " terrry" };
-            DataContainer d2 = new() { Category = "Yuiri", Description = " pojii" };
+            DataContainer d1 = new() { Category = "C# основы", Description = "Отличие типа decimal от double" };
+            DataContainer d2 = new() { Category = "WPF", Description = "Как добавить окно выбора папки" };
 
             hranilkaDbContext.DataContainers.AddRange(new List<DataContainer> { d1, d2 });
             hranilkaDbContext.SaveChanges();
@@ -46,7 +46,8 @@ namespace Hranilka
 
             foreach (var item in hranilkaDbContext.DataContainers)
             {
-                names.Add(item.Category);
+                string descriptionAndCreateDate = item.Description + " - " + item.CreateDate.ToString("g");
+                names.Add(descriptionAndCreateDate);
             }
 
             MainListBox.ItemsSource = names;
@@ -89,9 +90,9 @@ namespace Hranilka
 
         private void LoadRTBContent(object sender, RoutedEventArgs e)
         {
-            SaveLoadPrintRTB sv = new SaveLoadPrintRTB();
+            DataFile sv = new DataFile();
 
-            sv.LoadXamlPackage("C:\\hu.rtf", MainPageRichTextBox);
+            sv.LoadFileRTF("C:\\hu.rtf", MainPageRichTextBox);
         }
     }
 }
