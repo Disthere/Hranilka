@@ -14,25 +14,26 @@ namespace Hranilka
     internal class DataFile
     {
         public string FileDirectory { get; set; }
-        public string FileNameAndDirectory { get; set; }
+        public string FileDirectoryFullWay { get; set; }
 
         public DataContainer Sample { get; set; }
 
         public DataFile(DataContainer sample)
         {
             this.Sample = sample;
-            this.FileDirectory = GetFileDirectory(sample);
+            this.FileDirectoryFullWay = GetFileDirectoryFullWay(sample);
         }
 
 
-        private string GetFileDirectory(DataContainer sample)
+        private string GetFileDirectoryFullWay(DataContainer sample)
         {
-            var location = AppDomain.CurrentDomain.BaseDirectory;
-            location = location + @"\rtf file storage\" + sample.Category;
+            var appLocation = AppDomain.CurrentDomain.BaseDirectory;
 
+            this.FileDirectory = appLocation + @"\rtf file storage\" + sample.Category;
 
-            string fileSaveWay = location + @"\" + sample.Description;
-            return fileSaveWay.ToString().Replace(@"\", @"\\");
+            string fileDirectoryFullWay = FileDirectory + @"\" + sample.Description;
+
+            return fileDirectoryFullWay.ToString().Replace(@"\", @"\\");
         }
 
         private void CheckAndCreateDirectory(string fileDirectory)
@@ -42,11 +43,6 @@ namespace Hranilka
             {
                 directoryInfo.Create();
             }
-
-            string fileSaveWay = fileDirectory + @"\" + this.Sample.Description;
-            fileSaveWay = fileSaveWay.ToString().Replace(@"\", @"\\");
-            this.FileNameAndDirectory = fileSaveWay;
-
         }
 
         void SaveRTBContent(Object sender, RoutedEventArgs args)
@@ -72,31 +68,35 @@ namespace Hranilka
         }
 
         // Save XAML in RichTextBox to a file specified by _fileName
-        public void SaveFileRTF(RichTextBox rtb)
+        public void SaveFileRTF(RichTextBox reachTextBoxObj)
         {
             CheckAndCreateDirectory(FileDirectory);
             TextRange range;
             FileStream fStream;
-            range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            fStream = new FileStream(this.FileNameAndDirectory, FileMode.Create);
-            range.Save(fStream, DataFormats.Rtf);
-            fStream.Close();
+            if (!File.Exists(this.FileDirectoryFullWay))
+            {
+                range = new TextRange(reachTextBoxObj.Document.ContentStart, reachTextBoxObj.Document.ContentEnd);
+                fStream = new FileStream(this.FileDirectoryFullWay, FileMode.Create);
+                range.Save(fStream, DataFormats.Rtf);
+                fStream.Close();
+            }
+            MessageBox.Show("Файл с таким описанием уже существует.");
         }
 
         // Load XAML into RichTextBox from a file specified by _fileName
-        public void LoadFileRTF(string fileName, RichTextBox rtb)
+        public void LoadFileRTF(RichTextBox reachTextBoxObj)
         {
 
             TextRange range;
             FileStream fStream;
-            if (File.Exists(fileName))
+            if (File.Exists(this.FileDirectoryFullWay))
             {
-                range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-                fStream = new FileStream(fileName, FileMode.OpenOrCreate);
+                range = new TextRange(reachTextBoxObj.Document.ContentStart, reachTextBoxObj.Document.ContentEnd);
+                fStream = new FileStream(this.FileDirectoryFullWay, FileMode.OpenOrCreate);
                 range.Load(fStream, DataFormats.Rtf);
                 fStream.Close();
             }
-            else rtb.AppendText("ERROR: File not found!");
+            else reachTextBoxObj.AppendText("ERROR: File not found!");
         }
 
         // Print RichTextBox content
