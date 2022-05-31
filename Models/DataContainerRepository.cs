@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Hranilka.Models
 {
-    internal class DataContainerRepository
+    internal static class DataContainerRepository
     {
-        private Context hranilkaDbContext;
-        public DataContainerRepository()
+        private static Context hranilkaDbContext;
+        static DataContainerRepository()
         {
             hranilkaDbContext = new Context();
         }
 
-        ObservableCollection<DataContainer> GetAllDataContainersFromDataBase()
+        internal static ObservableCollection<DataContainer> GetAllDataContainersFromDataBase()
         {
             List<DataContainer> containers = new List<DataContainer>();
 
@@ -31,6 +31,13 @@ namespace Hranilka.Models
 
             var allDataContainers = new ObservableCollection<DataContainer>(containers);
             return allDataContainers;
+        }
+
+        internal static DataContainer GetSelectDataContainersFromDataBase(string description)
+        {
+            
+            return hranilkaDbContext.DataContainers.Find(description);
+
         }
     }
 }

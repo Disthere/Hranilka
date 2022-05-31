@@ -27,12 +27,12 @@ namespace Hranilka
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
+            
 
 
 
-            AddTestsValue();
-            ViewDataList();
+            //AddTestsValue();
+            
         }
 
         private void AddTestsValue()
@@ -45,20 +45,7 @@ namespace Hranilka
 
         }
 
-        public void ViewDataList()
-        {
-            var names = new List<string>();
-
-            
-
-            foreach (var item in hranilkaDbContext.DataContainers)
-            {
-                string descriptionAndCreateDate = item.Description + " - " + item.CreateDate.ToString("g");
-                names.Add(descriptionAndCreateDate);
-            }
-
-            MainListView.ItemsSource = names;
-        }
+        
 
         private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -88,18 +75,10 @@ namespace Hranilka
             addNewDataWindow.Show();
         }
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewDataList();
-        }
+        
 
 
 
-        private void LoadRTBContent(object sender, RoutedEventArgs e)
-        {
-            //DataFile sv = new DataFile();
-
-            //sv.LoadFileRTF("C:\\hu.rtf", MainPageRichTextBox);
-        }
+        
     }
 }

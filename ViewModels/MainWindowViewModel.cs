@@ -1,7 +1,9 @@
 ﻿using Hranilka.Infrastructure.Commands;
+using Hranilka.Models;
 using Hranilka.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +15,11 @@ namespace Hranilka.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        /// <summary>Заголовок окна</summary>
         #region Заголовок окна
         private string title = "Hranilka V1.0";
 
-       /// <summary>Заголовок окна</summary>
+       
         public string Title
         {
             get => title;
@@ -36,6 +39,7 @@ namespace Hranilka.ViewModels
         }
         #endregion
 
+        #region Команда на выход из приложения в меню
         public ICommand CloseApplicationCommand { get; }
 
         private bool CanCloseApplicationCommandExecuted(object p) => true;
@@ -50,20 +54,20 @@ namespace Hranilka.ViewModels
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
         }
 
-        DataContainer _currentDataContainer;
-        public DataContainer CurrentDataContainer
+        #endregion
+
+        ObservableCollection<DataContainer> _dataContainers;
+        public ObservableCollection<DataContainer> DataContainers
         {
             get
             {
-                if (_currentDataContainer == null)
-                    _currentDataContainer = new DataContainer();
-                return _currentDataContainer;
-            }
-            set
-            {
-                _currentDataContainer = value;
-                OnPropertyChanged("CurrentClient");
+                if (_dataContainers == null)
+                    _dataContainers = DataContainerRepository.GetAllDataContainersFromDataBase();
+                return _dataContainers;
             }
         }
+
+        
+
     }
 }
