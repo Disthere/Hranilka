@@ -21,7 +21,7 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="Свойства" />
                 <MenuItem Header="Сохранить" />
-                <MenuItem Header="Выход" />
+                <MenuItem Header="Выход" Command="{Binding CloseApplicationCommand}"/>
             </MenuItem>
             <MenuItem Header="Помощь">
                 <MenuItem Header="О программе" />
@@ -83,7 +83,7 @@
                         TextWrapping="Wrap" />
                     <RichTextBox
                         x:Name="MainPageRichTextBox"
-                        Width="950"
+                        Width="850"
                         Margin="10,125"
                         HorizontalAlignment="Right">
                         <FlowDocument>
@@ -100,7 +100,7 @@
                         Content="Button" />
                     <TextBox
                         x:Name="DescriptionTextBox"
-                        Width="950"
+                        Width="850"
                         Height="60"
                         Margin="10,40"
                         HorizontalAlignment="Right"
