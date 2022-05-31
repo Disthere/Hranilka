@@ -21,7 +21,7 @@ namespace Hranilka
     /// </summary>
     public partial class AddNewDataWindow : Window
     {
-        public string FileSaveWay { get; set; } = "C:\\Zapisi\\hui.rtf";
+        //public string FileSaveWay { get; set; } = "C:\\Zapisi\\hui.rtf";
 
         private Context hranilkaDbContext = new Context();
         public AddNewDataWindow()
@@ -33,16 +33,19 @@ namespace Hranilka
         {
             DataContainer container = new DataContainer();
 
-            bool isDataAdded = DescriptionBox.Text != string.Empty && NewDataBox.Text != string.Empty;
+            bool isDataAdded = DescriptionBox.Text != string.Empty && CategoryBox.Text != string.Empty && AddDataRichTextBox.Document != null;
 
             if (isDataAdded)
             {
-                container.Category = DescriptionBox.Text;
-                container.Description = NewDataBox.Text;
+                container.Description = DescriptionBox.Text;
+                container.Category = CategoryBox.Text;
                 hranilkaDbContext.DataContainers.Add(container);
                 hranilkaDbContext.SaveChanges();
+                DataFile dataFile = new DataFile(container);
+                dataFile.SaveFileRTF(AddDataRichTextBox);
+                AddDataRichTextBox.Document.Blocks.Clear();
                 DescriptionBox.Clear();
-                NewDataBox.Clear();
+                CategoryBox.Clear();
             }
             else
                 MessageBox.Show("Не введены данные!!");
@@ -52,16 +55,16 @@ namespace Hranilka
 
         private void SaveRTBContent(object sender, RoutedEventArgs e)
         {
-            DataFile sv = new DataFile();
-            sv.SaveFileRTF(FileSaveWay, AddDataRichTextBox);
+            //DataFile sv = new DataFile();
+            //sv.SaveFileRTF(FileSaveWay, AddDataRichTextBox);
         }
 
         private void ChooseSaveWayButton_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialogА a = new SaveFileDialogА();
-            string r = a.GetFileSaveWay();
-            TB1.Text = r;
-            FileSaveWay = r + "\\test.rtf"; 
+            //SaveFileDialogА a = new SaveFileDialogА();
+            //string r = a.GetFileSaveWay();
+            //TB1.Text = r;
+            //FileSaveWay = r + "\\test.rtf"; 
         }
     }
 }

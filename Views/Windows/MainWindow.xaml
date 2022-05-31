@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Hranilka"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Hranilka.ViewModels"
+    xmlns:da="clr-namespace:Hranilka"
     Title="{Binding Path=Title}"
     Width="1600"
     Height="800"
@@ -18,51 +19,73 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
-                <MenuItem Header="Свойства"></MenuItem>
-                <MenuItem Header="Сохранить"></MenuItem>
-                <MenuItem Header="Выход"></MenuItem>
+                <MenuItem Header="Свойства" />
+                <MenuItem Header="Сохранить" />
+                <MenuItem Header="Выход" />
             </MenuItem>
             <MenuItem Header="Помощь">
-                <MenuItem Header="О программе"></MenuItem>
+                <MenuItem Header="О программе" />
             </MenuItem>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom"></StatusBar>
-        <TabControl>
-            <TabItem Header="Вкладка 1">
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="github.com/Disthere" />
+            </StatusBarItem>
+        </StatusBar>
+        <TabControl Background="Beige">
+            <TabItem Header="Текстовые данные">
                 <Grid>
                     <Button
-            x:Name="AddButton"
-            Width="90"
-            Height="30"
-            Margin="530,80,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="AddButton_Click"
-            Content="Добавить" />
-                    <ListBox
-            x:Name="MainListBox"
-            Margin="10,80,1100,10"
-            Cursor="Hand"
-            RenderTransformOrigin="0.274,0.502"
-            SelectionChanged="MainListBox_SelectionChanged" />
+                        x:Name="AddButton"
+                        Width="90"
+                        Height="30"
+                        Margin="530,80,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="AddButton_Click"
+                        Content="Добавить" />
+                    <ListView 
+                        x:Name="MainListView"
+                        Width="500"
+                        Margin="10,80"
+                        HorizontalAlignment="Left"
+                        Cursor="Hand"
+                        SelectionChanged="MainListBox_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn
+                                    Width="400"
+                                    DisplayMemberBinding="{Binding  }"
+                                    Header="Описание" />
+                                <GridViewColumn
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding list_studfname}"
+                                    Header="Дата создания" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                     <Button
-            x:Name="RefreshButton"
-            Width="90"
-            Height="30"
-            Margin="530,125,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="RefreshButton_Click"
-            Content="Обновить" />
+                        x:Name="RefreshButton"
+                        Width="90"
+                        Height="30"
+                        Margin="530,125,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="RefreshButton_Click"
+                        Content="Обновить" />
                     <TextBlock
-            x:Name="DateTextBlock"
-            Width="154"
-            Height="23"
-            Margin="479,40,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            TextWrapping="Wrap" />
-                    <RichTextBox x:Name="MainPageRichTextBox" Margin="650,125,10,10">
+                        x:Name="DateTextBlock"
+                        Width="154"
+                        Height="23"
+                        Margin="479,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        TextWrapping="Wrap" />
+                    <RichTextBox
+                        x:Name="MainPageRichTextBox"
+                        Width="950"
+                        Margin="10,125"
+                        HorizontalAlignment="Right">
                         <FlowDocument>
                             <Paragraph>
                                 <Run Text="RichTextBox" />
@@ -70,27 +93,42 @@
                         </FlowDocument>
                     </RichTextBox>
                     <Button
-            Margin="555,178,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="LoadRTBContent"
-            Content="Button" />
+                        Margin="555,178,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="LoadRTBContent"
+                        Content="Button" />
                     <TextBox
-            x:Name="DescriptionTextBox"
-            Width="940"
-            Height="57"
-            Margin="650,40,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="TextBox"
-            TextWrapping="Wrap" />
-                    <ComboBox HorizontalAlignment="Left" Height="25" Width="200" Margin="10,40,0,0" VerticalAlignment="Top">
+                        x:Name="DescriptionTextBox"
+                        Width="950"
+                        Height="60"
+                        Margin="10,40"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Text="TextBox"
+                        TextWrapping="Wrap" />
+                    <ComboBox
+                        Width="200"
+                        Height="25"
+                        Margin="10,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
                         <ComboBoxItem>Собеседование</ComboBoxItem>
                         <ComboBoxItem>C# основы</ComboBoxItem>
                         <ComboBoxItem>Базы данных, SQL</ComboBoxItem>
                     </ComboBox>
-                    <TextBlock HorizontalAlignment="Left" Margin="10" Text="Категория" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                    <ComboBox HorizontalAlignment="Left" Height="25" Width="200" Margin="250,40,0,0" VerticalAlignment="Top">
+                    <TextBlock
+                        Margin="10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Text="Категория"
+                        TextWrapping="Wrap" />
+                    <ComboBox
+                        Width="200"
+                        Height="25"
+                        Margin="250,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top">
                         <ComboBoxItem>Дата</ComboBoxItem>
                         <ComboBoxItem>Размер</ComboBoxItem>
                         <ComboBoxItem>Алфавит</ComboBoxItem>

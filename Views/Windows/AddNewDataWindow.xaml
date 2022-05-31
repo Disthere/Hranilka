@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="AddNewDataWindow" Height="450" Width="700">
     <Grid>
-        <Button x:Name="SaveButton" Content="Сохранить" HorizontalAlignment="Center" Margin="0,385,0,0" VerticalAlignment="Top" Click="SaveButton_Click"/>
-        <TextBox x:Name="NewDataBox" HorizontalAlignment="Left" Margin="86,120,0,0" Text="Новый текст" TextWrapping="Wrap" VerticalAlignment="Top" Width="295" Height="207"/>
+        <Button x:Name="SaveButton" Content="Сохранить файл" HorizontalAlignment="Left" Margin="432,380,0,0" VerticalAlignment="Top" Click="SaveButton_Click"/>
+        <TextBox x:Name="CategoryBox" HorizontalAlignment="Left" Margin="86,120,0,0" Text="Категория" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" Height="27"/>
         <TextBox x:Name="DescriptionBox" HorizontalAlignment="Left" Margin="235,59,0,0" Text="Описание" TextWrapping="Wrap" VerticalAlignment="Top" Width="247"/>
         <RichTextBox x:Name="AddDataRichTextBox" Margin="413,99,52,72">
             <FlowDocument>
@@ -17,7 +17,7 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Button Content="Сохранить рич" HorizontalAlignment="Left" Margin="470,375,0,0" VerticalAlignment="Top" Click="SaveRTBContent"/>
+        <Button Content="Сохранить рич" HorizontalAlignment="Left" Margin="210,375,0,0" VerticalAlignment="Top" Click="SaveRTBContent"/>
         <Button x:Name="ChooseSaveWayButton" Content="Папка для сохранения" HorizontalAlignment="Left" Margin="520,59,0,0" VerticalAlignment="Top" Click="ChooseSaveWayButton_Click"/>
         <TextBlock x:Name="TB1" HorizontalAlignment="Left" Margin="539,34,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top"/>
 

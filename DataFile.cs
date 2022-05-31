@@ -31,7 +31,7 @@ namespace Hranilka
 
             this.FileDirectory = appLocation + @"\rtf file storage\" + sample.Category;
 
-            string fileDirectoryFullWay = FileDirectory + @"\" + sample.Description;
+            string fileDirectoryFullWay = FileDirectory + @"\" + sample.Description + @".rtf";
 
             return fileDirectoryFullWay.ToString().Replace(@"\", @"\\");
         }
@@ -80,7 +80,7 @@ namespace Hranilka
                 range.Save(fStream, DataFormats.Rtf);
                 fStream.Close();
             }
-            MessageBox.Show("Файл с таким описанием уже существует.");
+            else MessageBox.Show("Файл с таким описанием уже существует.");
         }
 
         // Load XAML into RichTextBox from a file specified by _fileName

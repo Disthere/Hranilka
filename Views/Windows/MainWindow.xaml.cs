@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Hranilka.ViewModels;
 
 namespace Hranilka
 {
@@ -26,6 +27,10 @@ namespace Hranilka
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainWindowViewModel();
+
+
+
             AddTestsValue();
             ViewDataList();
         }
@@ -50,12 +55,12 @@ namespace Hranilka
                 names.Add(descriptionAndCreateDate);
             }
 
-            MainListBox.ItemsSource = names;
+            MainListView.ItemsSource = names;
         }
 
         private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var a = MainListBox.SelectedItem.ToString();
+            var a = MainListView.SelectedItem.ToString();
 
             string b = hranilkaDbContext
                 .DataContainers
@@ -90,9 +95,9 @@ namespace Hranilka
 
         private void LoadRTBContent(object sender, RoutedEventArgs e)
         {
-            DataFile sv = new DataFile();
+            //DataFile sv = new DataFile();
 
-            sv.LoadFileRTF("C:\\hu.rtf", MainPageRichTextBox);
+            //sv.LoadFileRTF("C:\\hu.rtf", MainPageRichTextBox);
         }
     }
 }
