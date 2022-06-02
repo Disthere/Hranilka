@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -19,7 +20,7 @@ namespace Hranilka.ViewModels
         #region Заголовок окна
         private string title = "Hranilka V1.0";
 
-       
+
         public string Title
         {
             get => title;
@@ -43,7 +44,7 @@ namespace Hranilka.ViewModels
         public ICommand CloseApplicationCommand { get; }
 
         private bool CanCloseApplicationCommandExecuted(object p) => true;
-        
+
         private void OnCloseApplicationCommandExecuted(object p)
         {
             Application.Current.Shutdown();
@@ -67,7 +68,52 @@ namespace Hranilka.ViewModels
             }
         }
 
-        
+        public void SelectedItem(DataContainer selectedItem, RichTextBox reachTextBoxObj)
+        {
+            string description = selectedItem.Description;
+            DataContainer currentDataContainer = DataContainerRepository.GetSelectDataContainersFromDataBase(description);
+            DataFile dataFileFromListViewCurrentItem = new DataFile(currentDataContainer);
+            dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
+        }
 
+        DataContainer _currentDataContainer;
+        public DataContainer CurrentDataContainer
+        {
+            get
+            {
+                //if (_currentDataContainer == null)
+                //    _currentDataContainer = new DataContainer();
+                return _currentDataContainer;
+            }
+            set
+            {
+                _currentDataContainer = value;
+                OnPropertyChanged("CurrentDataContainer");
+            }
+        }
+
+        private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+                        
+
+            //string b = hranilkaDbContext
+            //    .DataContainers
+            //    .Where(u => u.Category == a)
+            //    .Select(u => u.Description)
+            //    .FirstOrDefault();
+            //DescriptionTextBox.Text = b;
+
+            //var c = hranilkaDbContext
+            //    .DataContainers
+            //    .Where(u => u.Category == a)
+            //    .Select(u => u.CreateDate)
+            //    .FirstOrDefault();
+
+            //DateTextBlock.Text = c.ToString("g");
+
+
+        }
+
+        
     }
 }

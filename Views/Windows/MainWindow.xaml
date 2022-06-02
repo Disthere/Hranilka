@@ -39,25 +39,27 @@
                         x:Name="AddButton"
                         Width="90"
                         Height="30"
-                        Margin="530,80,0,0"
+                        Margin="594,77,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Click="AddButton_Click"
                         Content="Добавить" />
                     <ListView
                         x:Name="MainListView"
-                        Width="500"
+                        Width="550"
                         Margin="10,80"
                         HorizontalAlignment="Left"
                         Cursor="Hand"
                         ItemsSource="{Binding Path=DataContainers}"
-                        SelectionChanged="MainListBox_SelectionChanged">
+                        SelectionChanged= "MainListBox_SelectionChanged"
+                        SelectedIndex="{Binding Path=CurrentDataContainer}"
+                        >
 
                         <ListView.View>
                             <GridView>
 
                                 <GridViewColumn
-                                    Width="380"
+                                    Width="420"
                                     DisplayMemberBinding="{Binding Description}"
                                     Header="Описание" />
 
@@ -80,7 +82,8 @@
                         x:Name="MainPageRichTextBox"
                         Width="850"
                         Margin="10,125"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        >
                         <FlowDocument>
                             <Paragraph>
                                 <Run Text="RichTextBox" />

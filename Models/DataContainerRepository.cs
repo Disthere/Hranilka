@@ -36,7 +36,7 @@ namespace Hranilka.Models
         internal static DataContainer GetSelectDataContainersFromDataBase(string description)
         {
             
-            return hranilkaDbContext.DataContainers.Find(description);
+            return hranilkaDbContext.DataContainers.Where(p => p.Description == description).FirstOrDefault();
 
         }
     }

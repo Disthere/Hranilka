@@ -44,28 +44,11 @@ namespace Hranilka
                 directoryInfo.Create();
             }
         }
+                
 
-        void SaveRTBContent(Object sender, RoutedEventArgs args)
-        {
+        
 
-            // Send an arbitrary URL and file name string specifying
-            // the location to save the XAML in.
-            //SaveXamlPackage("C:\\test.xaml");
-        }
-
-        // Handle "Load RichTextBox Content" button click.
-        void LoadRTBContent(Object sender, RoutedEventArgs args)
-        {
-            // Send URL string specifying what file to retrieve XAML
-            // from to load into the RichTextBox.
-            //LoadXamlPackage("C:\\test.xaml");
-        }
-
-        // Handle "Print RichTextBox Content" button click.
-        void PrintRTBContent(Object sender, RoutedEventArgs args)
-        {
-            //PrintCommand();
-        }
+        
 
         // Save XAML in RichTextBox to a file specified by _fileName
         public void SaveFileRTF(RichTextBox reachTextBoxObj)
@@ -111,16 +94,6 @@ namespace Hranilka
         //    }
         //}
 
-        //public void LoadTextDocument(string fileName, RichTextBox rtb)
-        //{
-        //    System.IO.StreamReader objReader = new StreamReader(fileName);
-
-        //    if (File.Exists(fileName))
-        //    {
-        //        rtb.AppendText(objReader.ReadToEnd());
-        //    }
-        //    else rtb.AppendText("ERROR: File not found!");
-        //    objReader.Close();
-        //}
+        
     }
 }

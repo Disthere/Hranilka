@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Hranilka.ViewModels;
+using Hranilka.Infrastructure.Commands;
 
 namespace Hranilka
 {
@@ -22,50 +23,35 @@ namespace Hranilka
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Context hranilkaDbContext = new Context();
-
+        MainWindowViewModel mainWindowViewModel;
         public MainWindow()
         {
             InitializeComponent();
-            
+            mainWindowViewModel = new MainWindowViewModel();
+            base.DataContext = mainWindowViewModel;
 
 
 
             //AddTestsValue();
-            
+
         }
 
         private void AddTestsValue()
         {
-            DataContainer d1 = new() { Category = "C# основы", Description = "Отличие типа decimal от double" };
-            DataContainer d2 = new() { Category = "WPF", Description = "Как добавить окно выбора папки" };
+            //DataContainer d1 = new() { Category = "C# основы", Description = "Отличие типа decimal от double" };
+            //DataContainer d2 = new() { Category = "WPF", Description = "Как добавить окно выбора папки" };
 
-            hranilkaDbContext.DataContainers.AddRange(new List<DataContainer> { d1, d2 });
-            hranilkaDbContext.SaveChanges();
+            //hranilkaDbContext.DataContainers.AddRange(new List<DataContainer> { d1, d2 });
+            //hranilkaDbContext.SaveChanges();
 
         }
 
-        
+
 
         private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var a = MainListView.SelectedItem.ToString();
-
-            string b = hranilkaDbContext
-                .DataContainers
-                .Where(u => u.Category == a)
-                .Select(u => u.Description)
-                .FirstOrDefault();
-            DescriptionTextBox.Text = b;
-
-            var c = hranilkaDbContext
-                .DataContainers
-                .Where(u => u.Category == a)
-                .Select(u => u.CreateDate)
-                .FirstOrDefault();
-
-            DateTextBlock.Text = c.ToString("g");
-
+            var item = (ListBox)sender;
+            mainWindowViewModel.SelectedItem((DataContainer)item.SelectedItem, MainPageRichTextBox);
 
         }
 
@@ -75,10 +61,10 @@ namespace Hranilka
             addNewDataWindow.Show();
         }
 
-        
 
 
 
-        
+
+
     }
 }
