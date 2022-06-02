@@ -1,4 +1,5 @@
-﻿using Hranilka.Infrastructure.Commands;
+﻿using Hranilka.Data;
+using Hranilka.Infrastructure.Commands;
 using Hranilka.Models;
 using Hranilka.ViewModels.Base;
 using System;
@@ -57,8 +58,8 @@ namespace Hranilka.ViewModels
 
         #endregion
 
-        ObservableCollection<DataContainer> _dataContainers;
-        public ObservableCollection<DataContainer> DataContainers
+        ObservableCollection<CurrentDataContainer> _dataContainers;
+        public ObservableCollection<CurrentDataContainer> DataContainers
         {
             get
             {
@@ -68,11 +69,11 @@ namespace Hranilka.ViewModels
             }
         }
 
-        public void SelectedItem(DataContainer selectedItem, RichTextBox reachTextBoxObj)
+        public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
         {
             string description = selectedItem.Description;
-            DataContainer currentDataContainer = DataContainerRepository.GetSelectDataContainersFromDataBase(description);
-            DataFile dataFileFromListViewCurrentItem = new DataFile(currentDataContainer);
+            CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDataContainersFromDataBase(description);
+            DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
             dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
         }
 

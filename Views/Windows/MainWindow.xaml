@@ -60,12 +60,12 @@
 
                                 <GridViewColumn
                                     Width="420"
-                                    DisplayMemberBinding="{Binding Description}"
+                                    DisplayMemberBinding="{Binding Path=Description}"
                                     Header="Описание" />
 
                                 <GridViewColumn
                                     Width="120"
-                                    DisplayMemberBinding="{Binding CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}"
+                                    DisplayMemberBinding="{Binding Path=CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}"
                                     Header="Дата создания" />
                             </GridView>
                         </ListView.View>

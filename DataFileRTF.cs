@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hranilka.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,21 +12,21 @@ using System.Windows.Media;
 
 namespace Hranilka
 {
-    internal class DataFile
+    internal class DataFileRTF
     {
         public string FileDirectory { get; set; }
         public string FileDirectoryFullWay { get; set; }
 
-        public DataContainer Sample { get; set; }
+        public CurrentDataContainer Sample { get; set; }
 
-        public DataFile(DataContainer sample)
+        public DataFileRTF(CurrentDataContainer sample)
         {
             this.Sample = sample;
             this.FileDirectoryFullWay = GetFileDirectoryFullWay(sample);
         }
 
 
-        private string GetFileDirectoryFullWay(DataContainer sample)
+        private string GetFileDirectoryFullWay(CurrentDataContainer sample)
         {
             var appLocation = AppDomain.CurrentDomain.BaseDirectory;
 

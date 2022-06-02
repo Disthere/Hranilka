@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hranilka.Data;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,28 +16,53 @@ namespace Hranilka.Models
             hranilkaDbContext = new Context();
         }
 
-        internal static ObservableCollection<DataContainer> GetAllDataContainersFromDataBase()
+        internal static ObservableCollection<CurrentDataContainer> GetAllDataContainersFromDataBase()
         {
-            List<DataContainer> containers = new List<DataContainer>();
+            List<CurrentDataContainer> containers = new List<CurrentDataContainer>();
 
-            containers = hranilkaDbContext.DataContainers
-                .Select(x => new DataContainer
-                {
-                    Id = x.Id,
-                    Category = x.Category,
-                    CategoryLevel = x.CategoryLevel,
-                    Description = x.Description,
-                    CreateDate = x.CreateDate
-                }).ToList();
+            containers = hranilkaDbContext.DataContainers.Join(hranilkaDbContext.InformationCategories,
+                    u => u.CategoryId,
+                    c => c.Id,
+                    (u, c) => new CurrentDataContainer
+                    {
+                        Id = u.Id,
+                        Description = u.Description,
+                        CreateDate = u.CreateDate,
+                        Category = c.Name
+                    }).ToList();
 
-            var allDataContainers = new ObservableCollection<DataContainer>(containers);
+            //foreach (var item in cont)
+            //{
+            //    CurrentDataContainer current = new CurrentDataContainer
+            //    {
+            //        Id = item.Id,
+            //        Description = item.Description,
+            //        CreateDate = item.CreateDate,
+            //        Category = item.Category
+            //    };
+            //}
+
+
+            //containers = hranilkaDbContext.DataContainers
+            //    .Select(x => new DataContainer
+            //    {
+            //        Id = x.Id,
+            //        Description = x.Description,
+            //        CreateDate = x.CreateDate,
+            //        Category = x.Category,
+            //        OtherInformation = x.OtherInformation
+                    
+            //    }).ToList();
+
+            var allDataContainers = new ObservableCollection<CurrentDataContainer>(containers);
             return allDataContainers;
         }
 
-        internal static DataContainer GetSelectDataContainersFromDataBase(string description)
+        internal static CurrentDataContainer GetSelectDataContainersFromDataBase(string description)
         {
-            
-            return hranilkaDbContext.DataContainers.Where(p => p.Description == description).FirstOrDefault();
+            DataContainer dataContainer = hranilkaDbContext.DataContainers.Where(p => p.Description == description).FirstOrDefault();
+            CurrentDataContainer currentDataContainer = new CurrentDataContainer(dataContainer);
+            return currentDataContainer;
 
         }
     }

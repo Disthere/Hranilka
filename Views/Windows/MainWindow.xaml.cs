@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Hranilka.ViewModels;
 using Hranilka.Infrastructure.Commands;
+using Hranilka.Data;
 
 namespace Hranilka
 {
@@ -24,22 +25,40 @@ namespace Hranilka
     public partial class MainWindow : Window
     {
         MainWindowViewModel mainWindowViewModel;
+        Context hranilkaDbContext;
         public MainWindow()
         {
             InitializeComponent();
             mainWindowViewModel = new MainWindowViewModel();
             base.DataContext = mainWindowViewModel;
+            hranilkaDbContext = new Context();
 
 
 
-            //AddTestsValue();
+            AddTestsValue();
 
         }
 
         private void AddTestsValue()
         {
-            //DataContainer d1 = new() { Category = "C# основы", Description = "Отличие типа decimal от double" };
-            //DataContainer d2 = new() { Category = "WPF", Description = "Как добавить окно выбора папки" };
+            ContentCategory category = new ContentCategory { Name = "Разное" };
+            hranilkaDbContext.InformationCategories.Add(category);
+            hranilkaDbContext.SaveChanges();
+
+            DataContainer container = new DataContainer { Description = "Какое что это", Category = category };
+            hranilkaDbContext.DataContainers.Add(container);
+            hranilkaDbContext.SaveChanges();
+
+            ContentCategory category2 = new ContentCategory { Name = "Солюшены" };
+            hranilkaDbContext.InformationCategories.Add(category2);
+            hranilkaDbContext.SaveChanges();
+
+            DataContainer container2 = new DataContainer { Description = "Что-то другое", Category = category };
+            hranilkaDbContext.DataContainers.Add(container2);
+            hranilkaDbContext.SaveChanges();
+
+            //DataContainer d1 = new() { CategoryId = 0, Description = "Отличие типа decimal от double" };
+            //DataContainer d2 = new() { CategoryId = 0, Description = "Как добавить окно выбора папки" };
 
             //hranilkaDbContext.DataContainers.AddRange(new List<DataContainer> { d1, d2 });
             //hranilkaDbContext.SaveChanges();
@@ -51,7 +70,7 @@ namespace Hranilka
         private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var item = (ListBox)sender;
-            mainWindowViewModel.SelectedItem((DataContainer)item.SelectedItem, MainPageRichTextBox);
+            mainWindowViewModel.SelectedItem((CurrentDataContainer)item.SelectedItem, MainPageRichTextBox);
 
         }
 

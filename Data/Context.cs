@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hranilka.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Hranilka
     public class Context : DbContext
     {
         //private readonly StreamWriter logStream = new StreamWriter("AppLogi.txt", true);
+        public DbSet<ContentCategory> InformationCategories { get; set; }
         public DbSet<DataContainer> DataContainers { get; set; }
 
         public Context()
@@ -30,16 +32,6 @@ namespace Hranilka
 
         }
 
-        //public override void Dispose()
-        //{
-        //    base.Dispose();
-        //    logStream.Dispose();
-        //}
-
-        //public override async ValueTask DisposeAsync()
-        //{
-        //    await base.DisposeAsync();
-        //    await logStream.DisposeAsync();
-        //}
+        
     }
 }

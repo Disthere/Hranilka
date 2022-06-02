@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hranilka.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,28 +30,53 @@ namespace Hranilka
             InitializeComponent();
         }
 
+
+        public void SaveContent()
+        {
+            ContentCategory category = new ContentCategory { Name = CategoryBox.Text };
+            hranilkaDbContext.InformationCategories.Add(category);
+            hranilkaDbContext.SaveChanges();
+
+            DataContainer container = new DataContainer { Description = DescriptionBox.Text, Category = category };
+            hranilkaDbContext.DataContainers.Add(container);
+            hranilkaDbContext.SaveChanges();
+
+            CurrentDataContainer currentDataContainer = new CurrentDataContainer(container);
+            DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
+            dataFile.SaveFileRTF(AddDataRichTextBox);
+            AddDataRichTextBox.Document.Blocks.Clear();
+            DescriptionBox.Clear();
+            CategoryBox.Clear();
+        }
+
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+
+
+
+            ContentCategory category = new ContentCategory();
             DataContainer container = new DataContainer();
+
 
             bool isDataAdded = DescriptionBox.Text != string.Empty && CategoryBox.Text != string.Empty && AddDataRichTextBox.Document != null;
 
             if (isDataAdded)
             {
-                container.Description = DescriptionBox.Text;
-                container.Category = CategoryBox.Text;
-                hranilkaDbContext.DataContainers.Add(container);
-                hranilkaDbContext.SaveChanges();
-                DataFile dataFile = new DataFile(container);
-                dataFile.SaveFileRTF(AddDataRichTextBox);
-                AddDataRichTextBox.Document.Blocks.Clear();
-                DescriptionBox.Clear();
-                CategoryBox.Clear();
+                SaveContent();
+                //container.Description = DescriptionBox.Text;
+                //container.Category = CategoryBox.Text;
+                //hranilkaDbContext.DataContainers.Add(container);
+                //hranilkaDbContext.SaveChanges();
+                //DataFile dataFile = new DataFile(container);
+                //dataFile.SaveFileRTF(AddDataRichTextBox);
+                //AddDataRichTextBox.Document.Blocks.Clear();
+                //DescriptionBox.Clear();
+                //CategoryBox.Clear();
             }
             else
                 MessageBox.Show("Не введены данные!!");
-            
-            
+
+
         }
 
         private void SaveRTBContent(object sender, RoutedEventArgs e)

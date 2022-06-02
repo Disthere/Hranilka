@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hranilka.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,10 +11,14 @@ namespace Hranilka
     public class DataContainer
     {
         public int Id { get; set; }
-        public string Category { get; set; }
-        public int? CategoryLevel { get; set; }
         public string Description { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; } = DateTime.Now;
-        
+        public string OtherInformation { get; set; }
+
+        public int CategoryId { get; set; }
+        public ContentCategory Category { get; set; }
     }
 }
