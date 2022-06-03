@@ -27,7 +27,7 @@ namespace Hranilka.Data
         {
             using (Context hranilkaDbContext = new Context())
             {
-                var currentDataContainer = hranilkaDbContext.DataContainers.Join(hranilkaDbContext.InformationCategories,
+                var currentDataContainer = hranilkaDbContext.DataContainers.Join(hranilkaDbContext.ContentCategories,
                     u => u.CategoryId,
                     c => c.Id,
                     (u, c) => new

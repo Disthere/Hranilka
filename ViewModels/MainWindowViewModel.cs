@@ -64,7 +64,7 @@ namespace Hranilka.ViewModels
             get
             {
                 if (_dataContainers == null)
-                    _dataContainers = DataContainerRepository.GetAllDataContainersFromDataBase();
+                    _dataContainers = DataContainerRepository.GetAllDataContainersFromDB();
                 return _dataContainers;
             }
         }
@@ -72,7 +72,7 @@ namespace Hranilka.ViewModels
         public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
         {
             string description = selectedItem.Description;
-            CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDataContainersFromDataBase(description);
+            CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainersFromDB(description);
             DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
             dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
         }

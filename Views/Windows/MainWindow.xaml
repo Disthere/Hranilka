@@ -27,6 +27,7 @@
                 <MenuItem Header="О программе" />
             </MenuItem>
         </Menu>
+
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <TextBlock Text="github.com/Disthere" />
@@ -35,6 +36,37 @@
         <TabControl Background="Beige">
             <TabItem Header="Текстовые данные">
                 <Grid>
+                    <ComboBox
+            Width="200"
+            Height="25"
+            Margin="10,40,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            DisplayMemberPath="Name"
+            ItemsSource="{Binding Path=ContentCategories}" />
+
+                    <TextBlock
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="Категория"
+            TextWrapping="Wrap" />
+
+                    <ComboBox
+            Width="200"
+            Height="25"
+            Margin="230,40,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            DisplayMemberPath="Name"
+            ItemsSource="{Binding Path=ContentCategories}" />
+
+                    <TextBlock
+            Margin="230,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="Подкатегория"
+            TextWrapping="Wrap" />
                     <Button
                         x:Name="AddButton"
                         Width="90"
@@ -99,32 +131,7 @@
                         VerticalAlignment="Top"
                         Text="TextBox"
                         TextWrapping="Wrap" />
-                    <ComboBox
-                        Width="200"
-                        Height="25"
-                        Margin="10,40,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top">
-                        <ComboBoxItem>Собеседование</ComboBoxItem>
-                        <ComboBoxItem>C# основы</ComboBoxItem>
-                        <ComboBoxItem>Базы данных, SQL</ComboBoxItem>
-                    </ComboBox>
-                    <TextBlock
-                        Margin="10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Text="Категория"
-                        TextWrapping="Wrap" />
-                    <ComboBox
-                        Width="200"
-                        Height="25"
-                        Margin="250,40,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top">
-                        <ComboBoxItem>Дата</ComboBoxItem>
-                        <ComboBoxItem>Размер</ComboBoxItem>
-                        <ComboBoxItem>Алфавит</ComboBoxItem>
-                    </ComboBox>
+
                 </Grid>
             </TabItem>
             <TabItem Header="Ссылки">Другой текст</TabItem>

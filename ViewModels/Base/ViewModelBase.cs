@@ -8,12 +8,21 @@ using System.Threading.Tasks;
 
 namespace Hranilka.ViewModels.Base
 {
-    internal abstract class ViewModelBase : INotifyPropertyChanged
+    internal abstract class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         // INotifyPropertyChanged -  Когда объект класса изменяет значение свойства, то он через событие PropertyChanged
         // извещает систему об изменении свойства. А система обновляет все привязанные объекты.
         // Автообновление визуальной части текстовых блоков 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        //public virtual void OnPropertyChanged(string propertyName)
+        //{
+        //    PropertyChangedEventHandler handler = this.PropertyChanged;
+        //    if (handler != null)
+        //    {
+        //        handler.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
 
         protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
         {
@@ -34,6 +43,13 @@ namespace Hranilka.ViewModels.Base
             return true;
         }
 
-        
+        public void Dispose()
+        {
+            this.OnDispose();
+        }
+
+        protected virtual void OnDispose()
+        {
+        }
     }
 }

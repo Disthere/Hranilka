@@ -34,7 +34,7 @@ namespace Hranilka
         public void SaveContent()
         {
             ContentCategory category = new ContentCategory { Name = CategoryBox.Text };
-            hranilkaDbContext.InformationCategories.Add(category);
+            hranilkaDbContext.ContentCategories.Add(category);
             hranilkaDbContext.SaveChanges();
 
             DataContainer container = new DataContainer { Description = DescriptionBox.Text, Category = category };
@@ -79,11 +79,7 @@ namespace Hranilka
 
         }
 
-        private void SaveRTBContent(object sender, RoutedEventArgs e)
-        {
-            //DataFile sv = new DataFile();
-            //sv.SaveFileRTF(FileSaveWay, AddDataRichTextBox);
-        }
+        
 
         private void ChooseSaveWayButton_Click(object sender, RoutedEventArgs e)
         {

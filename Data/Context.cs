@@ -12,7 +12,7 @@ namespace Hranilka
     public class Context : DbContext
     {
         //private readonly StreamWriter logStream = new StreamWriter("AppLogi.txt", true);
-        public DbSet<ContentCategory> InformationCategories { get; set; }
+        public DbSet<ContentCategory> ContentCategories { get; set; }
         public DbSet<DataContainer> DataContainers { get; set; }
 
         public Context()

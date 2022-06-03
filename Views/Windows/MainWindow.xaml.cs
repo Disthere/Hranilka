@@ -41,21 +41,29 @@ namespace Hranilka
 
         private void AddTestsValue()
         {
-            ContentCategory category = new ContentCategory { Name = "Разное" };
-            hranilkaDbContext.InformationCategories.Add(category);
-            hranilkaDbContext.SaveChanges();
+            //ContentCategory category = new ContentCategory { Name = "Разное Разное", ParentId = 1 };
+            //hranilkaDbContext.ContentCategories.Add(category);
+            //hranilkaDbContext.SaveChanges();
 
-            DataContainer container = new DataContainer { Description = "Какое что это", Category = category };
-            hranilkaDbContext.DataContainers.Add(container);
-            hranilkaDbContext.SaveChanges();
+            //ContentCategory category1 = new ContentCategory { Name = "Разное Разное разное", ParentId = 1 };
+            //hranilkaDbContext.ContentCategories.Add(category1);
+            //hranilkaDbContext.SaveChanges();
 
-            ContentCategory category2 = new ContentCategory { Name = "Солюшены" };
-            hranilkaDbContext.InformationCategories.Add(category2);
-            hranilkaDbContext.SaveChanges();
+            ////DataContainer container = new DataContainer { Description = "Какое что это", Category = category };
+            ////hranilkaDbContext.DataContainers.Add(container);
+            ////hranilkaDbContext.SaveChanges();
 
-            DataContainer container2 = new DataContainer { Description = "Что-то другое", Category = category };
-            hranilkaDbContext.DataContainers.Add(container2);
-            hranilkaDbContext.SaveChanges();
+            //ContentCategory category2 = new ContentCategory { Name = "Солюшены солика", ParentId = 2 };
+            //hranilkaDbContext.ContentCategories.Add(category2);
+            //hranilkaDbContext.SaveChanges();
+
+            //ContentCategory category3 = new ContentCategory { Name = "солики другие", ParentId = 2 };
+            //hranilkaDbContext.ContentCategories.Add(category3);
+            //hranilkaDbContext.SaveChanges();
+
+            //DataContainer container2 = new DataContainer { Description = "Что-то другое", Category = category };
+            //hranilkaDbContext.DataContainers.Add(container2);
+            //hranilkaDbContext.SaveChanges();
 
             //DataContainer d1 = new() { CategoryId = 0, Description = "Отличие типа decimal от double" };
             //DataContainer d2 = new() { CategoryId = 0, Description = "Как добавить окно выбора папки" };
