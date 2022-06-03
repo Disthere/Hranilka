@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hranilka.Models
 {
@@ -73,6 +74,23 @@ namespace Hranilka.Models
 
             }
         }
+
+        public static bool IsCategoriesContains(string categoryName)
+        {
+            string findingCategoryName;
+            using (Context hranilkaDbContext = new Context())
+            {
+                findingCategoryName = hranilkaDbContext
+                .ContentCategories
+                .Where(u => u.Name == categoryName)
+                .Select(u => u.Name)
+                .FirstOrDefault();
+            }
+            if (findingCategoryName != null)
+                return true;
+            return false;
+        }
+
     }
 
 

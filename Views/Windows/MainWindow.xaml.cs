@@ -79,7 +79,6 @@ namespace Hranilka
         {
             var item = (ListBox)sender;
             mainWindowViewModel.SelectedItem((CurrentDataContainer)item.SelectedItem, MainPageRichTextBox);
-
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)

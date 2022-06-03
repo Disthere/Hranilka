@@ -1,4 +1,5 @@
 ﻿using Hranilka.Data;
+using Hranilka.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -87,6 +88,12 @@ namespace Hranilka
             //string r = a.GetFileSaveWay();
             //TB1.Text = r;
             //FileSaveWay = r + "\\test.rtf"; 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            SaveCategoryWindow saveCategoryWindow = new SaveCategoryWindow();  
+            saveCategoryWindow.Show();
         }
     }
 }

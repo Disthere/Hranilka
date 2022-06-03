@@ -9,7 +9,7 @@
     Title="Добавить новый текст"
     Width="800"
     Height="500"
-    WindowStartupLocation="CenterOwner"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.DataContext>
         <vm:AddNewDataWindowViewModel />
@@ -96,10 +96,15 @@
             </FlowDocument>
         </RichTextBox>
         <Button
-            Margin="10"
+            Margin="0,11,590,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Content="Добавить категорию" />
+            Content="Добавить" Click="Button_Click" />
+        <Button
+            Margin="0,11,370,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Content="Добавить" />
         <TextBlock
             x:Name="TB1"
             Margin="671,30,0,0"
