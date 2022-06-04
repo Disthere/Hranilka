@@ -95,5 +95,11 @@ namespace Hranilka
             SaveCategoryWindow saveCategoryWindow = new SaveCategoryWindow();  
             saveCategoryWindow.Show();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            SaveSubCategoryWindow saveSubCategoryWindow = new SaveSubCategoryWindow();
+            saveSubCategoryWindow.Show();
+        }
     }
 }

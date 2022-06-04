@@ -65,8 +65,8 @@ namespace Hranilka
             //hranilkaDbContext.DataContainers.Add(container2);
             //hranilkaDbContext.SaveChanges();
 
-            //DataContainer d1 = new() { CategoryId = 0, Description = "Отличие типа decimal от double" };
-            //DataContainer d2 = new() { CategoryId = 0, Description = "Как добавить окно выбора папки" };
+            //DataContainer d1 = new() { CategoryId = 2, Description = "Отличие типа decimal от double" };
+            //DataContainer d2 = new() { CategoryId = 2, Description = "Как добавить окно выбора папки" };
 
             //hranilkaDbContext.DataContainers.AddRange(new List<DataContainer> { d1, d2 });
             //hranilkaDbContext.SaveChanges();

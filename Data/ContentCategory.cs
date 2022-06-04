@@ -16,6 +16,9 @@ namespace Hranilka.Data
         [DefaultValue(0)]
         public int ParentId { get; set; }
 
+        [DefaultValue(0)]
+        public int InfoType { get; set; }
+
 
         public ICollection<DataContainer> DataContainer { get; set; }
         public ContentCategory()
