@@ -29,7 +29,7 @@ namespace Hranilka.ViewModels
             set
             {
                 _categories = value;
-                OnPropertyChanged(nameof(Categories)); 
+                OnPropertyChanged(nameof(Categories));
             }
         }
 
@@ -55,7 +55,7 @@ namespace Hranilka.ViewModels
             using (Context hranilkaDbContext = new Context())
             {
                 var wwww = hranilkaDbContext.ContentCategories.Where(x => x.Id == 3).FirstOrDefault();
-                
+
                 return wwww;
             }
         }
@@ -90,6 +90,46 @@ namespace Hranilka.ViewModels
                 _currentSubCategory = value;
                 OnPropertyChanged(nameof(CurrentSubCategory));
             }
+        }
+
+        string _currentDescription;
+        public string CurrentDescription
+        {
+            get
+            {
+                return _currentDescription;
+            }
+            set
+            {
+                _currentDescription = value;
+                OnPropertyChanged(nameof(CurrentDescription));
+            }
+        }
+
+        RichTextBox _currentRichTextBox;
+        public RichTextBox CurrentRichTextBox
+        {
+            get
+            {
+                if (_currentRichTextBox == null)
+                    _currentRichTextBox = new RichTextBox();
+                return _currentRichTextBox;
+            }
+            set
+            {
+                _currentRichTextBox = value;
+                OnPropertyChanged(nameof(CurrentRichTextBox));
+            }
+        }
+
+
+        public ICommand SaveDataCommand { get; }
+
+        private bool CanSaveDataCommandExecuted(object p) => true;
+
+        private void OnSaveDataCommandExecuted(object p)
+        {
+            Application.Current.Shutdown();
         }
 
     }

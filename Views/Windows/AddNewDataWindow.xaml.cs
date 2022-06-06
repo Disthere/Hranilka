@@ -1,4 +1,5 @@
 ﻿using Hranilka.Data;
+using Hranilka.Models;
 using Hranilka.Views.Windows;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,6 @@ namespace Hranilka
     /// </summary>
     public partial class AddNewDataWindow : Window
     {
-        //public string FileSaveWay { get; set; } = "C:\\Zapisi\\hui.rtf";
 
         private Context hranilkaDbContext = new Context();
         public AddNewDataWindow()
@@ -52,18 +52,43 @@ namespace Hranilka
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            var currentCategory = (ContentCategory)this.CategoryComboBox.SelectedItem;
+            string currentSubCategory = this.SubCategoryComboBox.Text;
+            string currentDescription = this.DescriptionBox.Text;
 
+            ContentCategory category;
+            {
+                string a = "Категория 1";
 
+                category = new ContentCategory { Id = 5, Name = "Категория 1", ParentId = 0, InfoType = 0 };
 
-            ContentCategory category = new ContentCategory();
-            DataContainer container = new DataContainer();
+                //category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(a);
+            }
 
+            if (currentSubCategory != null)
+            {
+                currentCategory = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
+            }
 
-            bool isDataAdded = DescriptionBox.Text != string.Empty && CategoryBox.Text != string.Empty && AddDataRichTextBox.Document != null;
+            bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.Blocks != null;
 
             if (isDataAdded)
             {
-                SaveContent();
+                DataContainerRepository.SaveDataContainerToDB(currentCategory, currentDescription);
+
+                CurrentDataContainer currentDataContainer = new CurrentDataContainer
+                {
+                    Category = currentCategory.Name,
+                    Description = currentDescription
+                };
+
+                DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
+                dataFile.SaveFileRTF(AddDataRichTextBox);
+                AddDataRichTextBox.Document.Blocks.Clear();
+                DescriptionBox.Clear();
+
+
+                //SaveContent();
                 //container.Description = DescriptionBox.Text;
                 //container.Category = CategoryBox.Text;
                 //hranilkaDbContext.DataContainers.Add(container);
@@ -80,7 +105,7 @@ namespace Hranilka
 
         }
 
-        
+
 
         private void ChooseSaveWayButton_Click(object sender, RoutedEventArgs e)
         {
@@ -92,7 +117,7 @@ namespace Hranilka
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            SaveCategoryWindow saveCategoryWindow = new SaveCategoryWindow();  
+            SaveCategoryWindow saveCategoryWindow = new SaveCategoryWindow();
             saveCategoryWindow.Show();
         }
 
@@ -100,6 +125,52 @@ namespace Hranilka
         {
             SaveSubCategoryWindow saveSubCategoryWindow = new SaveSubCategoryWindow();
             saveSubCategoryWindow.Show();
+        }
+
+        private void FileSaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var currentCategoryName = this.CategoryComboBox.Text;
+            string currentSubCategory = this.SubCategoryComboBox.Text;
+            string currentDescription = this.DescriptionBox.Text;
+
+            ContentCategory category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentCategoryName);
+            
+            if (currentSubCategory != null)
+            {
+                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(category.Name);
+            }
+
+            bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.Blocks != null;
+
+            if (isDataAdded)
+            {
+                DataContainerRepository.SaveDataContainerToDB(category, currentDescription);
+
+                CurrentDataContainer currentDataContainer = new CurrentDataContainer
+                {
+                    Category = category.Name,
+                    Description = currentDescription
+                };
+
+                DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
+                dataFile.SaveFileRTF(AddDataRichTextBox);
+                AddDataRichTextBox.Document.Blocks.Clear();
+                DescriptionBox.Clear();
+
+
+                //SaveContent();
+                //container.Description = DescriptionBox.Text;
+                //container.Category = CategoryBox.Text;
+                //hranilkaDbContext.DataContainers.Add(container);
+                //hranilkaDbContext.SaveChanges();
+                //DataFile dataFile = new DataFile(container);
+                //dataFile.SaveFileRTF(AddDataRichTextBox);
+                //AddDataRichTextBox.Document.Blocks.Clear();
+                //DescriptionBox.Clear();
+                //CategoryBox.Clear();
+            }
+            else
+                MessageBox.Show("Не введены данные!!");
         }
     }
 }

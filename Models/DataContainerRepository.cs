@@ -57,7 +57,7 @@ namespace Hranilka.Models
             return allDataContainers;
         }
 
-        internal static CurrentDataContainer GetSelectDescriptionDataContainersFromDB(string description)
+        public static CurrentDataContainer GetSelectDescriptionDataContainersFromDB(string description)
         {
             using (Context hranilkaDbContext = new Context())
             {
@@ -103,13 +103,13 @@ namespace Hranilka.Models
 
 
 
-        public static void SaveDataContainerToDB(string description, string categoryName)
+        public static void SaveDataContainerToDB(ContentCategory category, string description)
         {
             using (Context hranilkaDbContext = new Context())
             {
                 int categoryId = hranilkaDbContext
                 .ContentCategories
-                .Where(u => u.Name == categoryName)
+                .Where(u => u.Name == category.Name)
                 .Select(u => u.Id)
                 .FirstOrDefault();
 

@@ -16,9 +16,31 @@ namespace Hranilka.Models
 
             using (Context hranilkaDbContext = new Context())
             {
-                var categories = hranilkaDbContext.ContentCategories.Where(x=>x.ParentId==0).ToList();
+                var categories = hranilkaDbContext.ContentCategories.Where(x => x.ParentId == 0).ToList();
                 var allCategories = new ObservableCollection<ContentCategory>(categories);
                 return allCategories;
+            }
+
+            //contentCategories.DataContainers.Join(hranilkaDbContext.ContentCategories,
+            //        u => u.CategoryId,
+            //        c => c.Id,
+            //        (u, c) => new CurrentDataContainer
+            //        {
+            //            Id = u.Id,
+            //            Description = u.Description,
+            //            CreateDate = u.CreateDate,
+            //            Category = c.Name
+            //        }).ToList();
+
+        }
+
+        public static ContentCategory GetContentCategoryForNameFromDB(string categoryName)
+        {
+
+            using (Context hranilkaDbContext = new Context())
+            {
+                var category = hranilkaDbContext.ContentCategories.Where(x => x.Name == categoryName).FirstOrDefault();
+                return category;
             }
 
             //contentCategories.DataContainers.Join(hranilkaDbContext.ContentCategories,
@@ -44,7 +66,7 @@ namespace Hranilka.Models
                 .Select(u => u.Id)
                 .FirstOrDefault();
 
-                var subCategories = hranilkaDbContext.ContentCategories.Where(c => c.ParentId == parentId).Where(y=>y.ParentId !=0).ToList();
+                var subCategories = hranilkaDbContext.ContentCategories.Where(c => c.ParentId == parentId).Where(y => y.ParentId != 0).ToList();
                 var allSubCategories = new ObservableCollection<ContentCategory>(subCategories);
                 return allSubCategories;
             }
