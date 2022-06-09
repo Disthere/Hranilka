@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,31 +14,31 @@ namespace Hranilka
     {
 
 
-        public string GetFileSaveWay()
-        {
-            var dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            CommonFileDialogResult result = dialog.ShowDialog();
-            if (result == CommonFileDialogResult.Ok)
-            {
-                var fileName = dialog.FileName;
-                Console.WriteLine("Имя папки:");
-                return fileName.ToString().Replace(@"\", @"\\");
-            }
+        //public string GetFileSaveWay()
+        //{
+        //    var dialog = new CommonOpenFileDialog();
+        //    dialog.IsFolderPicker = true;
+        //    CommonFileDialogResult result = dialog.ShowDialog();
+        //    if (result == CommonFileDialogResult.Ok)
+        //    {
+        //        var fileName = dialog.FileName;
+        //        Console.WriteLine("Имя папки:");
+        //        return fileName.ToString().Replace(@"\", @"\\");
+        //    }
 
-            //SaveFileDialog saveFileDialog = new SaveFileDialog();
+        //    //SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            //saveFileDialog.FileName = "Document"; 
-            //// Default file name
-            //saveFileDialog.DefaultExt = ".rtf";
+        //    //saveFileDialog.FileName = "Document"; 
+        //    //// Default file name
+        //    //saveFileDialog.DefaultExt = ".rtf";
 
-            //if (saveFileDialog.ShowDialog() == true)
-            //    string filename = saveFileDialog.FileName;
+        //    //if (saveFileDialog.ShowDialog() == true)
+        //    //    string filename = saveFileDialog.FileName;
 
-            //File.WriteAllText(saveFileDialog.FileName, txtEditor.Text);
+        //    //File.WriteAllText(saveFileDialog.FileName, txtEditor.Text);
 
-            return "fff";
-        }
+        //    return "fff";
+        //}
 
     }
 }

@@ -26,5 +26,11 @@ namespace Hranilka.Data
             this.DataContainer = new List<DataContainer>(); 
         }
 
+        public ContentCategory(int id, string name)
+        {
+            this.Id = id;
+            this.Name = name;
+        }
+
     }
 }

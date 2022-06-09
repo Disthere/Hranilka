@@ -16,7 +16,9 @@ namespace Hranilka.Models
 
             using (Context hranilkaDbContext = new Context())
             {
-                var categories = hranilkaDbContext.ContentCategories.Where(x => x.ParentId == 0).ToList();
+                var categories = hranilkaDbContext.ContentCategories
+                    .Where(x => x.ParentId == 0)
+                    .ToList();
                 var allCategories = new ObservableCollection<ContentCategory>(categories);
                 return allCategories;
             }
@@ -39,7 +41,8 @@ namespace Hranilka.Models
 
             using (Context hranilkaDbContext = new Context())
             {
-                var category = hranilkaDbContext.ContentCategories.Where(x => x.Name == categoryName).FirstOrDefault();
+                ContentCategory category = new ContentCategory();
+                category = hranilkaDbContext.ContentCategories.FirstOrDefault(r => r.Name == categoryName);
                 return category;
             }
 
@@ -58,18 +61,22 @@ namespace Hranilka.Models
 
         public static ObservableCollection<ContentCategory> GetSubCategoriesFromDB(ContentCategory parentCategory)
         {
-            using (Context hranilkaDbContext = new Context())
+            if (parentCategory != null)
             {
-                int parentId = hranilkaDbContext
-                .ContentCategories
-                .Where(u => u.Name == parentCategory.Name)
-                .Select(u => u.Id)
-                .FirstOrDefault();
+                using (Context hranilkaDbContext = new Context())
+                {
+                    int parentId = hranilkaDbContext
+                    .ContentCategories
+                    .Where(u => u.Name == parentCategory.Name)
+                    .Select(u => u.Id)
+                    .FirstOrDefault();
 
-                var subCategories = hranilkaDbContext.ContentCategories.Where(c => c.ParentId == parentId).Where(y => y.ParentId != 0).ToList();
-                var allSubCategories = new ObservableCollection<ContentCategory>(subCategories);
-                return allSubCategories;
+                    var subCategories = hranilkaDbContext.ContentCategories.Where(c => c.ParentId == parentId).Where(y => y.ParentId != 0).ToList();
+                    var allSubCategories = new ObservableCollection<ContentCategory>(subCategories);
+                    return allSubCategories;
+                }
             }
+            return new ObservableCollection<ContentCategory>();
         }
 
         public static void SaveCategoriesToDB(string parentCategoryName)

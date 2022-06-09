@@ -26,12 +26,17 @@ namespace Hranilka.ViewModels.Base
 
         protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
         {
+            //if (PropertyName != nameof(IsChanged))
+            //{
+            //    IsChanged = true;
+            //}
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 
         protected virtual bool Set<T>(ref T field, T value, [CallerMemberName] string PropertyName = null)
         {
-            if (Equals(field,value))
+            if (Equals(field, value))
             {
                 return false;
             }

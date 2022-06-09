@@ -17,8 +17,9 @@ namespace Hranilka.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
-        /// <summary>Заголовок окна</summary>
+
         #region Заголовок окна
+        /// <summary>Заголовок окна</summary>
         private string title = "Hranilka V1.0";
 
 
@@ -26,18 +27,7 @@ namespace Hranilka.ViewModels
         {
             get => title;
             set => Set(ref title, value);
-            //set
-            //{
-            //    if (Equals(title, value))
-            //    {
-            //        return;
-            //    }
 
-            //    title = value;
-
-            //    OnPropertyChanged();
-
-            //}
         }
         #endregion
 
@@ -54,7 +44,34 @@ namespace Hranilka.ViewModels
         public MainWindowViewModel()
         {
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
+            //DeleteContainerCommand = new LambdaCommand(OnDeleteContainerCommandExecuted, CanDeleteContainerCommandExecuted);
         }
+
+        //private bool _isChanged;
+        //public bool IsChanged
+        //{
+        //    get => _isChanged;
+        //    set
+        //    {
+        //        if (value == _isChanged) return;
+        //        _isChanged = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
+
+
+        #endregion
+
+        #region Команда удаления контейнеров в MainViewList
+        //public ICommand DeleteContainerCommand { get; }
+
+        //private bool CanDeleteContainerCommandExecuted(object p) => true;
+
+        //private void OnDeleteContainerCommandExecuted(object p)
+        //{
+        //    
+        //}
+
 
         #endregion
 
@@ -64,57 +81,112 @@ namespace Hranilka.ViewModels
             get
             {
                 if (_dataContainers == null)
-                    _dataContainers = DataContainerRepository.GetAllDataContainersFromDB();
+                    _dataContainers = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name);
                 return _dataContainers;
+            }
+
+            set
+            {
+                _dataContainers = value;
+                OnPropertyChanged(nameof(DataContainers));
             }
         }
 
-        public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
-        {
-            string description = selectedItem.Description;
-            CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainersFromDB(description);
-            DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
-            dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
-        }
+        //public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
+        //{
+        //    string description = selectedItem.Description;
+        //    CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainersFromDB(description);
+        //    DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
+        //    dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
+        //}
 
         DataContainer _currentDataContainer;
         public DataContainer CurrentDataContainer
         {
             get
             {
-                //if (_currentDataContainer == null)
-                //    _currentDataContainer = new DataContainer();
                 return _currentDataContainer;
             }
             set
             {
                 _currentDataContainer = value;
-                OnPropertyChanged("CurrentDataContainer");
+                OnPropertyChanged(nameof(CurrentDataContainer));
             }
         }
 
-        private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        ObservableCollection<ContentCategory> _categories;
+        public ObservableCollection<ContentCategory> Categories
         {
-                        
-
-            //string b = hranilkaDbContext
-            //    .DataContainers
-            //    .Where(u => u.Category == a)
-            //    .Select(u => u.Description)
-            //    .FirstOrDefault();
-            //DescriptionTextBox.Text = b;
-
-            //var c = hranilkaDbContext
-            //    .DataContainers
-            //    .Where(u => u.Category == a)
-            //    .Select(u => u.CreateDate)
-            //    .FirstOrDefault();
-
-            //DateTextBlock.Text = c.ToString("g");
-
-
+            get
+            {
+                if (_categories == null)
+                    _categories = ContentCategoryRepozitory.GetAllParentCategoriesFromDB();
+                return _categories;
+            }
+            set
+            {
+                _categories = value;
+                OnPropertyChanged(nameof(Categories));
+            }
         }
 
-        
+        ContentCategory _currentCategory;
+        public ContentCategory CurrentCategory
+        {
+            get
+            {
+                if (_currentCategory == null)
+                { _currentCategory = new ContentCategory(); }
+                return _currentCategory;
+            }
+            set
+            {
+                _currentCategory = value;
+
+                DataContainers = null;
+                SubCategories = null;
+
+                OnPropertyChanged(nameof(CurrentCategory));
+            }
+        }
+
+
+        ObservableCollection<ContentCategory> _subCategories;
+        public ObservableCollection<ContentCategory> SubCategories
+        {
+            get
+            {
+                if (_subCategories == null)
+                    _subCategories = ContentCategoryRepozitory.GetSubCategoriesFromDB(_currentCategory);
+                return _subCategories;
+            }
+            set
+            {
+                _subCategories = value;
+
+                OnPropertyChanged(nameof(SubCategories));
+            }
+        }
+
+        ContentCategory _currentSubCategory;
+        public ContentCategory CurrentSubCategory
+        {
+            get
+            {
+                if (_currentSubCategory == null)
+                { _currentSubCategory = new ContentCategory(); }
+
+                return _currentSubCategory;
+            }
+            set
+            {
+                _currentSubCategory = value;
+                DataContainers = null;
+                OnPropertyChanged(nameof(CurrentSubCategory));
+            }
+        }
+
+
+
     }
 }

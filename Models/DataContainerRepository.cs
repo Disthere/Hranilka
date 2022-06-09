@@ -69,35 +69,93 @@ namespace Hranilka.Models
             }
         }
 
-        internal static ObservableCollection<CurrentDataContainer> GetSelectCategoryDataContainersFromDB(string categoryName)
+        internal static ObservableCollection<CurrentDataContainer> GetSelectCategoryDataContainersFromDB(string categoryName, string subCategoryName)
         {
-            using (Context hranilkaDbContext = new Context())
+            string parentCategory = categoryName;
+            int parentCategoryId;
+            int subCategoryIdForSelect;
+            List<DataContainer> containers;
+            List<CurrentDataContainer> currentContainers = new List<CurrentDataContainer>();
+
+            if (subCategoryName == null)
             {
-                int categoryId = hranilkaDbContext
-                .ContentCategories
-                .Where(u => u.Name == categoryName)
-                .Select(u => u.Id)
-                .FirstOrDefault();
+                using (Context hranilkaDbContext = new Context())
+                {
+                    parentCategoryId = hranilkaDbContext
+                        .ContentCategories
+                        .Where(u => u.Name == parentCategory)
+                        .Select(u => u.Id)
+                        .FirstOrDefault();
 
-                List<DataContainer> containers = hranilkaDbContext.DataContainers
-                    .Where(p => p.CategoryId == categoryId)
-                    .ToList();
+                    var childCategoriesIDs = hranilkaDbContext.ContentCategories
+                        .Where(p => p.ParentId == parentCategoryId && p.ParentId != 0)
+                        .Select(p => p.Id)
+                        .ToList();
 
-                var currentContainers = containers
-                    .Join(hranilkaDbContext.ContentCategories,
-                    u => u.CategoryId,
-                    c => c.Id,
-                    (u, c) => new CurrentDataContainer
+                    containers = hranilkaDbContext.DataContainers
+                        .Where(p => childCategoriesIDs.Contains(p.CategoryId) || p.CategoryId == parentCategoryId)
+                        .ToList();
+
+                    foreach (var item in containers)
                     {
-                        Id = u.Id,
-                        Description = u.Description,
-                        CreateDate = u.CreateDate,
-                        Category = c.Name
-                    })
-                    .ToList();
+                       CurrentDataContainer currentDataContainer = new CurrentDataContainer
+                        {
+                            Description = item.Description,
+                            CreateDate = item.CreateDate,
+                            Category = categoryName
+                        };
 
-                return new ObservableCollection<CurrentDataContainer>(currentContainers); 
+                        currentContainers.Add(currentDataContainer);
+                    }
+
+                    //var categories = hranilkaDbContext.ContentCategories
+                    //    .Where(p => p.Id == categoryIdForSelect || p.ParentId == categoryIdForSelect)
+                    //    .ToList();
+
+                    //currentContainers = containers
+                    //    .Join(categories,
+                    //    u => u.CategoryId,
+                    //    c => c.Id,
+                    //    (u, c) => new CurrentDataContainer
+                    //    {
+
+                    //        Description = u.Description,
+                    //        CreateDate = u.CreateDate,
+                    //        Category = categoryName
+                    //    })
+                    //    .ToList();
+                }
+
             }
+            else
+            {
+                using (Context hranilkaDbContext = new Context())
+                {
+                    subCategoryIdForSelect = hranilkaDbContext
+                        .ContentCategories
+                        .Where(u => u.Name == subCategoryName)
+                        .Select(u => u.Id)
+                        .FirstOrDefault();
+
+                    containers = hranilkaDbContext.DataContainers
+                        .Where(p => p.CategoryId == subCategoryIdForSelect)
+                        .ToList();
+                }
+
+                foreach (var item in containers)
+                {
+                    currentContainers.Add(new CurrentDataContainer
+                    {
+                        Description = item.Description,
+                        CreateDate = item.CreateDate,
+                        Category = categoryName
+                    });
+                }
+            }
+          
+
+            return new ObservableCollection<CurrentDataContainer>(currentContainers);
+
         }
 
 

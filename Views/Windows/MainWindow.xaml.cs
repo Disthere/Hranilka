@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Hranilka.ViewModels;
 using Hranilka.Infrastructure.Commands;
 using Hranilka.Data;
+using Hranilka.Models;
 
 namespace Hranilka
 {
@@ -24,18 +25,19 @@ namespace Hranilka
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowViewModel mainWindowViewModel;
+        
         Context hranilkaDbContext;
         public MainWindow()
         {
+           
             InitializeComponent();
-            mainWindowViewModel = new MainWindowViewModel();
-            base.DataContext = mainWindowViewModel;
+
+            //base.DataContext = mainWindowViewModel;
             hranilkaDbContext = new Context();
 
 
 
-            AddTestsValue();
+            //AddTestsValue();
 
         }
 
@@ -73,12 +75,23 @@ namespace Hranilka
 
         }
 
+        public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
+        {
+            if (selectedItem != null)
+            {
+                string description = selectedItem.Description;
+                CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainersFromDB(description);
+                DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
+                dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
+            }
 
+        }
 
         private void MainListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            MainPageRichTextBox.Document.Blocks.Clear();
             var item = (ListBox)sender;
-            mainWindowViewModel.SelectedItem((CurrentDataContainer)item.SelectedItem, MainPageRichTextBox);
+            SelectedItem((CurrentDataContainer)item.SelectedItem, MainPageRichTextBox);
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -87,10 +100,21 @@ namespace Hranilka
             addNewDataWindow.Show();
         }
 
+        private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
 
 
 
+        //private void gotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    MainListView.Focus();
+        //}
 
+        //private void SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
 
+        //}
     }
 }

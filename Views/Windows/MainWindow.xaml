@@ -7,13 +7,12 @@
     xmlns:local="clr-namespace:Hranilka"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Hranilka.ViewModels"
-    WindowStartupLocation="CenterScreen"
-    WindowStyle="ThreeDBorderWindow"
     Title="{Binding Path=Title}"
     Width="1600"
     Height="800"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="ThreeDBorderWindow"
     mc:Ignorable="d">
-    <!--  DataContext - есть у всех визуальных объектов, наследуется для всех объектов ниже, т. е. уходит в Grid  -->
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -39,55 +38,63 @@
             <TabItem Header="Текстовые данные">
                 <Grid>
                     <ComboBox
-            Width="200"
-            Height="25"
-            Margin="10,40,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            DisplayMemberPath="Name"
-            ItemsSource="{Binding Path=ContentCategories}" />
+                        x:Name="CategoryComboBox"
+                        Width="200"
+                        Height="25"
+                        Margin="10,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        DisplayMemberPath="Name"
+                        
+                        IsSynchronizedWithCurrentItem="True"
+                        ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"/>
 
                     <TextBlock
-            Margin="10"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="Категория"
-            TextWrapping="Wrap" />
+                        Margin="10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Text="Категория"
+                        TextWrapping="Wrap" />
 
                     <ComboBox
-            Width="200"
-            Height="25"
-            Margin="230,40,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            DisplayMemberPath="Name"
-            ItemsSource="{Binding Path=ContentCategories}" />
+                        x:Name="SubCategoryComboBox"
+                        Width="200"
+                        Height="25"
+                        Margin="230,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        DisplayMemberPath="Name"
+                        IsSynchronizedWithCurrentItem="False"
+                        ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        
+                        SelectedItem ="{Binding Path=CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+
 
                     <TextBlock
-            Margin="230,10"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="Подкатегория"
-            TextWrapping="Wrap" />
+                        Margin="230,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Text="Подкатегория"
+                        TextWrapping="Wrap" />
                     <Button
                         x:Name="AddButton"
                         Width="90"
                         Height="30"
-                        Margin="594,77,0,0"
-                        HorizontalAlignment="Left"
+                        Margin="10,40,10,10"
+                        HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Click="AddButton_Click"
                         Content="Добавить" />
                     <ListView
                         x:Name="MainListView"
                         Width="550"
-                        Margin="10,80"
+                        Margin="10,80,10,10"
                         HorizontalAlignment="Left"
                         Cursor="Hand"
-                        ItemsSource="{Binding Path=DataContainers}"
-                        SelectionChanged= "MainListBox_SelectionChanged"
-                        SelectedIndex="{Binding Path=CurrentDataContainer}"
-                        >
+                        ItemsSource="{Binding Path=DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectedIndex ="{Binding Path=CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectionChanged="MainListBox_SelectionChanged">
 
                         <ListView.View>
                             <GridView>
@@ -104,40 +111,23 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <TextBlock
-                        x:Name="DateTextBlock"
-                        Width="154"
-                        Height="23"
-                        Margin="479,40,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        TextWrapping="Wrap" />
                     <RichTextBox
                         x:Name="MainPageRichTextBox"
-                        Width="850"
-                        Margin="10,125"
+                        Width="1000"
+                        Height="600"
+                        Margin="0,80,10,0"
                         HorizontalAlignment="Right"
-                        >
+                        VerticalAlignment="Top">
                         <FlowDocument>
-                            <Paragraph>
-                                <Run Text="RichTextBox" />
-                            </Paragraph>
+                            <Paragraph />
                         </FlowDocument>
                     </RichTextBox>
-                    <TextBox
-                        x:Name="DescriptionTextBox"
-                        Width="850"
-                        Height="60"
-                        Margin="10,40"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Text="TextBox"
-                        TextWrapping="Wrap" />
 
                 </Grid>
             </TabItem>
             <TabItem Header="Ссылки">Другой текст</TabItem>
         </TabControl>
+
     </DockPanel>
 
 </Window>

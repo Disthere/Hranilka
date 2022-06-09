@@ -32,78 +32,78 @@ namespace Hranilka
         }
 
 
-        public void SaveContent()
-        {
-            ContentCategory category = new ContentCategory { Name = CategoryBox.Text };
-            hranilkaDbContext.ContentCategories.Add(category);
-            hranilkaDbContext.SaveChanges();
+        //public void SaveContent()
+        //{
+        //    //ContentCategory category = new ContentCategory { Name = CategoryBox.Text };
+        //    hranilkaDbContext.ContentCategories.Add(category);
+        //    hranilkaDbContext.SaveChanges();
 
-            DataContainer container = new DataContainer { Description = DescriptionBox.Text, Category = category };
-            hranilkaDbContext.DataContainers.Add(container);
-            hranilkaDbContext.SaveChanges();
+        //    DataContainer container = new DataContainer { Description = DescriptionBox.Text, Category = category };
+        //    hranilkaDbContext.DataContainers.Add(container);
+        //    hranilkaDbContext.SaveChanges();
 
-            CurrentDataContainer currentDataContainer = new CurrentDataContainer(container);
-            DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
-            dataFile.SaveFileRTF(AddDataRichTextBox);
-            AddDataRichTextBox.Document.Blocks.Clear();
-            DescriptionBox.Clear();
-            CategoryBox.Clear();
-        }
+        //    CurrentDataContainer currentDataContainer = new CurrentDataContainer(container);
+        //    DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
+        //    dataFile.SaveFileRTF(AddDataRichTextBox);
+        //    AddDataRichTextBox.Document.Blocks.Clear();
+        //    DescriptionBox.Clear();
+        //    //CategoryBox.Clear();
+        //}
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            var currentCategory = (ContentCategory)this.CategoryComboBox.SelectedItem;
-            string currentSubCategory = this.SubCategoryComboBox.Text;
-            string currentDescription = this.DescriptionBox.Text;
+        //private void SaveButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var currentCategory = (ContentCategory)this.CategoryComboBox.SelectedItem;
+        //    string currentSubCategory = this.SubCategoryComboBox.Text;
+        //    string currentDescription = this.DescriptionBox.Text;
 
-            ContentCategory category;
-            {
-                string a = "Категория 1";
+        //    ContentCategory category;
+        //    {
+        //        string a = "Категория 1";
 
-                category = new ContentCategory { Id = 5, Name = "Категория 1", ParentId = 0, InfoType = 0 };
+        //        category = new ContentCategory { Id = 5, Name = "Категория 1", ParentId = 0, InfoType = 0 };
 
-                //category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(a);
-            }
+        //        //category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(a);
+        //    }
 
-            if (currentSubCategory != null)
-            {
-                currentCategory = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
-            }
+        //    if (currentSubCategory != null)
+        //    {
+        //        currentCategory = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
+        //    }
 
-            bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.Blocks != null;
+        //    bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.Blocks != null;
 
-            if (isDataAdded)
-            {
-                DataContainerRepository.SaveDataContainerToDB(currentCategory, currentDescription);
+        //    if (isDataAdded)
+        //    {
+        //        DataContainerRepository.SaveDataContainerToDB(currentCategory, currentDescription);
 
-                CurrentDataContainer currentDataContainer = new CurrentDataContainer
-                {
-                    Category = currentCategory.Name,
-                    Description = currentDescription
-                };
+        //        CurrentDataContainer currentDataContainer = new CurrentDataContainer
+        //        {
+        //            Category = currentCategory.Name,
+        //            Description = currentDescription
+        //        };
 
-                DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
-                dataFile.SaveFileRTF(AddDataRichTextBox);
-                AddDataRichTextBox.Document.Blocks.Clear();
-                DescriptionBox.Clear();
-
-
-                //SaveContent();
-                //container.Description = DescriptionBox.Text;
-                //container.Category = CategoryBox.Text;
-                //hranilkaDbContext.DataContainers.Add(container);
-                //hranilkaDbContext.SaveChanges();
-                //DataFile dataFile = new DataFile(container);
-                //dataFile.SaveFileRTF(AddDataRichTextBox);
-                //AddDataRichTextBox.Document.Blocks.Clear();
-                //DescriptionBox.Clear();
-                //CategoryBox.Clear();
-            }
-            else
-                MessageBox.Show("Не введены данные!!");
+        //        DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
+        //        dataFile.SaveFileRTF(AddDataRichTextBox);
+        //        AddDataRichTextBox.Document.Blocks.Clear();
+        //        DescriptionBox.Clear();
 
 
-        }
+        //        //SaveContent();
+        //        //container.Description = DescriptionBox.Text;
+        //        //container.Category = CategoryBox.Text;
+        //        //hranilkaDbContext.DataContainers.Add(container);
+        //        //hranilkaDbContext.SaveChanges();
+        //        //DataFile dataFile = new DataFile(container);
+        //        //dataFile.SaveFileRTF(AddDataRichTextBox);
+        //        //AddDataRichTextBox.Document.Blocks.Clear();
+        //        //DescriptionBox.Clear();
+        //        //CategoryBox.Clear();
+        //    }
+        //    else
+        //        MessageBox.Show("Не введены данные!!");
+
+
+        //}
 
 
 
@@ -129,18 +129,19 @@ namespace Hranilka
 
         private void FileSaveButton_Click(object sender, RoutedEventArgs e)
         {
-            var currentCategoryName = this.CategoryComboBox.Text;
+            var currentCategory = (ContentCategory)this.CategoryComboBox.SelectedItem;
             string currentSubCategory = this.SubCategoryComboBox.Text;
             string currentDescription = this.DescriptionBox.Text;
 
-            ContentCategory category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentCategoryName);
+            ContentCategory category = new ContentCategory(currentCategory.Id, currentCategory.Name);
+            //category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentCategory.Name);
             
             if (currentSubCategory != null)
             {
-                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(category.Name);
+                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
             }
 
-            bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.Blocks != null;
+            bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.ContentStart != null;
 
             if (isDataAdded)
             {
@@ -156,18 +157,7 @@ namespace Hranilka
                 dataFile.SaveFileRTF(AddDataRichTextBox);
                 AddDataRichTextBox.Document.Blocks.Clear();
                 DescriptionBox.Clear();
-
-
-                //SaveContent();
-                //container.Description = DescriptionBox.Text;
-                //container.Category = CategoryBox.Text;
-                //hranilkaDbContext.DataContainers.Add(container);
-                //hranilkaDbContext.SaveChanges();
-                //DataFile dataFile = new DataFile(container);
-                //dataFile.SaveFileRTF(AddDataRichTextBox);
-                //AddDataRichTextBox.Document.Blocks.Clear();
-                //DescriptionBox.Clear();
-                //CategoryBox.Clear();
+                                
             }
             else
                 MessageBox.Show("Не введены данные!!");

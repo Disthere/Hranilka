@@ -106,31 +106,15 @@ namespace Hranilka.ViewModels
             }
         }
 
-        RichTextBox _currentRichTextBox;
-        public RichTextBox CurrentRichTextBox
-        {
-            get
-            {
-                if (_currentRichTextBox == null)
-                    _currentRichTextBox = new RichTextBox();
-                return _currentRichTextBox;
-            }
-            set
-            {
-                _currentRichTextBox = value;
-                OnPropertyChanged(nameof(CurrentRichTextBox));
-            }
-        }
+        
+        //public ICommand SaveDataCommand { get; }
 
+        //private bool CanSaveDataCommandExecuted(object p) => true;
 
-        public ICommand SaveDataCommand { get; }
-
-        private bool CanSaveDataCommandExecuted(object p) => true;
-
-        private void OnSaveDataCommandExecuted(object p)
-        {
-            Application.Current.Shutdown();
-        }
+        //private void OnSaveDataCommandExecuted(object p)
+        //{
+        //    Application.Current.Shutdown();
+        //}
 
     }
 }

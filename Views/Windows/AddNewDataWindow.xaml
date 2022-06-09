@@ -9,17 +9,15 @@
     Title="Добавить новый текст"
     Width="800"
     Height="500"
-    WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d"
     Focusable="True"
-    >
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <Window.DataContext>
         <vm:AddNewDataWindowViewModel />
     </Window.DataContext>
     <Grid>
-
-
-        <ComboBox x:Name="CategoryComboBox"
+        <ComboBox
+            x:Name="CategoryComboBox"
             Width="200"
             Height="25"
             Margin="10,40,0,0"
@@ -27,9 +25,9 @@
             VerticalAlignment="Top"
             DisplayMemberPath="Name"
             IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=Default, Mode=TwoWay}"
-            SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-        </ComboBox>
+            ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
 
         <TextBlock
             Margin="10"
@@ -38,7 +36,8 @@
             Text="Категория"
             TextWrapping="Wrap" />
 
-        <ComboBox x:Name="SubCategoryComboBox"
+        <ComboBox
+            x:Name="SubCategoryComboBox"
             Width="200"
             Height="25"
             Margin="230,40,0,0"
@@ -46,7 +45,7 @@
             VerticalAlignment="Top"
             DisplayMemberPath="Name"
             IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=Default, Mode=TwoWay}"
+            ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             SelectedItem="{Binding Path=CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
         <TextBlock
@@ -55,38 +54,18 @@
             VerticalAlignment="Top"
             Text="Подкатегория"
             TextWrapping="Wrap" />
-
-        <Button
-            x:Name="FileSaveButton"
-            Margin="10"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Content="Сохранить в файл" Click="FileSaveButton_Click" Focusable="False" 
-            />
-        <TextBox
-            x:Name="CategoryBox"
-            Width="190"
-            Height="27"
-            Margin="434,11,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="Категория"
-            TextWrapping="Wrap" />
         <TextBox
             x:Name="DescriptionBox"
-            Width="340"
+            Width="320"
             Height="40"
-            Margin="450,40,0,0"
+            Margin="450,40,10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Text="{Binding Path=CurrentDescription, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
-        <RichTextBox x:Name="AddDataRichTextBox" 
-                     Margin="10,99,10,35">
-            <FlowDocument >
-                <Paragraph>
-                    
-                </Paragraph>
+        <RichTextBox x:Name="AddDataRichTextBox" Margin="10,99,10,35">
+            <FlowDocument>
+                <Paragraph />
             </FlowDocument>
         </RichTextBox>
         <Button
@@ -102,12 +81,20 @@
             Click="Button_Click_1"
             Content="Добавить" />
         <TextBlock
-            x:Name="TB1"
-            Margin="671,30,0,0"
+            x:Name="DescriptionTextBlock"
+            Margin="450,11,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Text="TextBlock"
+            Text="Описание или ключевые слова"
             TextWrapping="Wrap" />
+        <Button
+            x:Name="FileSaveButton"
+            Margin="10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Click="FileSaveButton_Click"
+            Content="Сохранить в файл" />
+
 
     </Grid>
 </Window>
