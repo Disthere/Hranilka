@@ -15,7 +15,14 @@
     <Window.DataContext>
         <vm:AddNewDataWindowViewModel />
     </Window.DataContext>
-    <Grid>
+    <Grid Background="Beige">
+        <TextBlock
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="Категория"
+            TextWrapping="Wrap" />
+
         <ComboBox
             x:Name="CategoryComboBox"
             Width="200"
@@ -28,12 +35,41 @@
             ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-
-        <TextBlock
-            Margin="10"
+        <TextBox
+            Name="TextBox1"
+            Width="200"
+            Height="20"
+            Margin="10,70,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Text="Категория"
+            Text="{Binding Path=CUDCategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Button
+            Margin="10,100,470,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Path=AddCategory}"
+            Content="Добавить" />
+
+        <Button
+            Margin="85,100,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Path=UpdateCategory}"
+            Content="Изменить" />
+
+        <Button
+            Margin="162,100,370,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Path=RemoveCategory}"
+            Content="Удалить" />
+
+        <TextBlock
+            Margin="230,10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="Подкатегория"
             TextWrapping="Wrap" />
 
         <ComboBox
@@ -48,12 +84,15 @@
             ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             SelectedItem="{Binding Path=CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <TextBlock
-            Margin="230,10"
+        <TextBox
+            Name="TextBox2"
+            Width="200"
+            Height="20"
+            Margin="230,70,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Text="Подкатегория"
-            TextWrapping="Wrap" />
+            Text="{Binding Path=CUDSubCategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
         <TextBox
             x:Name="DescriptionBox"
             Width="320"
@@ -63,7 +102,7 @@
             VerticalAlignment="Top"
             Text="{Binding Path=CurrentDescription, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
-        <RichTextBox x:Name="AddDataRichTextBox" Margin="10,99,10,35">
+        <RichTextBox x:Name="AddDataRichTextBox" Margin="10,129,10,35">
             <FlowDocument>
                 <Paragraph />
             </FlowDocument>
@@ -72,14 +111,37 @@
             Margin="0,11,590,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Click="Button_Click"
-            Content="Добавить" />
+            Command="{Binding Path=OpenSaveCategoryWindowCommand}"
+            Content="Добавить/уд./изм." />
         <Button
             Margin="0,11,370,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Click="Button_Click_1"
+            Command="{Binding Path=OpenSaveSubCategoryWindowCommand}"
+            Content="Добавить/уд./изм." />
+
+        <Button
+            Margin="230,100,470,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Path=AddSubCategory}"
             Content="Добавить" />
+
+        <Button
+            Margin="305,100,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Path=UpdateSubCategory}"
+            Content="Изменить" />
+
+        <Button
+            Margin="383,100,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding Path=RemoveSubCategory}"
+            Content="Удалить" />
+
+
         <TextBlock
             x:Name="DescriptionTextBlock"
             Margin="450,11,0,0"

@@ -84,7 +84,7 @@
                         Margin="10,40,10,10"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        Click="AddButton_Click"
+                        Command="{Binding Path=OpenAddNewDataWindowCommand}"
                         Content="Добавить" />
                     <ListView
                         x:Name="MainListView"

@@ -94,16 +94,7 @@ namespace Hranilka
             SelectedItem((CurrentDataContainer)item.SelectedItem, MainPageRichTextBox);
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
-            addNewDataWindow.Show();
-        }
-
-        private void CategoryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
+        
 
 
 

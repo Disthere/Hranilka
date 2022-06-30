@@ -30,7 +30,7 @@ namespace Hranilka.ViewModels
             }
         }
 
-
+        #region Команда на добавление подкатегории в базу
         LambdaCommand _addSubCategory;
 
         public ICommand AddSubCategory
@@ -52,14 +52,13 @@ namespace Hranilka.ViewModels
             }
             else
             {
-                ContentCategoryRepozitory.SaveSubCategoriesToDB(CurrentCategory.Name, SubCategoryNameForSave);
+                ContentCategoryRepozitory.SaveSubCategoryToDB(CurrentCategory.Name, SubCategoryNameForSave);
                 SubCategoryNameForSave = null;
                 Application.Current.Windows.OfType<SaveSubCategoryWindow>().SingleOrDefault(x => x.IsActive).Close();
                 Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault().Close();
                 AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
                 addNewDataWindow.Show();
             }
-
         }
 
         public bool CanExecuteAddSubCategoryCommand(object parameter)
@@ -67,6 +66,7 @@ namespace Hranilka.ViewModels
             return (SubCategoryNameForSave != null) ? true : false;
         }
 
+        #endregion
 
         ObservableCollection<ContentCategory> _categories;
         public ObservableCollection<ContentCategory> Categories

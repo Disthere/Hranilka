@@ -52,7 +52,7 @@ namespace Hranilka.ViewModels
             }
             else
             {
-                ContentCategoryRepozitory.SaveCategoriesToDB(CategoryNameForSave);
+                ContentCategoryRepozitory.SaveCategoryToDB(CategoryNameForSave);
                 CategoryNameForSave = null;
                 Application.Current.Windows.OfType<SaveCategoryWindow>().SingleOrDefault(x => x.IsActive).Close();
                 Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault().Close();

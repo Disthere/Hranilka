@@ -79,7 +79,7 @@ namespace Hranilka.Models
             return new ObservableCollection<ContentCategory>();
         }
 
-        public static void SaveCategoriesToDB(string parentCategoryName)
+        public static void SaveCategoryToDB(string parentCategoryName)
         {
             using (Context hranilkaDbContext = new Context())
             {
@@ -88,7 +88,7 @@ namespace Hranilka.Models
             }
         }
 
-        public static void SaveSubCategoriesToDB(string parentCategoryName, string subCategoryName)
+        public static void SaveSubCategoryToDB(string parentCategoryName, string subCategoryName)
         {
             using (Context hranilkaDbContext = new Context())
             {
@@ -118,6 +118,29 @@ namespace Hranilka.Models
             if (findingCategoryName != null)
                 return true;
             return false;
+        }
+
+        public static void UpdateCategoryToDB(string categoryName, string updatingcategoryName)
+        {
+            using (Context hranilkaDbContext = new Context())
+            {
+                var updatingCategory = GetContentCategoryForNameFromDB(categoryName);
+                updatingCategory.Name = updatingcategoryName;
+                hranilkaDbContext.ContentCategories.Update(updatingCategory);
+                       
+                hranilkaDbContext.SaveChanges();
+            }
+        }
+
+        public static void DeleteCategoryFromDB(string categoryName)
+        {
+            using (Context hranilkaDbContext = new Context())
+            {
+                var updatingCategory = GetContentCategoryForNameFromDB(categoryName);
+                hranilkaDbContext.ContentCategories.Remove(updatingCategory);
+
+                hranilkaDbContext.SaveChanges();
+            }
         }
 
     }

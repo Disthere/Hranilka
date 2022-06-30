@@ -114,18 +114,7 @@ namespace Hranilka
             //TB1.Text = r;
             //FileSaveWay = r + "\\test.rtf"; 
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SaveCategoryWindow saveCategoryWindow = new SaveCategoryWindow();
-            saveCategoryWindow.Show();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            SaveSubCategoryWindow saveSubCategoryWindow = new SaveSubCategoryWindow();
-            saveSubCategoryWindow.Show();
-        }
+               
 
         private void FileSaveButton_Click(object sender, RoutedEventArgs e)
         {

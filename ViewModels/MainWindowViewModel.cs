@@ -44,6 +44,7 @@ namespace Hranilka.ViewModels
         public MainWindowViewModel()
         {
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
+            OpenAddNewDataWindowCommand = new LambdaCommand(OnOpenAddNewDataWindowCommandExecuted, CanOpenAddNewDataWindowCommandExecuted);
             //DeleteContainerCommand = new LambdaCommand(OnDeleteContainerCommandExecuted, CanDeleteContainerCommandExecuted);
         }
 
@@ -59,6 +60,19 @@ namespace Hranilka.ViewModels
         //    }
         //}
 
+
+        #endregion
+
+        #region Команда на открытие окна добавления данных AddNewDataWindow
+        public ICommand OpenAddNewDataWindowCommand { get; }
+
+        private bool CanOpenAddNewDataWindowCommandExecuted(object p) => true;
+
+        private void OnOpenAddNewDataWindowCommandExecuted(object p)
+        {
+            AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+            addNewDataWindow.Show();
+        }
 
         #endregion
 
