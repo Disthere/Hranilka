@@ -74,7 +74,7 @@ namespace Hranilka.ViewModels
         #endregion
 
         #region Команда на открытие окна редактирования подкатегорий данных SaveSubCategoryWindow
-        public ICommand OpenSaveSubCategoryWindowCommand { get=> new LambdaCommand(OnOpenSaveSubCategoryWindowCommandExecuted, CanOpenSaveSubCategoryWindowCommandExecuted); }
+        public ICommand OpenSaveSubCategoryWindowCommand { get => new LambdaCommand(OnOpenSaveSubCategoryWindowCommandExecuted, CanOpenSaveSubCategoryWindowCommandExecuted); }
 
         private bool CanOpenSaveSubCategoryWindowCommandExecuted(object p) => true;
 
@@ -122,9 +122,11 @@ namespace Hranilka.ViewModels
                     ContentCategoryRepozitory.UpdateCategoryToDB(CurrentCategory.Name, CUDCategoryText);
                     UpdateCategoryFlag = 0;
                 }
-                Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
-                AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
-                addNewDataWindow.Show();
+                Categories = null;
+                CUDCategoryText = null;
+                //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
+                //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+                //addNewDataWindow.Show();
 
             }
         }
@@ -172,15 +174,14 @@ namespace Hranilka.ViewModels
         }
         public void OnRemoveCategoryCommand(object parameter)
         {
-
-
             bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CurrentCategory.Name);
             if (isCategoryExist)
             {
                 ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentCategory.Name);
-                Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
-                AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
-                addNewDataWindow.Show();
+                Categories = null;
+                //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
+                //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+                //addNewDataWindow.Show();
             }
             else
             {
@@ -294,7 +295,7 @@ namespace Hranilka.ViewModels
 
         #endregion
 
-                 
+
 
         ObservableCollection<ContentCategory> _categories;
         public ObservableCollection<ContentCategory> Categories

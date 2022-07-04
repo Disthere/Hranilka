@@ -76,6 +76,54 @@ namespace Hranilka.ViewModels
 
         #endregion
 
+        #region Команда на открытие окна добавления данных AddNewDataWindow
+
+        LambdaCommand _saveChangedText;
+        public ICommand SaveChangedText
+        {
+            get
+            {
+                if (_saveChangedText == null)
+                    _saveChangedText = new LambdaCommand(OnSaveChangedTextCommand, CanExecuteSaveChangedTextCommand);
+                return _saveChangedText;
+            }
+        }
+        public bool CanExecuteSaveChangedTextCommand(object parameter)
+        {
+            return true;
+            //return (CUDCategoryText != null) ? true : false;
+        }
+        public void OnSaveChangedTextCommand(object parameter)
+        {
+
+
+            //bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CUDCategoryText);
+            //if (isCategoryExist)
+            //{
+            //    MessageBox.Show("Такая категория уже существует!!");
+            //}
+            //else
+            //{
+            //    if (UpdateCategoryFlag == 0)
+            //    {
+            //        ContentCategoryRepozitory.SaveCategoryToDB(CUDCategoryText);
+            //    }
+            //    else
+            //    {
+            //        ContentCategoryRepozitory.UpdateCategoryToDB(CurrentCategory.Name, CUDCategoryText);
+            //        UpdateCategoryFlag = 0;
+            //    }
+            //    Categories = null;
+            //    CUDCategoryText = null;
+            //    //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
+            //    //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+            //    //addNewDataWindow.Show();
+
+            //}
+        }
+
+        #endregion
+
         #region Команда удаления контейнеров в MainViewList
         //public ICommand DeleteContainerCommand { get; }
 

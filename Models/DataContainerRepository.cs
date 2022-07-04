@@ -69,6 +69,18 @@ namespace Hranilka.Models
             }
         }
 
+        public static DataContainer GetDataContainersFromDB(string description)
+        {
+            using (Context hranilkaDbContext = new Context())
+            {
+                DataContainer dataContainer = hranilkaDbContext.DataContainers
+                    .Where(p => p.Description == description)
+                    .FirstOrDefault();
+
+                return dataContainer;
+            }
+        }
+
         internal static ObservableCollection<CurrentDataContainer> GetSelectCategoryDataContainersFromDB(string categoryName, string subCategoryName)
         {
             string parentCategory = categoryName;
@@ -98,7 +110,7 @@ namespace Hranilka.Models
 
                     foreach (var item in containers)
                     {
-                       CurrentDataContainer currentDataContainer = new CurrentDataContainer
+                        CurrentDataContainer currentDataContainer = new CurrentDataContainer
                         {
                             Description = item.Description,
                             CreateDate = item.CreateDate,
@@ -152,7 +164,7 @@ namespace Hranilka.Models
                     });
                 }
             }
-          
+
 
             return new ObservableCollection<CurrentDataContainer>(currentContainers);
 
@@ -172,6 +184,18 @@ namespace Hranilka.Models
                 .FirstOrDefault();
 
                 hranilkaDbContext.DataContainers.Add(new DataContainer { Description = description, CategoryId = categoryId });
+                hranilkaDbContext.SaveChanges();
+
+            }
+        }
+
+        public static void DeleteDataContainerFromDB(string description)
+        {
+            using (Context hranilkaDbContext = new Context())
+            {
+                var deletingDataContainer = GetDataContainersFromDB(description);
+                hranilkaDbContext.DataContainers.Remove(deletingDataContainer);
+
                 hranilkaDbContext.SaveChanges();
 
             }

@@ -103,6 +103,11 @@
             Text="{Binding Path=CurrentDescription, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
         <RichTextBox x:Name="AddDataRichTextBox" Margin="10,129,10,35">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
             <FlowDocument>
                 <Paragraph />
             </FlowDocument>

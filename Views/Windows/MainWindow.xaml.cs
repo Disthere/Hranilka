@@ -17,6 +17,9 @@ using Hranilka.ViewModels;
 using Hranilka.Infrastructure.Commands;
 using Hranilka.Data;
 using Hranilka.Models;
+using Microsoft.Win32;
+using System.IO;
+using System.ComponentModel;
 
 namespace Hranilka
 {
@@ -25,13 +28,17 @@ namespace Hranilka
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+
         Context hranilkaDbContext;
         public MainWindow()
         {
-           
+
             InitializeComponent();
 
+            cmbFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
+            cmbFontSize.ItemsSource = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
+            SaveButton.IsEnabled = false;
+            DeleteButton.IsEnabled = false;
             //base.DataContext = mainWindowViewModel;
             hranilkaDbContext = new Context();
 
@@ -77,12 +84,14 @@ namespace Hranilka
 
         public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
         {
+
             if (selectedItem != null)
             {
                 string description = selectedItem.Description;
                 CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainersFromDB(description);
                 DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
                 dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
+                SaveButton.IsEnabled = false;
             }
 
         }
@@ -92,9 +101,148 @@ namespace Hranilka
             MainPageRichTextBox.Document.Blocks.Clear();
             var item = (ListBox)sender;
             SelectedItem((CurrentDataContainer)item.SelectedItem, MainPageRichTextBox);
+            DeleteButton.IsEnabled = true;
         }
 
-        
+        private void MainPageRichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            object temp = MainPageRichTextBox.Selection.GetPropertyValue(Inline.FontWeightProperty);
+            btnBold.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontWeights.Bold));
+            temp = MainPageRichTextBox.Selection.GetPropertyValue(Inline.FontStyleProperty);
+            btnItalic.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(FontStyles.Italic));
+            temp = MainPageRichTextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
+            btnUnderline.IsChecked = (temp != DependencyProperty.UnsetValue) && (temp.Equals(TextDecorations.Underline));
+
+            temp = MainPageRichTextBox.Selection.GetPropertyValue(Inline.FontFamilyProperty);
+            cmbFontFamily.SelectedItem = temp;
+            temp = MainPageRichTextBox.Selection.GetPropertyValue(Inline.FontSizeProperty);
+            cmbFontSize.Text = temp.ToString();
+        }
+
+        private void Open_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "Rich Text Format (*.rtf)|*.rtf|All files (*.*)|*.*";
+            if (dlg.ShowDialog() == true)
+            {
+                FileStream fileStream = new FileStream(dlg.FileName, FileMode.Open);
+                TextRange range = new TextRange(MainPageRichTextBox.Document.ContentStart, MainPageRichTextBox.Document.ContentEnd);
+                range.Load(fileStream, DataFormats.Rtf);
+            }
+        }
+
+        private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.Filter = "Rich Text Format (*.rtf)|*.rtf|All files (*.*)|*.*";
+            if (dlg.ShowDialog() == true)
+            {
+                FileStream fileStream = new FileStream(dlg.FileName, FileMode.Create);
+                TextRange range = new TextRange(MainPageRichTextBox.Document.ContentStart, MainPageRichTextBox.Document.ContentEnd);
+                range.Save(fileStream, DataFormats.Rtf);
+            }
+        }
+
+        private void cmbFontFamily_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbFontFamily.SelectedItem != null)
+                MainPageRichTextBox.Selection.ApplyPropertyValue(Inline.FontFamilyProperty, cmbFontFamily.SelectedItem);
+        }
+
+        private void cmbFontSize_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MainPageRichTextBox.Selection.ApplyPropertyValue(Inline.FontSizeProperty, cmbFontSize.Text);
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var item = (CurrentDataContainer)this.MainListView.SelectedItem;
+            var currentCategory = (ContentCategory)this.CategoryComboBox.SelectedItem;
+            string currentSubCategory = this.SubCategoryComboBox.Text;
+            string currentDescription = item.Description;
+
+            ContentCategory category = new ContentCategory(currentCategory.Id, currentCategory.Name);
+            //category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentCategory.Name);
+
+            if (currentSubCategory != null)
+            {
+                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
+            }
+
+            //bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.ContentStart != null;
+
+            //if (isDataAdded)
+            {
+                //DataContainerRepository.SaveDataContainerToDB(category, currentDescription);
+
+                CurrentDataContainer currentDataContainer = new CurrentDataContainer
+                {
+                    Category = category.Name,
+                    Description = currentDescription
+                };
+
+                DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
+                dataFile.UpdateFileRTF(MainPageRichTextBox);
+                //MainPageRichTextBox.Document.Blocks.Clear();
+                SaveButton.IsEnabled = false;
+
+            }
+            //else
+                //MessageBox.Show("Не введены данные!!");
+        }
+
+        private void MainPageRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SaveButton.IsEnabled = true;
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (CurrentDataContainer)this.MainListView.SelectedItem;
+            var currentCategory = (ContentCategory)this.CategoryComboBox.SelectedItem;
+            string currentSubCategory = this.SubCategoryComboBox.Text;
+            string currentDescription = item.Description;
+
+            ContentCategory category = new ContentCategory(currentCategory.Id, currentCategory.Name);
+            
+            if (currentSubCategory != null)
+            {
+                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
+            }
+
+           
+            {
+               DataContainerRepository.DeleteDataContainerFromDB(currentDescription);
+
+
+                CurrentDataContainer currentDataContainer = new CurrentDataContainer
+                {
+                    Category = category.Name,
+                    Description = currentDescription
+                };
+
+                DataFileRTF dataFile = new DataFileRTF(currentDataContainer);
+                dataFile.DeleteFileRTF();
+                MainPageRichTextBox.Document.Blocks.Clear();
+
+                //ICollectionView view = CollectionViewSource.GetDefaultView(this.MainListView.ItemsSource);
+                //view.Refresh();
+                MainListView.ItemsSource= null;
+
+                SaveButton.IsEnabled = false;
+
+            }
+            
+        }
+
+
+
+
+
+
+
+
 
 
 

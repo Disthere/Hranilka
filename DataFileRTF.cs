@@ -45,11 +45,11 @@ namespace Hranilka
                 directoryInfo.Create();
             }
         }
-                
 
-        
 
-        
+
+
+
 
         // Save XAML in RichTextBox to a file specified by _fileName
         public void SaveFileRTF(RichTextBox reachTextBoxObj)
@@ -65,6 +65,31 @@ namespace Hranilka
                 fStream.Close();
             }
             else MessageBox.Show("Файл с таким описанием уже существует.");
+        }
+
+        public void UpdateFileRTF(RichTextBox reachTextBoxObj)
+        {
+            //CheckAndCreateDirectory(FileDirectory);
+
+            DeleteFileRTF();
+
+            TextRange range;
+            FileStream fStream;
+            range = new TextRange(reachTextBoxObj.Document.ContentStart, reachTextBoxObj.Document.ContentEnd);
+            fStream = new FileStream(this.FileDirectoryFullWay, FileMode.Create);
+            range.Save(fStream, DataFormats.Rtf);
+            fStream.Close();
+
+        }
+
+        public void DeleteFileRTF()
+        {
+            //CheckAndCreateDirectory(FileDirectory);
+
+            if (File.Exists(this.FileDirectoryFullWay))
+            {
+                File.Delete(this.FileDirectoryFullWay);
+            }
         }
 
         // Load XAML into RichTextBox from a file specified by _fileName
@@ -95,6 +120,6 @@ namespace Hranilka
         //    }
         //}
 
-        
+
     }
 }

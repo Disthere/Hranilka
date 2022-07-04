@@ -136,8 +136,8 @@ namespace Hranilka.Models
         {
             using (Context hranilkaDbContext = new Context())
             {
-                var updatingCategory = GetContentCategoryForNameFromDB(categoryName);
-                hranilkaDbContext.ContentCategories.Remove(updatingCategory);
+                var deletingCategory = GetContentCategoryForNameFromDB(categoryName);
+                hranilkaDbContext.ContentCategories.Remove(deletingCategory);
 
                 hranilkaDbContext.SaveChanges();
             }
