@@ -156,7 +156,11 @@ namespace Hranilka
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            if (this.MainListView.SelectedItem == null)
+            {
+                MessageBox.Show("Не указан путь для сохранения");
+                return;
+            }
             var item = (CurrentDataContainer)this.MainListView.SelectedItem;
             var currentCategory = (ContentCategory)this.CategoryComboBox.SelectedItem;
             string currentSubCategory = this.SubCategoryComboBox.Text;
@@ -228,7 +232,8 @@ namespace Hranilka
 
                 //ICollectionView view = CollectionViewSource.GetDefaultView(this.MainListView.ItemsSource);
                 //view.Refresh();
-                MainListView.ItemsSource= null;
+                
+                MainListView.ItemsSource = DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name,currentSubCategory);
 
                 SaveButton.IsEnabled = false;
 

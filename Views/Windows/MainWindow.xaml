@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cmd="clr-namespace:Hranilka.Infrastructure.Commands"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fa="http://schemas.fontawesome.com/icons/"
     xmlns:local="clr-namespace:Hranilka"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Hranilka.ViewModels"
@@ -34,8 +35,12 @@
                 <TextBlock Text="github.com/Disthere" />
             </StatusBarItem>
         </StatusBar>
-        <TabControl Background="Beige">
-            <TabItem Header="Текстовые данные">
+        <TabControl HorizontalAlignment="Stretch" Background="Beige">
+            <TabItem
+                Width="220"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Stretch"
+                Header="Текстовые данные">
                 <Grid>
                     <ComboBox
                         x:Name="CategoryComboBox"
@@ -89,6 +94,8 @@
                         Width="550"
                         Margin="10,80,10,10"
                         HorizontalAlignment="Left"
+                        BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                        BorderThickness="2"
                         Cursor="Hand"
                         ItemsSource="{Binding Path=DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         SelectedIndex="{Binding Path=CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -97,13 +104,14 @@
                         <ListView.View>
                             <GridView>
 
-                                <GridViewColumn x:Name="DescriptionColumn"
-                                    Width="420"
+                                <GridViewColumn
+                                    x:Name="DescriptionColumn"
+                                    Width="400"
                                     DisplayMemberBinding="{Binding Path=Description}"
                                     Header="Описание" />
 
                                 <GridViewColumn
-                                    Width="120"
+                                    Width="160"
                                     DisplayMemberBinding="{Binding Path=CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}"
                                     Header="Дата создания" />
                             </GridView>
@@ -117,53 +125,77 @@
                         Margin="565,40,10,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
+                        Click="SaveButton_Click"
                         Command="{Binding Path=SaveChangedText}"
-                        Content="Сохранить" Click="SaveButton_Click" IsEnabled="False" />
+                        Content="Сохранить"
+                        IsEnabled="False" />
 
                     <Button
                         x:Name="DeleteButton"
-                        Width="100"
+                        Width="120"
                         Height="30"
                         Margin="700,40,10,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Content="Удалить текст" IsEnabled="False" Click="DeleteButton_Click" />
+                        Click="DeleteButton_Click"
+                        Content="Удалить текст"
+                        IsEnabled="False" />
+                    <Button
+                        x:Name="ScreenshotButton"
+                        Width="150"
+                        Height="30"
+                        Margin="850,40,10,10"
+                        HorizontalAlignment="Left"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Content="Сделать скриншот"
+                        Command="{Binding Path=OpenScreenShoter}" Cursor="Hand" />
 
                     <ToolBar
-                        Margin="0,50,10,0"
+                        Margin="0,25,10,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
                         Background="White">
                         <Button Command="ApplicationCommands.Open">
-                            <Image
-                                Width="20"
-                                Height="20"
-                                Source="/Views/Component/Open.png" />
+                            <StackPanel>
+                                <fa:ImageAwesome
+                                    Width="20"
+                                    Height="20"
+                                    Icon="Regular_FolderOpen" />
+                            </StackPanel>
                         </Button>
                         <Button Command="ApplicationCommands.Save">
-                            <Image
-                                Width="20"
-                                Height="20"
-                                Source="/Views/Component/Save.png" />
+                            <StackPanel>
+                                <fa:ImageAwesome
+                                    Width="20"
+                                    Height="20"
+                                    Icon="Regular_Save" />
+                            </StackPanel>
                         </Button>
                         <Separator />
                         <ToggleButton Name="btnBold" Command="EditingCommands.ToggleBold">
-                            <Image
-                                Width="20"
-                                Height="20"
-                                Source="/Views/Component/Bold.png" />
+                            <StackPanel>
+                                <fa:ImageAwesome
+                                    Width="20"
+                                    Height="18"
+                                    Icon="Solid_Bold" />
+                            </StackPanel>
                         </ToggleButton>
                         <ToggleButton Name="btnItalic" Command="EditingCommands.ToggleItalic">
-                            <Image
-                                Width="20"
-                                Height="20"
-                                Source="/Views/Component/Italic.png" />
+                            <StackPanel>
+                                <fa:ImageAwesome
+                                    Width="20"
+                                    Height="18"
+                                    Icon="Solid_Italic" />
+                            </StackPanel>
                         </ToggleButton>
                         <ToggleButton Name="btnUnderline" Command="EditingCommands.ToggleUnderline">
-                            <Image
-                                Width="20"
-                                Height="20"
-                                Source="/Views/Component/Underline.png" />
+                            <StackPanel>
+                                <fa:ImageAwesome
+                                    Width="20"
+                                    Height="18"
+                                    Icon="Solid_Underline" />
+                            </StackPanel>
                         </ToggleButton>
                         <Separator />
                         <ComboBox
@@ -184,7 +216,10 @@
                         Margin="0,80,10,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
-                        SelectionChanged="MainPageRichTextBox_SelectionChanged" TextChanged="MainPageRichTextBox_TextChanged">
+                        BorderBrush="Brown"
+                        Cursor="Arrow"
+                        SelectionChanged="MainPageRichTextBox_SelectionChanged"
+                        TextChanged="MainPageRichTextBox_TextChanged">
                         <RichTextBox.Resources>
                             <Style TargetType="{x:Type Paragraph}">
                                 <Setter Property="Margin" Value="0" />
@@ -196,8 +231,16 @@
                     </RichTextBox>
 
                 </Grid>
+
             </TabItem>
-            <TabItem Header="Ссылки">Другой текст</TabItem>
+            <TabItem
+                Width="220"
+                HorizontalAlignment="Left"
+                HorizontalContentAlignment="Stretch"
+                Header="Ссылки">
+                Другой текст
+            </TabItem>
+
         </TabControl>
 
     </DockPanel>

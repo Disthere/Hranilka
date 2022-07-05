@@ -95,10 +95,10 @@
 
         <TextBox
             x:Name="DescriptionBox"
-            Width="320"
+            Width="330"
             Height="40"
             Margin="450,40,10,10"
-            HorizontalAlignment="Left"
+            HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Text="{Binding Path=CurrentDescription, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap" />
@@ -113,17 +113,17 @@
             </FlowDocument>
         </RichTextBox>
         <Button
-            Margin="0,11,590,0"
+            Margin="0,10,590,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Command="{Binding Path=OpenSaveCategoryWindowCommand}"
             Content="Добавить/уд./изм." />
         <Button
-            Margin="0,11,370,0"
+            Margin="0,10,10,0"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Command="{Binding Path=OpenSaveSubCategoryWindowCommand}"
-            Content="Добавить/уд./изм." />
+            Command="{Binding Path=UpdateWindow}"
+            Content="Обновить" />
 
         <Button
             Margin="230,100,470,0"

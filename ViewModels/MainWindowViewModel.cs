@@ -76,7 +76,7 @@ namespace Hranilka.ViewModels
 
         #endregion
 
-        #region Команда на открытие окна добавления данных AddNewDataWindow
+        #region Команда на сохранение изменений в тексте
 
         LambdaCommand _saveChangedText;
         public ICommand SaveChangedText
@@ -134,6 +134,33 @@ namespace Hranilka.ViewModels
         //    
         //}
 
+
+        #endregion
+
+        #region Команда вызова скриншотера
+        LambdaCommand _openScreenShoter;
+
+        public ICommand OpenScreenShoter
+        {
+            get
+            {
+                if (_openScreenShoter == null)
+                    _openScreenShoter = new LambdaCommand(OnOpenScreenShoterCommand, CanExecuteOpenScreenShoterCommand);
+                return _openScreenShoter;
+            }
+        }
+        public bool CanExecuteOpenScreenShoterCommand(object parameter)
+        {
+            return  true;
+        }
+        public void OnOpenScreenShoterCommand(object parameter)
+        {
+            // if the build platform of this app is x86 use C:\windows\sysnative
+            if (!Environment.Is64BitProcess)
+                System.Diagnostics.Process.Start("C:\\Windows\\sysnative\\SnippingTool.exe");
+            else
+                System.Diagnostics.Process.Start("C:\\Windows\\system32\\SnippingTool.exe");
+        }
 
         #endregion
 

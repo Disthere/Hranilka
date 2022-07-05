@@ -59,6 +59,7 @@ namespace Hranilka.ViewModels
 
         public int UpdateCategoryFlag { get; set; } = 0;
         public int UpdateSubCategoryFlag { get; set; } = 0;
+        public string CategoryNameForChanging { get; set; }
 
         #region Команда на открытие окна редактирования категорий данных SaveCategoryWindow
         public ICommand OpenSaveCategoryWindowCommand { get => new LambdaCommand(OnOpenSaveCategoryWindowCommandExecuted, CanOpenSaveCategoryWindowCommandExecuted); }
@@ -223,13 +224,16 @@ namespace Hranilka.ViewModels
                 }
                 else
                 {
-                    ContentCategoryRepozitory.UpdateCategoryToDB(CurrentSubCategory.Name, CUDSubCategoryText);
+                    ContentCategoryRepozitory.UpdateCategoryToDB(this.CategoryNameForChanging, CUDSubCategoryText);
                     UpdateSubCategoryFlag = 0;
                 }
 
-                Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
-                AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
-                addNewDataWindow.Show();
+                SubCategories = null;
+                CUDSubCategoryText = null;
+
+                //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
+                //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+                //addNewDataWindow.Show();
 
             }
         }
@@ -255,7 +259,34 @@ namespace Hranilka.ViewModels
         public void OnUpdateSubCategoryCommand(object parameter)
         {
             CUDSubCategoryText = CurrentSubCategory.Name;
+            this.CategoryNameForChanging = CUDSubCategoryText;
             UpdateSubCategoryFlag = 1;
+        }
+
+        #endregion
+
+        #region Команда на обновление окна добавления категорий и текста
+
+        LambdaCommand _updateWindow;
+
+        public ICommand UpdateWindow
+        {
+            get
+            {
+                if (_updateWindow == null)
+                    _updateWindow = new LambdaCommand(OnUpdateWindowCommand, CanExecuteUpdateWindowCommand);
+                return _updateWindow;
+            }
+        }
+        public bool CanExecuteUpdateWindowCommand(object parameter)
+        {
+            return true;
+        }
+        public void OnUpdateWindowCommand(object parameter)
+        {
+            Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
+            AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+            addNewDataWindow.Show();
         }
 
         #endregion

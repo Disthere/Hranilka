@@ -69,10 +69,9 @@ namespace Hranilka
 
         public void UpdateFileRTF(RichTextBox reachTextBoxObj)
         {
-            //CheckAndCreateDirectory(FileDirectory);
-
             DeleteFileRTF();
-
+            CheckAndCreateDirectory(FileDirectory);
+            
             TextRange range;
             FileStream fStream;
             range = new TextRange(reachTextBoxObj.Document.ContentStart, reachTextBoxObj.Document.ContentEnd);
