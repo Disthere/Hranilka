@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Hranilka.ViewModels"
     Title="Добавить новый текст"
-    Width="800"
-    Height="500"
+    Width="1000"
+    Height="700"
     Focusable="True"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -16,93 +16,178 @@
         <vm:AddNewDataWindowViewModel />
     </Window.DataContext>
     <Grid Background="Beige">
-        <TextBlock
-            Margin="10"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="Категория"
-            TextWrapping="Wrap" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1.75*" />
+            <RowDefinition Height="0.25*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0.75*" />
+        </Grid.ColumnDefinitions>
 
-        <ComboBox
-            x:Name="CategoryComboBox"
-            Width="200"
-            Height="25"
-            Margin="10,40,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            DisplayMemberPath="Name"
-            IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                x:Name="stackPanel"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Margin="10,10">
+                <UniformGrid Columns="2" Rows="1">
+                    <RadioButton
+                    Content="Тексты"
+                    GroupName="Languages"
+                    IsChecked="True" />
+                <RadioButton Content="Ссылки" GroupName="Languages" />
+                </UniformGrid>
+                
+            </StackPanel>
 
-        <TextBox
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="10,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="Категория"
+                TextWrapping="Wrap" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="10,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="Подкатегория"
+                TextWrapping="Wrap" />
+            
+            <ComboBox Grid.Row="2"
+                Grid.Column="0"
+                x:Name="CategoryComboBox"
+                Width="200"
+                Margin="10,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                DisplayMemberPath="Name"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding Path=CategoryBlock.Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+            <TextBox Grid.Row="3"
+                Grid.Column="0"
             Name="TextBox1"
-            Width="200"
-            Height="20"
-            Margin="10,70,0,0"
+            Width="250"
+            Margin="10,10,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Text="{Binding Path=CUDCategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Button
-            Margin="10,100,470,0"
+            <ComboBox Grid.Row="2"
+                Grid.Column="1"
+            x:Name="SubCategoryComboBox"
+            Width="200"
+            Margin="10,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            DisplayMemberPath="Name"
+            IsSynchronizedWithCurrentItem="True"
+            ItemsSource="{Binding Path=CategoryBlock.SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+            <TextBox Grid.Row="3"
+                Grid.Column="1"
+            Name="TextBox2"
+            Width="250"
+            Margin="10,10,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Text="{Binding Path=CUDSubCategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <UniformGrid Columns="3" Rows="1" Grid.Row="4"
+                Grid.Column="0">
+                <Button
+            Margin="10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding Path=AddCategory}"
-            Content="Добавить" />
+            Content="Добавить" Cursor="Hand" />
 
         <Button
-            Margin="85,100,0,0"
+            Margin="10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding Path=UpdateCategory}"
             Content="Изменить" />
 
         <Button
-            Margin="162,100,370,0"
+            Margin="10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding Path=RemoveCategory}"
             Content="Удалить" />
+                               
+            </UniformGrid>
 
-        <TextBlock
-            Margin="230,10"
+            <UniformGrid Columns="3" Grid.Row="4"
+                Grid.Column="1">
+                <Button
+            Margin="10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Text="Подкатегория"
-            TextWrapping="Wrap" />
+            Command="{Binding Path=AddSubCategory}"
+            Content="Добавить" />
 
-        <ComboBox
-            x:Name="SubCategoryComboBox"
-            Width="200"
-            Height="25"
-            Margin="230,40,0,0"
+        <Button
+           Margin="10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            DisplayMemberPath="Name"
-            IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-            SelectedItem="{Binding Path=CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+            Command="{Binding Path=UpdateSubCategory}"
+            Content="Изменить" />
 
-        <TextBox
-            Name="TextBox2"
-            Width="200"
-            Height="20"
-            Margin="230,70,0,0"
+        <Button
+            Margin="10,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Text="{Binding Path=CUDSubCategoryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            Command="{Binding Path=RemoveSubCategory}"
+            Content="Удалить" />
+                
+            </UniformGrid>
 
-        <TextBox
-            x:Name="DescriptionBox"
-            Width="330"
-            Height="40"
-            Margin="450,40,10,10"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Text="{Binding Path=CurrentDescription, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap" />
-        <RichTextBox x:Name="AddDataRichTextBox" Margin="10,129,10,35">
+        </Grid>
+
+
+
+
+
+
+
+
+
+        
+
+        
+
+
+
+        
+
+
+        <RichTextBox
+            x:Name="AddDataRichTextBox"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Margin="10,10">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
@@ -112,12 +197,7 @@
                 <Paragraph />
             </FlowDocument>
         </RichTextBox>
-        <Button
-            Margin="0,10,590,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding Path=OpenSaveCategoryWindowCommand}"
-            Content="Добавить/уд./изм." />
+
         <Button
             Margin="0,10,10,0"
             HorizontalAlignment="Right"
@@ -125,40 +205,39 @@
             Command="{Binding Path=UpdateWindow}"
             Content="Обновить" />
 
-        <Button
-            Margin="230,100,470,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding Path=AddSubCategory}"
-            Content="Добавить" />
+        
 
-        <Button
-            Margin="305,100,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding Path=UpdateSubCategory}"
-            Content="Изменить" />
+        <UniformGrid
+            Grid.Row="0"
+            Grid.Column="2"
+            Columns="1"
+            Rows="2">
+            <TextBlock
+                x:Name="DescriptionTextBlock"
+                Margin="10,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="Описание или ключевые слова"
+                TextWrapping="Wrap" />
 
-        <Button
-            Margin="383,100,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding Path=RemoveSubCategory}"
-            Content="Удалить" />
+            <TextBox
+                x:Name="DescriptionBox"
+                Width="330"
+                Height="40"
+                Margin="10,10,10,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="{Binding Path=CurrentDescription, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
+        </UniformGrid>
 
-
-        <TextBlock
-            x:Name="DescriptionTextBlock"
-            Margin="450,11,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Text="Описание или ключевые слова"
-            TextWrapping="Wrap" />
         <Button
             x:Name="FileSaveButton"
-            Margin="10"
+            Grid.Row="2"
+            Grid.Column="2"
+            Margin="5"
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
+            VerticalAlignment="Top"
             Click="FileSaveButton_Click"
             Content="Сохранить в файл" />
 

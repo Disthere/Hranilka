@@ -35,51 +35,56 @@
                 <TextBlock Text="github.com/Disthere" />
             </StatusBarItem>
         </StatusBar>
-        <TabControl HorizontalAlignment="Stretch" Background="Beige">
+        <TabControl
+            HorizontalAlignment="Stretch"
+            Background="Beige"
+            Cursor="Hand">
             <TabItem
                 Width="220"
                 HorizontalAlignment="Left"
                 HorizontalContentAlignment="Stretch"
                 Header="Текстовые данные">
                 <Grid>
-                    <ComboBox
-                        x:Name="CategoryComboBox"
-                        Width="200"
-                        Height="25"
-                        Margin="10,40,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        DisplayMemberPath="Name"
-                        IsSynchronizedWithCurrentItem="True"
-                        ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+                    <Grid x:Name="CategoryBlock">
+                        <ComboBox
+                            x:Name="CategoryComboBox"
+                            Width="200"
+                            Height="25"
+                            Margin="10,40,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            DisplayMemberPath="Name"
+                            IsSynchronizedWithCurrentItem="True"
+                            ItemsSource="{Binding Path=CategoryBlock.Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
 
-                    <TextBlock
-                        Margin="10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Text="Категория"
-                        TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="Категория"
+                            TextWrapping="Wrap" />
 
-                    <ComboBox
-                        x:Name="SubCategoryComboBox"
-                        Width="200"
-                        Height="25"
-                        Margin="230,40,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        DisplayMemberPath="Name"
-                        IsSynchronizedWithCurrentItem="True"
-                        ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        SelectedItem="{Binding Path=CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+                        <ComboBox
+                            x:Name="SubCategoryComboBox"
+                            Width="200"
+                            Height="25"
+                            Margin="230,40,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            DisplayMemberPath="Name"
+                            IsSynchronizedWithCurrentItem="True"
+                            ItemsSource="{Binding Path=CategoryBlock.SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                            SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
 
 
-                    <TextBlock
-                        Margin="230,10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Text="Подкатегория"
-                        TextWrapping="Wrap" />
+                        <TextBlock
+                            Margin="230,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="Подкатегория"
+                            TextWrapping="Wrap" />
+                    </Grid>
                     <Button
                         x:Name="AddButton"
                         Width="100"
@@ -97,8 +102,8 @@
                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                         BorderThickness="2"
                         Cursor="Hand"
-                        ItemsSource="{Binding Path=DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        SelectedIndex="{Binding Path=CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        ItemsSource="{Binding Path=CategoryBlock.DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectedIndex="{Binding Path=CategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         SelectionChanged="MainListBox_SelectionChanged">
 
                         <ListView.View>
@@ -146,10 +151,11 @@
                         Height="30"
                         Margin="850,40,10,10"
                         HorizontalAlignment="Left"
-                        HorizontalContentAlignment="Stretch"
                         VerticalAlignment="Top"
+                        HorizontalContentAlignment="Stretch"
+                        Command="{Binding Path=OpenScreenShoter}"
                         Content="Сделать скриншот"
-                        Command="{Binding Path=OpenScreenShoter}" Cursor="Hand" />
+                        Cursor="Hand" />
 
                     <ToolBar
                         Margin="0,25,10,0"
@@ -236,9 +242,52 @@
             <TabItem
                 Width="220"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Top"
                 HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
                 Header="Ссылки">
-                Другой текст
+                <Grid VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    
+                    <UniformGrid
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Columns="2"
+                        Rows="2">
+                        <TextBlock
+                            x:Name="CategoryTextBlock"
+                            Margin="10,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="Категория"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            x:Name="SubCategoryTextBlock"
+                            MaxWidth="120"
+                            Margin="10,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="Подкатегория"
+                            TextWrapping="Wrap" />
+                        <ComboBox Template="{DynamicResource CategoryComboBoxTemplate}" />
+                        <ComboBox Template="{DynamicResource SubCategoryComboBoxTemplate}" />
+                    </UniformGrid>
+
+                    <ListView
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Template="{DynamicResource MainListViewTemplate}" />
+                </Grid>
             </TabItem>
 
         </TabControl>

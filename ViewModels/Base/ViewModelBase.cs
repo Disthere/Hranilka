@@ -15,22 +15,8 @@ namespace Hranilka.ViewModels.Base
         // Автообновление визуальной части текстовых блоков 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //public virtual void OnPropertyChanged(string propertyName)
-        //{
-        //    PropertyChangedEventHandler handler = this.PropertyChanged;
-        //    if (handler != null)
-        //    {
-        //        handler.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //    }
-        //}
-
         protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null)
         {
-            //if (PropertyName != nameof(IsChanged))
-            //{
-            //    IsChanged = true;
-            //}
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
         }
 

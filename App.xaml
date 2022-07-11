@@ -15,7 +15,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Shadows.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml"/>
 
+                <ResourceDictionary Source="Views\Templates\Dictionary1.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

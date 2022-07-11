@@ -2,6 +2,7 @@
 using Hranilka.Infrastructure.Commands;
 using Hranilka.Models;
 using Hranilka.ViewModels.Base;
+using Hranilka.Views;
 using Hranilka.Views.Windows;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,8 +19,10 @@ namespace Hranilka.ViewModels
 {
     internal class AddNewDataWindowViewModel : ViewModelBase
     {
+        public CategoryForm CategoryBlock { get; set; }
         public AddNewDataWindowViewModel()
         {
+            CategoryBlock = new CategoryForm();
             //OpenSaveCategoryWindowCommand = new LambdaCommand(OnOpenSaveCategoryWindowCommandExecuted, CanOpenSaveCategoryWindowCommandExecuted);
             //OpenSaveSubCategoryWindowCommand = new LambdaCommand(OnOpenSaveSubCategoryWindowCommandExecuted, CanOpenSaveSubCategoryWindowCommandExecuted);
         }
@@ -178,8 +181,17 @@ namespace Hranilka.ViewModels
             bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CurrentCategory.Name);
             if (isCategoryExist)
             {
-                ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentCategory.Name);
-                Categories = null;
+                string removeCategoryMessage = "Удалить категорию?";
+                MessageBoxResult result = MessageBox.Show(removeCategoryMessage, "My app", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentCategory.Name);
+                    Categories = null;
+                }
+                else
+                    return;
+
                 //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
                 //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
                 //addNewDataWindow.Show();
@@ -313,10 +325,22 @@ namespace Hranilka.ViewModels
             bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CurrentSubCategory.Name);
             if (isCategoryExist)
             {
-                ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentSubCategory.Name);
-                Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
-                AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
-                addNewDataWindow.Show();
+                string removeCategoryMessage = "Удалить подкатегорию?";
+                MessageBoxResult result = MessageBox.Show(removeCategoryMessage, "My app", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentSubCategory.Name);
+                    SubCategories = null;
+                }
+                else
+                    return;
+
+
+                //ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentSubCategory.Name);
+                //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
+                //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+                //addNewDataWindow.Show();
             }
             else
             {
@@ -361,16 +385,7 @@ namespace Hranilka.ViewModels
             }
         }
 
-        private ContentCategory der()
-        {
-            using (Context hranilkaDbContext = new Context())
-            {
-                var wwww = hranilkaDbContext.ContentCategories.Where(x => x.Id == 3).FirstOrDefault();
-
-                return wwww;
-            }
-        }
-
+       
         ObservableCollection<ContentCategory> _subCategories;
         public ObservableCollection<ContentCategory> SubCategories
         {

@@ -2,6 +2,7 @@
 using Hranilka.Infrastructure.Commands;
 using Hranilka.Models;
 using Hranilka.ViewModels.Base;
+using Hranilka.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,8 @@ namespace Hranilka.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
+        
+        public CategoryForm CategoryBlock { get; set; }
 
         #region Заголовок окна
         /// <summary>Заголовок окна</summary>
@@ -46,6 +49,7 @@ namespace Hranilka.ViewModels
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
             OpenAddNewDataWindowCommand = new LambdaCommand(OnOpenAddNewDataWindowCommandExecuted, CanOpenAddNewDataWindowCommandExecuted);
             //DeleteContainerCommand = new LambdaCommand(OnDeleteContainerCommandExecuted, CanDeleteContainerCommandExecuted);
+            CategoryBlock = new CategoryForm();
         }
 
         //private bool _isChanged;
@@ -71,6 +75,7 @@ namespace Hranilka.ViewModels
         private void OnOpenAddNewDataWindowCommandExecuted(object p)
         {
             AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+            addNewDataWindow.Owner = Application.Current.MainWindow;
             addNewDataWindow.Show();
         }
 

@@ -193,7 +193,7 @@ namespace Hranilka
 
             }
             //else
-                //MessageBox.Show("Не введены данные!!");
+            //MessageBox.Show("Не введены данные!!");
         }
 
         private void MainPageRichTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -209,16 +209,19 @@ namespace Hranilka
             string currentDescription = item.Description;
 
             ContentCategory category = new ContentCategory(currentCategory.Id, currentCategory.Name);
-            
+
             if (currentSubCategory != null)
             {
                 category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
             }
 
-           
-            {
-               DataContainerRepository.DeleteDataContainerFromDB(currentDescription);
 
+            string removeCategoryMessage = "Удалить данные?";
+            MessageBoxResult result = MessageBox.Show(removeCategoryMessage, "My app", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                DataContainerRepository.DeleteDataContainerFromDB(currentDescription);
 
                 CurrentDataContainer currentDataContainer = new CurrentDataContainer
                 {
@@ -232,13 +235,17 @@ namespace Hranilka
 
                 //ICollectionView view = CollectionViewSource.GetDefaultView(this.MainListView.ItemsSource);
                 //view.Refresh();
-                
-                MainListView.ItemsSource = DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name,currentSubCategory);
 
-                SaveButton.IsEnabled = false;
+                MainListView.ItemsSource = DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory);
+
+
 
             }
-            
+            else
+                return;
+
+            DeleteButton.IsEnabled = false;
+
         }
 
 

@@ -1,0 +1,84 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Templates="clr-namespace:Hranilka.Views.Templates">
+
+    <ControlTemplate x:Key="CategoryComboBoxTemplate" TargetType="ComboBox">
+        <Grid VerticalAlignment="Top">
+            <ComboBox
+                x:Name="CategoryComboBoxTemplate"
+                Width="200"
+                Height="25"
+                Margin="10,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                DisplayMemberPath="Name"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="CategoryTextBlock" TargetType="TextBox">
+        <Grid />
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="SubCategoryComboBoxTemplate" TargetType="ComboBox">
+        <Grid VerticalAlignment="Top">
+            <ComboBox
+                x:Name="SubCategoryComboBox"
+                Width="200"
+                Height="25"
+                Margin="10,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                DisplayMemberPath="Name"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedItem="{Binding Path=CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="MainListViewTemplate" TargetType="ListView">
+        <Grid VerticalAlignment="Top">
+            <ListView
+                x:Name="MainListView"
+                
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                BorderThickness="2"
+                Cursor="Hand"
+                ItemsSource="{Binding Path=CategoryBlock.DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedIndex="{Binding Path=CategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+
+                <ListView.View>
+                    <GridView>
+
+                        <GridViewColumn
+                            x:Name="DescriptionColumn"
+                            Width="500"
+                            
+                            DisplayMemberBinding="{Binding Path=Description}"
+                            Header="Описание" />
+
+                        <GridViewColumn
+                            
+                            DisplayMemberBinding="{Binding Path=CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}"
+                            Header="Дата создания" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </ControlTemplate>
+
+
+
+
+
+
+
+
+
+
+</ResourceDictionary>

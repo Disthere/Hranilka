@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\Windows\Open.png" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.17.1" />
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.17" />
@@ -29,10 +26,6 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Views\Component\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Views\Windows\Open.png" />
   </ItemGroup>
 
 </Project>
