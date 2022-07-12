@@ -18,7 +18,7 @@
         <vm:MainWindowViewModel />
     </Window.DataContext>
 
-    <DockPanel>
+    <DockPanel Background="Beige">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Свойства" />
@@ -36,69 +36,199 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl
-            HorizontalAlignment="Stretch"
+            HorizontalAlignment="Left"
             Background="Beige"
-            Cursor="Hand">
+            Cursor="Hand" Height="716" VerticalAlignment="Center" HorizontalContentAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" FlowDirection="LeftToRight" Padding="0,0,0,0" UseLayoutRounding="True">
             <TabItem
                 Width="220"
                 HorizontalAlignment="Left"
-                HorizontalContentAlignment="Stretch"
-                Header="Текстовые данные">
-                <Grid>
-                    <Grid x:Name="CategoryBlock">
+                Margin="3,3,0,0"
+                Header="Текстовые данные"  >
+                <TabItem.Effect>
+                    <DropShadowEffect/>
+                </TabItem.Effect>
+
+                <Grid Background="Beige">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="6.5*" />
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="1.75*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid
+                        x:Name="CategoryBlock"
+                        Grid.Row="0"
+                        Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*"/>
+                            <RowDefinition Height="1.2*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="0.6*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="10,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="Категория"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Margin="10,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="Подкатегория"
+                            TextWrapping="Wrap" />
                         <ComboBox
                             x:Name="CategoryComboBox"
+                            Grid.Row="1"
+                            Grid.Column="0"
                             Width="200"
-                            Height="25"
-                            Margin="10,40,0,0"
+                            Margin="10,5"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             DisplayMemberPath="Name"
                             IsSynchronizedWithCurrentItem="True"
                             ItemsSource="{Binding Path=CategoryBlock.Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
-
-                        <TextBlock
-                            Margin="10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Text="Категория"
-                            TextWrapping="Wrap" />
+                            SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" FontWeight="Bold" />
 
                         <ComboBox
                             x:Name="SubCategoryComboBox"
+                            Grid.Row="1"
+                            Grid.Column="1"
                             Width="200"
-                            Height="25"
-                            Margin="230,40,0,0"
+                            Margin="10,5"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             DisplayMemberPath="Name"
                             IsSynchronizedWithCurrentItem="True"
                             ItemsSource="{Binding Path=CategoryBlock.SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+                            SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" FontWeight="Bold" />
 
-
-                        <TextBlock
-                            Margin="230,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Text="Подкатегория"
-                            TextWrapping="Wrap" />
+                        <Button
+                            x:Name="AddButton"
+                            Grid.RowSpan="2"
+                            Grid.Column="2"
+                            Margin="10,10"
+                            Padding="5"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding Path=OpenAddNewDataWindowCommand}"
+                            Content="Добавить текст" />
                     </Grid>
-                    <Button
-                        x:Name="AddButton"
-                        Width="100"
-                        Height="30"
-                        Margin="460,40,10,10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Command="{Binding Path=OpenAddNewDataWindowCommand}"
-                        Content="Добавить текст" />
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        VerticalAlignment="Bottom"
+                        Orientation="Horizontal">
+                        <Button
+                            x:Name="SaveButton"
+                            Margin="10,10"
+                            Padding="5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Click="SaveButton_Click"
+                            Command="{Binding Path=SaveChangedText}"
+                            Content="Сохранить"
+                            IsEnabled="False" />
+
+                        <Button
+                            x:Name="DeleteButton"
+                            Margin="10,10"
+                            Padding="5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Click="DeleteButton_Click"
+                            Content="Удалить текст"
+                            IsEnabled="False" />
+
+
+                        <ToolBar
+                            Margin="10,10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Background="Beige">
+                            <Button Command="ApplicationCommands.Open">
+                                <StackPanel>
+                                    <fa:ImageAwesome
+                                        Width="20"
+                                        Height="20"
+                                        Icon="Regular_FolderOpen" />
+                                </StackPanel>
+                            </Button>
+                            <Button Command="ApplicationCommands.Save">
+                                <StackPanel>
+                                    <fa:ImageAwesome
+                                        Width="20"
+                                        Height="20"
+                                        Icon="Regular_Save" />
+                                </StackPanel>
+                            </Button>
+                            <Separator />
+                            <ToggleButton Name="btnBold" Command="EditingCommands.ToggleBold">
+                                <StackPanel>
+                                    <fa:ImageAwesome
+                                        Width="20"
+                                        Height="18"
+                                        Icon="Solid_Bold" />
+                                </StackPanel>
+                            </ToggleButton>
+                            <ToggleButton Name="btnItalic" Command="EditingCommands.ToggleItalic">
+                                <StackPanel>
+                                    <fa:ImageAwesome
+                                        Width="20"
+                                        Height="18"
+                                        Icon="Solid_Italic" />
+                                </StackPanel>
+                            </ToggleButton>
+                            <ToggleButton Name="btnUnderline" Command="EditingCommands.ToggleUnderline">
+                                <StackPanel>
+                                    <fa:ImageAwesome
+                                        Width="20"
+                                        Height="18"
+                                        Icon="Solid_Underline" />
+                                </StackPanel>
+                            </ToggleButton>
+                            <Separator />
+                            <ComboBox
+                                Name="cmbFontFamily"
+                                Width="150"
+                                SelectionChanged="cmbFontFamily_SelectionChanged" />
+                            <ComboBox
+                                Name="cmbFontSize"
+                                Width="50"
+                                IsEditable="True"
+                                TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
+                        </ToolBar>
+                        <Button
+                            x:Name="ScreenshotButton"
+                            Margin="10,10"
+                            Padding="5"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding Path=OpenScreenShoter}"
+                            Content="Сделать скриншот"
+                            Cursor="Hand" />
+                    </StackPanel>
+
                     <ListView
                         x:Name="MainListView"
-                        Width="550"
-                        Margin="10,80,10,10"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        
+                        Margin="10,10"
                         HorizontalAlignment="Left"
+                        Background="White"
                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
                         BorderThickness="2"
                         Cursor="Hand"
@@ -110,142 +240,58 @@
                             <GridView>
 
                                 <GridViewColumn
+                                    
                                     x:Name="DescriptionColumn"
-                                    Width="400"
+                                    Width="350"
                                     DisplayMemberBinding="{Binding Path=Description}"
                                     Header="Описание" />
 
                                 <GridViewColumn
-                                    Width="160"
+                                    Width="170"
                                     DisplayMemberBinding="{Binding Path=CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}"
                                     Header="Дата создания" />
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <StackPanel Grid.Row="1" Grid.Column="1">
+                        <RichTextBox
+                            x:Name="MainPageRichTextBox"
+                            Height="550"
+                            Margin="10,10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Background="White"
+                            BorderBrush="Brown"
+                            Cursor="IBeam"
+                            SelectionChanged="MainPageRichTextBox_SelectionChanged"
+                            TextChanged="MainPageRichTextBox_TextChanged">
+                            <RichTextBox.Resources>
+                                <Style TargetType="{x:Type Paragraph}">
+                                    <Setter Property="Margin" Value="0" />
+                                </Style>
+                            </RichTextBox.Resources>
+                            <FlowDocument>
+                                <Paragraph />
+                            </FlowDocument>
+                        </RichTextBox>
+                    </StackPanel>
 
-                    <Button
-                        x:Name="SaveButton"
-                        Width="100"
-                        Height="30"
-                        Margin="565,40,10,10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="SaveButton_Click"
-                        Command="{Binding Path=SaveChangedText}"
-                        Content="Сохранить"
-                        IsEnabled="False" />
-
-                    <Button
-                        x:Name="DeleteButton"
-                        Width="120"
-                        Height="30"
-                        Margin="700,40,10,10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="DeleteButton_Click"
-                        Content="Удалить текст"
-                        IsEnabled="False" />
-                    <Button
-                        x:Name="ScreenshotButton"
-                        Width="150"
-                        Height="30"
-                        Margin="850,40,10,10"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        HorizontalContentAlignment="Stretch"
-                        Command="{Binding Path=OpenScreenShoter}"
-                        Content="Сделать скриншот"
-                        Cursor="Hand" />
-
-                    <ToolBar
-                        Margin="0,25,10,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        Background="White">
-                        <Button Command="ApplicationCommands.Open">
-                            <StackPanel>
-                                <fa:ImageAwesome
-                                    Width="20"
-                                    Height="20"
-                                    Icon="Regular_FolderOpen" />
-                            </StackPanel>
-                        </Button>
-                        <Button Command="ApplicationCommands.Save">
-                            <StackPanel>
-                                <fa:ImageAwesome
-                                    Width="20"
-                                    Height="20"
-                                    Icon="Regular_Save" />
-                            </StackPanel>
-                        </Button>
-                        <Separator />
-                        <ToggleButton Name="btnBold" Command="EditingCommands.ToggleBold">
-                            <StackPanel>
-                                <fa:ImageAwesome
-                                    Width="20"
-                                    Height="18"
-                                    Icon="Solid_Bold" />
-                            </StackPanel>
-                        </ToggleButton>
-                        <ToggleButton Name="btnItalic" Command="EditingCommands.ToggleItalic">
-                            <StackPanel>
-                                <fa:ImageAwesome
-                                    Width="20"
-                                    Height="18"
-                                    Icon="Solid_Italic" />
-                            </StackPanel>
-                        </ToggleButton>
-                        <ToggleButton Name="btnUnderline" Command="EditingCommands.ToggleUnderline">
-                            <StackPanel>
-                                <fa:ImageAwesome
-                                    Width="20"
-                                    Height="18"
-                                    Icon="Solid_Underline" />
-                            </StackPanel>
-                        </ToggleButton>
-                        <Separator />
-                        <ComboBox
-                            Name="cmbFontFamily"
-                            Width="150"
-                            SelectionChanged="cmbFontFamily_SelectionChanged" />
-                        <ComboBox
-                            Name="cmbFontSize"
-                            Width="50"
-                            IsEditable="True"
-                            TextBoxBase.TextChanged="cmbFontSize_TextChanged" />
-                    </ToolBar>
-
-                    <RichTextBox
-                        x:Name="MainPageRichTextBox"
-                        Width="1000"
-                        Height="600"
-                        Margin="0,80,10,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top"
-                        BorderBrush="Brown"
-                        Cursor="Arrow"
-                        SelectionChanged="MainPageRichTextBox_SelectionChanged"
-                        TextChanged="MainPageRichTextBox_TextChanged">
-                        <RichTextBox.Resources>
-                            <Style TargetType="{x:Type Paragraph}">
-                                <Setter Property="Margin" Value="0" />
-                            </Style>
-                        </RichTextBox.Resources>
-                        <FlowDocument>
-                            <Paragraph />
-                        </FlowDocument>
-                    </RichTextBox>
 
                 </Grid>
 
+
+
+
             </TabItem>
             <TabItem
+                Margin="3,3,0,0"
                 Width="220"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                HorizontalContentAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
                 Header="Ссылки">
+                <TabItem.Effect>
+                    <DropShadowEffect/>
+                </TabItem.Effect>
                 <Grid VerticalAlignment="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -257,7 +303,7 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    
+
                     <UniformGrid
                         Grid.Row="0"
                         Grid.Column="0"
