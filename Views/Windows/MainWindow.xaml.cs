@@ -88,7 +88,7 @@ namespace Hranilka
             if (selectedItem != null)
             {
                 string description = selectedItem.Description;
-                CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainersFromDB(description);
+                CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainerFromDB(description);
                 DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
                 dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
                 SaveButton.IsEnabled = false;
@@ -235,8 +235,8 @@ namespace Hranilka
 
                 //ICollectionView view = CollectionViewSource.GetDefaultView(this.MainListView.ItemsSource);
                 //view.Refresh();
-
-                MainListView.ItemsSource = DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory);
+                
+                MainListView.ItemsSource = DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory, DataType.Texts);
 
 
 

@@ -39,18 +39,21 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel
-                x:Name="stackPanel" Orientation="Horizontal"
+                x:Name="stackPanel"
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Margin="10,10">
+                Margin="10,10"
+                Orientation="Horizontal">
 
-                <RadioButton Margin="10,0"
-                        Content="Тексты"
-                        GroupName="Languages"
-                        IsChecked="True" />
-                <RadioButton Margin="10,0" Content="Ссылки" GroupName="Languages" />
-                
+                <RadioButton x:Name="TextsRadioButton"
+                    Margin="10,0"
+                    Content="Тексты"
+                    IsChecked="True" Checked="TextsRadioButton_Checked" />
+                <RadioButton x:Name="ReferencesRadioButton"
+                    Margin="10,0"
+                    Content="Ссылки"
+                    IsChecked="{Binding Path=IsDataTypeReferencesChosen, Mode=TwoWay}" Checked="ReferencesRadioButton_Checked" />
 
             </StackPanel>
 
@@ -80,9 +83,10 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 DisplayMemberPath="Name"
+                FontWeight="Bold"
                 IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding Path=CategoryBlock.Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontWeight="Bold" />
+                SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
             <TextBox
                 Name="TextBox1"
@@ -103,9 +107,10 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 DisplayMemberPath="Name"
+                FontWeight="Bold"
                 IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding Path=CategoryBlock.SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FontWeight="Bold" />
+                SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
             <TextBox
                 Name="TextBox2"
@@ -216,24 +221,25 @@
 
             <TextBox
                 x:Name="DescriptionBox"
-                Background="White"
                 Width="400"
-                
                 Margin="10,10,10,10"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                Background="White"
                 Text="{Binding Path=CurrentDescription, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap" />
 
             <Button
-            x:Name="ReferenceSaveButton"
-            Margin="5"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="FileSaveButton_Click"
-            Content="Сохранить ссылку" Visibility="Visible" Cursor="Hand" />
+                x:Name="ReferenceSaveButton"
+                Margin="10,5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding Path=SaveReference}"
+                Content="Сохранить ссылку"
+                Cursor="Hand"
+                 />
         </StackPanel>
-        <Button
+        <Button x:Name="ScreenshotButton"
             Grid.Row="0"
             Grid.Column="2"
             Margin="10,10"

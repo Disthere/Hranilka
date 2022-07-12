@@ -1,8 +1,12 @@
-﻿using Hranilka.Data;
+﻿using AngleSharp;
+using Hranilka.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,7 +61,7 @@ namespace Hranilka.Models
             return allDataContainers;
         }
 
-        public static CurrentDataContainer GetSelectDescriptionDataContainersFromDB(string description)
+        public static CurrentDataContainer GetSelectDescriptionDataContainerFromDB(string description)
         {
             using (Context hranilkaDbContext = new Context())
             {
@@ -81,7 +85,7 @@ namespace Hranilka.Models
             }
         }
 
-        internal static ObservableCollection<CurrentDataContainer> GetSelectCategoryDataContainersFromDB(string categoryName, string subCategoryName)
+        internal static ObservableCollection<CurrentDataContainer> GetSelectCategoryDataContainersFromDB(string categoryName, string subCategoryName, DataType dataType)
         {
             string parentCategory = categoryName;
             int parentCategoryId;
@@ -105,7 +109,9 @@ namespace Hranilka.Models
                         .ToList();
 
                     containers = hranilkaDbContext.DataContainers
-                        .Where(p => childCategoriesIDs.Contains(p.CategoryId) || p.CategoryId == parentCategoryId)
+                        .Where(p => childCategoriesIDs.Contains(p.CategoryId) 
+                        || p.CategoryId == parentCategoryId 
+                        || p.DataType == (int)dataType)
                         .ToList();
 
                     foreach (var item in containers)
@@ -173,7 +179,7 @@ namespace Hranilka.Models
 
 
 
-        public static void SaveDataContainerToDB(ContentCategory category, string description)
+        public static void SaveTextDataContainerToDB(ContentCategory category, string description)
         {
             using (Context hranilkaDbContext = new Context())
             {
@@ -183,7 +189,38 @@ namespace Hranilka.Models
                 .Select(u => u.Id)
                 .FirstOrDefault();
 
-                hranilkaDbContext.DataContainers.Add(new DataContainer { Description = description, CategoryId = categoryId });
+                hranilkaDbContext.DataContainers.Add(new DataContainer { Description = description, CategoryId = categoryId, DataType = (int)DataType.Texts });
+                hranilkaDbContext.SaveChanges();
+
+            }
+        }
+
+        public static async void SaveReferenceDataContainerToDB(ContentCategory category, string url)
+        {
+            string sourse;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.UserAgent = "My applicartion name";
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default, true, 8192))
+            {
+                sourse = reader.ReadToEnd();
+            }
+            
+            var config = Configuration.Default.WithDefaultLoader();
+            var context = BrowsingContext.New(config);
+            var document = await context.OpenAsync(req => req.Content(sourse));
+
+            var description = document.QuerySelector("title").TextContent;
+            using (Context hranilkaDbContext = new Context())
+            {
+                int categoryId = hranilkaDbContext
+                .ContentCategories
+                .Where(u => u.Name == category.Name)
+                .Select(u => u.Id)
+                .FirstOrDefault();
+
+                hranilkaDbContext.DataContainers.Add(new DataContainer { Description = description, CategoryId = categoryId, OtherInformation = url, DataType = (int)DataType.Refrences });
                 hranilkaDbContext.SaveChanges();
 
             }

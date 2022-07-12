@@ -12,13 +12,18 @@ namespace Hranilka.Views
 {
    internal class CategoryForm : ViewModelBase
     {
+        public CategoryForm(DataType dataType)
+        {
+            this.DataType = dataType;
+        }
+        public DataType DataType { get; set; }
         ObservableCollection<CurrentDataContainer> _dataContainers;
         public ObservableCollection<CurrentDataContainer> DataContainers
         {
             get
             {
                 if (_dataContainers == null)
-                    _dataContainers = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name);
+                    _dataContainers = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name, DataType);
                 return _dataContainers;
             }
 

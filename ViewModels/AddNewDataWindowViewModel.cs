@@ -22,10 +22,26 @@ namespace Hranilka.ViewModels
         public CategoryForm CategoryBlock { get; set; }
         public AddNewDataWindowViewModel()
         {
-            CategoryBlock = new CategoryForm();
+            CategoryBlock = new CategoryForm(DataType.Texts);
             //OpenSaveCategoryWindowCommand = new LambdaCommand(OnOpenSaveCategoryWindowCommandExecuted, CanOpenSaveCategoryWindowCommandExecuted);
             //OpenSaveSubCategoryWindowCommand = new LambdaCommand(OnOpenSaveSubCategoryWindowCommandExecuted, CanOpenSaveSubCategoryWindowCommandExecuted);
         }
+
+        #region Указатель типа данных 
+        /// <summary>Указатель типа данных</summary>
+        private bool _isDataTypeReferencesChosen = false;
+
+        public bool IsDataTypeReferencesChosen
+        {
+            get => _isDataTypeReferencesChosen;
+            set
+            {
+                _isDataTypeReferencesChosen = value;
+                OnPropertyChanged(nameof(IsDataTypeReferencesChosen));
+            }
+
+        }
+        #endregion
 
         #region Текст окна редактирования категорий
         /// <summary>Текст окна редактирования категорий</summary>
@@ -123,10 +139,10 @@ namespace Hranilka.ViewModels
                 }
                 else
                 {
-                    ContentCategoryRepozitory.UpdateCategoryToDB(CurrentCategory.Name, CUDCategoryText);
+                    ContentCategoryRepozitory.UpdateCategoryToDB(CategoryBlock.CurrentCategory.Name, CUDCategoryText);
                     UpdateCategoryFlag = 0;
                 }
-                Categories = null;
+                CategoryBlock.Categories = null;
                 CUDCategoryText = null;
                 //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
                 //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
@@ -154,7 +170,7 @@ namespace Hranilka.ViewModels
         }
         public void OnUpdateCategoryCommand(object parameter)
         {
-            CUDCategoryText = CurrentCategory.Name;
+            CUDCategoryText = CategoryBlock.CurrentCategory.Name;
             UpdateCategoryFlag = 1;
         }
 
@@ -178,7 +194,7 @@ namespace Hranilka.ViewModels
         }
         public void OnRemoveCategoryCommand(object parameter)
         {
-            bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CurrentCategory.Name);
+            bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CategoryBlock.CurrentCategory.Name);
             if (isCategoryExist)
             {
                 string removeCategoryMessage = "Удалить категорию?";
@@ -186,8 +202,8 @@ namespace Hranilka.ViewModels
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentCategory.Name);
-                    Categories = null;
+                    ContentCategoryRepozitory.DeleteCategoryFromDB(CategoryBlock.CurrentCategory.Name);
+                    CategoryBlock.Categories = null;
                 }
                 else
                     return;
@@ -219,7 +235,7 @@ namespace Hranilka.ViewModels
         }
         public bool CanExecuteAddSubCategoryCommand(object parameter)
         {
-            return (CUDSubCategoryText != null && CurrentCategory.Name != null) ? true : false;
+            return (CUDSubCategoryText != null && CategoryBlock.CurrentCategory.Name != null) ? true : false;
         }
         public void OnAddSubCategoryCommand(object parameter)
         {
@@ -232,7 +248,7 @@ namespace Hranilka.ViewModels
             {
                 if (UpdateSubCategoryFlag == 0)
                 {
-                    ContentCategoryRepozitory.SaveSubCategoryToDB(CurrentCategory.Name, CUDSubCategoryText);
+                    ContentCategoryRepozitory.SaveSubCategoryToDB(CategoryBlock.CurrentCategory.Name, CUDSubCategoryText);
                 }
                 else
                 {
@@ -240,7 +256,7 @@ namespace Hranilka.ViewModels
                     UpdateSubCategoryFlag = 0;
                 }
 
-                SubCategories = null;
+                CategoryBlock.SubCategories = null;
                 CUDSubCategoryText = null;
 
                 //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
@@ -266,13 +282,60 @@ namespace Hranilka.ViewModels
         }
         public bool CanExecuteUpdateSubCategoryCommand(object parameter)
         {
-            return (CUDSubCategoryText == null && CurrentSubCategory.Name != null) ? true : false;
+            return (CUDSubCategoryText == null && CategoryBlock.CurrentSubCategory.Name != null) ? true : false;
         }
         public void OnUpdateSubCategoryCommand(object parameter)
         {
-            CUDSubCategoryText = CurrentSubCategory.Name;
+            CUDSubCategoryText = CategoryBlock.CurrentSubCategory.Name;
             this.CategoryNameForChanging = CUDSubCategoryText;
             UpdateSubCategoryFlag = 1;
+        }
+
+        #endregion
+
+        #region Команда на удаление подкатегории из базы
+
+        LambdaCommand _removeSubCategory;
+
+        public ICommand RemoveSubCategory
+        {
+            get
+            {
+                if (_removeSubCategory == null)
+                    _removeSubCategory = new LambdaCommand(OnRemoveSubCategoryCommand, CanExecuteRemoveSubCategoryCommand);
+                return _removeSubCategory;
+            }
+        }
+        public bool CanExecuteRemoveSubCategoryCommand(object parameter)
+        {
+            return (CUDSubCategoryText == null && CategoryBlock.CurrentSubCategory.Name != null) ? true : false;
+        }
+        public void OnRemoveSubCategoryCommand(object parameter)
+        {
+            bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CategoryBlock.CurrentSubCategory.Name);
+            if (isCategoryExist)
+            {
+                string removeCategoryMessage = "Удалить подкатегорию?";
+                MessageBoxResult result = MessageBox.Show(removeCategoryMessage, "My app", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    ContentCategoryRepozitory.DeleteCategoryFromDB(CategoryBlock.CurrentSubCategory.Name);
+                    CategoryBlock.SubCategories = null;
+                }
+                else
+                    return;
+
+
+                //ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentSubCategory.Name);
+                //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
+                //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
+                //addNewDataWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("Такой категории не существует!!");
+            }
         }
 
         #endregion
@@ -303,54 +366,44 @@ namespace Hranilka.ViewModels
 
         #endregion
 
-        #region Команда на удаление подкатегории из базы
+        #region Команда на сохранения ссылки
+        LambdaCommand _saveReference;
 
-        LambdaCommand _removeSubCategory;
-
-        public ICommand RemoveSubCategory
+        public ICommand SaveReference
         {
             get
             {
-                if (_removeSubCategory == null)
-                    _removeSubCategory = new LambdaCommand(OnRemoveSubCategoryCommand, CanExecuteRemoveSubCategoryCommand);
-                return _removeSubCategory;
+                if (_saveReference == null)
+                    _saveReference = new LambdaCommand(OnSaveReferenceCommand, CanExecuteSaveReferenceCommand);
+                return _saveReference;
             }
         }
-        public bool CanExecuteRemoveSubCategoryCommand(object parameter)
+        public bool CanExecuteSaveReferenceCommand(object parameter)
         {
-            return (CUDSubCategoryText == null && CurrentSubCategory.Name != null) ? true : false;
+            return (CurrentDescription != null) ? true : false;
         }
-        public void OnRemoveSubCategoryCommand(object parameter)
+        public void OnSaveReferenceCommand(object parameter)
         {
-            bool isCategoryExist = ContentCategoryRepozitory.IsCategoriesContains(CurrentSubCategory.Name);
-            if (isCategoryExist)
+            ContentCategory category = CategoryBlock.CurrentCategory;
+
+            if (CategoryBlock.CurrentSubCategory != null)
             {
-                string removeCategoryMessage = "Удалить подкатегорию?";
-                MessageBoxResult result = MessageBox.Show(removeCategoryMessage, "My app", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentSubCategory.Name);
-                    SubCategories = null;
-                }
-                else
-                    return;
-
-
-                //ContentCategoryRepozitory.DeleteCategoryFromDB(CurrentSubCategory.Name);
-                //Application.Current.Windows.OfType<AddNewDataWindow>().SingleOrDefault(x => x.IsActive).Close();
-                //AddNewDataWindow addNewDataWindow = new AddNewDataWindow();
-                //addNewDataWindow.Show();
+                category = CategoryBlock.CurrentSubCategory;
             }
-            else
+            try
             {
-                MessageBox.Show("Такой категории не существует!!");
+                DataContainerRepository.SaveReferenceDataContainerToDB(category, CurrentDescription);
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Некорректная ссылка");
+                throw;
+            }
+
+            CurrentDescription = null;
         }
 
         #endregion
-
-
 
         ObservableCollection<ContentCategory> _categories;
         public ObservableCollection<ContentCategory> Categories
@@ -385,7 +438,7 @@ namespace Hranilka.ViewModels
             }
         }
 
-       
+
         ObservableCollection<ContentCategory> _subCategories;
         public ObservableCollection<ContentCategory> SubCategories
         {

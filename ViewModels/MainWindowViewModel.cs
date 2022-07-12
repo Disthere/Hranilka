@@ -49,7 +49,8 @@ namespace Hranilka.ViewModels
             CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
             OpenAddNewDataWindowCommand = new LambdaCommand(OnOpenAddNewDataWindowCommandExecuted, CanOpenAddNewDataWindowCommandExecuted);
             //DeleteContainerCommand = new LambdaCommand(OnDeleteContainerCommandExecuted, CanDeleteContainerCommandExecuted);
-            CategoryBlock = new CategoryForm();
+            DataType dataType = DataType.Texts;
+            CategoryBlock = new CategoryForm(dataType);
         }
 
         //private bool _isChanged;
@@ -175,7 +176,7 @@ namespace Hranilka.ViewModels
             get
             {
                 if (_dataContainers == null)
-                    _dataContainers = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name);
+                    _dataContainers = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name,DataType.Texts);
                 return _dataContainers;
             }
 

@@ -134,7 +134,8 @@ namespace Hranilka
 
             if (isDataAdded)
             {
-                DataContainerRepository.SaveDataContainerToDB(category, currentDescription);
+                
+                DataContainerRepository.SaveTextDataContainerToDB(category, currentDescription);
 
                 CurrentDataContainer currentDataContainer = new CurrentDataContainer
                 {
@@ -150,6 +151,24 @@ namespace Hranilka
             }
             else
                 MessageBox.Show("Не введены данные!!");
+        }
+
+        private void TextsRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            //System.Threading.Thread.Sleep(1000);
+            //this.ReferenceSaveButton.Visibility = Visibility.Hidden;
+            //this.AddDataRichTextBox.Visibility = Visibility.Visible;
+            //this.FileSaveButton.Visibility = Visibility.Visible;
+            //this.ScreenshotButton.Visibility = Visibility.Visible;
+
+        }
+
+        private void ReferencesRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            ReferenceSaveButton.Visibility = Visibility.Visible;
+            AddDataRichTextBox.Visibility = Visibility.Hidden;
+            FileSaveButton.Visibility = Visibility.Hidden;
+            ScreenshotButton.Visibility = Visibility.Hidden;
         }
     }
 }
