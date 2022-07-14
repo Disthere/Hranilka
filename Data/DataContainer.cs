@@ -1,6 +1,7 @@
 ﻿using Hranilka.Data;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,9 @@ namespace Hranilka
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public string OtherInformation { get; set; }
         public int DataType { get; set; }
+
+        [DefaultValue(0)]
+        public string Author { get; set; }
 
         public int CategoryId { get; set; }
         public ContentCategory Category { get; set; }

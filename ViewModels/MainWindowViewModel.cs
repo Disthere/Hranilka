@@ -18,13 +18,78 @@ namespace Hranilka.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
-        
-        public CategoryForm CategoryBlock { get; set; }
+        public MainWindowViewModel()
+        {
+            CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
+            OpenAddNewDataWindowCommand = new LambdaCommand(OnOpenAddNewDataWindowCommandExecuted, CanOpenAddNewDataWindowCommandExecuted);
+            //DeleteContainerCommand = new LambdaCommand(OnDeleteContainerCommandExecuted, CanDeleteContainerCommandExecuted);
+
+            CategoryBlock = new CategoryBlock(DataType.Texts);
+            ReferencesCategoryBlock = new CategoryBlock(DataType.References);
+        }
+
+        //public ObservableCollection<TabItem> Tabs { get; set; }
+        public CategoryBlock CategoryBlock { get; set; }
+        public CategoryBlock ReferencesCategoryBlock { get; set; }
+
+
+        //private DataType _dataType;
+
+        //public DataType DataType
+        //{
+        //    get => _dataType;
+        //    set
+        //    {
+        //        _dataType = value;
+
+        //        OnPropertyChanged(nameof(DataType));
+        //    }
+        //}
+
+
+        //private bool _textsChosen;
+        //public bool TextsChosen
+        //{
+        //    get => _textsChosen;
+        //    set
+        //    {
+        //        _textsChosen = value;
+        //        if (TextsChosen == true)
+        //            CategoryBlock = new CategoryBlock(DataType.Texts);
+        //        OnPropertyChanged(nameof(TextsChosen));
+        //    }
+        //}
+
+        //private bool _referencesChosen;
+        //public bool ReferencesChosen
+        //{
+        //    get => _referencesChosen;
+        //    set
+        //    {
+        //        _referencesChosen = value;
+        //        if (_referencesChosen == true)
+        //        {
+        //            this.CategoryBlock = null;
+        //            this.CategoryBlock = new CategoryBlock(DataType.References);
+        //        }
+        //        OnPropertyChanged(nameof(ReferencesChosen));
+        //    }
+        //}
+
+        //private DataType GetDataType()
+        //{
+        //    foreach (var item in _dataTypes)
+        //    {
+        //        if (item.Value == true)
+        //            return item.Key;
+
+        //    }
+        //    return DataType.Texts;
+        //}
 
         #region Заголовок окна
         /// <summary>Заголовок окна</summary>
         private string title = "Hranilka V1.0";
-
 
         public string Title
         {
@@ -44,14 +109,7 @@ namespace Hranilka.ViewModels
             Application.Current.Shutdown();
         }
 
-        public MainWindowViewModel()
-        {
-            CloseApplicationCommand = new LambdaCommand(OnCloseApplicationCommandExecuted, CanCloseApplicationCommandExecuted);
-            OpenAddNewDataWindowCommand = new LambdaCommand(OnOpenAddNewDataWindowCommandExecuted, CanOpenAddNewDataWindowCommandExecuted);
-            //DeleteContainerCommand = new LambdaCommand(OnDeleteContainerCommandExecuted, CanDeleteContainerCommandExecuted);
-            DataType dataType = DataType.Texts;
-            CategoryBlock = new CategoryForm(dataType);
-        }
+
 
         //private bool _isChanged;
         //public bool IsChanged
@@ -157,7 +215,7 @@ namespace Hranilka.ViewModels
         }
         public bool CanExecuteOpenScreenShoterCommand(object parameter)
         {
-            return  true;
+            return true;
         }
         public void OnOpenScreenShoterCommand(object parameter)
         {
@@ -170,116 +228,117 @@ namespace Hranilka.ViewModels
 
         #endregion
 
-        ObservableCollection<CurrentDataContainer> _dataContainers;
-        public ObservableCollection<CurrentDataContainer> DataContainers
+        ObservableCollection<CurrentDataContainer> _dataContainersForReferences;
+        public ObservableCollection<CurrentDataContainer> DataContainersForReferences
         {
             get
             {
-                if (_dataContainers == null)
-                    _dataContainers = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name,DataType.Texts);
-                return _dataContainers;
+                if (_dataContainersForReferences == null)
+                    _dataContainersForReferences = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CategoryBlock.CurrentCategory.Name, CategoryBlock.CurrentSubCategory.Name, DataType.References);
+                return _dataContainersForReferences;
             }
 
             set
             {
-                _dataContainers = value;
-                OnPropertyChanged(nameof(DataContainers));
+                _dataContainersForReferences = value;
+                OnPropertyChanged(nameof(DataContainersForReferences));
             }
         }
 
-        //public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
+        
+
+        DataContainer _currentDataContainerForReferences;
+        public DataContainer CurrentDataContainerForReferences
+        {
+            get
+            {
+                return _currentDataContainerForReferences;
+            }
+            set
+            {
+                _currentDataContainerForReferences = value;
+                OnPropertyChanged(nameof(CurrentDataContainerForReferences));
+            }
+        }
+
+//public void SelectedItem(CurrentDataContainer selectedItem, RichTextBox reachTextBoxObj)
         //{
         //    string description = selectedItem.Description;
         //    CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainersFromDB(description);
         //    DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
         //    dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
         //}
+        //ObservableCollection<ContentCategory> _categories;
+        //public ObservableCollection<ContentCategory> Categories
+        //{
+        //    get
+        //    {
+        //        if (_categories == null)
+        //            _categories = ContentCategoryRepozitory.GetAllParentCategoriesFromDB();
+        //        return _categories;
+        //    }
+        //    set
+        //    {
+        //        _categories = value;
+        //        OnPropertyChanged(nameof(Categories));
+        //    }
+        //}
 
-        DataContainer _currentDataContainer;
-        public DataContainer CurrentDataContainer
-        {
-            get
-            {
-                return _currentDataContainer;
-            }
-            set
-            {
-                _currentDataContainer = value;
-                OnPropertyChanged(nameof(CurrentDataContainer));
-            }
-        }
+        //ContentCategory _currentCategory;
+        //public ContentCategory CurrentCategory
+        //{
+        //    get
+        //    {
+        //        if (_currentCategory == null)
+        //        { _currentCategory = new ContentCategory(); }
+        //        return _currentCategory;
+        //    }
+        //    set
+        //    {
+        //        _currentCategory = value;
 
-        ObservableCollection<ContentCategory> _categories;
-        public ObservableCollection<ContentCategory> Categories
-        {
-            get
-            {
-                if (_categories == null)
-                    _categories = ContentCategoryRepozitory.GetAllParentCategoriesFromDB();
-                return _categories;
-            }
-            set
-            {
-                _categories = value;
-                OnPropertyChanged(nameof(Categories));
-            }
-        }
+        //        DataContainers = null;
+        //        SubCategories = null;
 
-        ContentCategory _currentCategory;
-        public ContentCategory CurrentCategory
-        {
-            get
-            {
-                if (_currentCategory == null)
-                { _currentCategory = new ContentCategory(); }
-                return _currentCategory;
-            }
-            set
-            {
-                _currentCategory = value;
-
-                DataContainers = null;
-                SubCategories = null;
-
-                OnPropertyChanged(nameof(CurrentCategory));
-            }
-        }
+        //        OnPropertyChanged(nameof(CurrentCategory));
+        //    }
+        //}
 
 
-        ObservableCollection<ContentCategory> _subCategories;
-        public ObservableCollection<ContentCategory> SubCategories
-        {
-            get
-            {
-                if (_subCategories == null)
-                    _subCategories = ContentCategoryRepozitory.GetSubCategoriesFromDB(_currentCategory);
-                return _subCategories;
-            }
-            set
-            {
-                _subCategories = value;
+        //ObservableCollection<ContentCategory> _subCategories;
+        //public ObservableCollection<ContentCategory> SubCategories
+        //{
+        //    get
+        //    {
+        //        if (_subCategories == null)
+        //            _subCategories = ContentCategoryRepozitory.GetSubCategoriesFromDB(_currentCategory);
+        //        return _subCategories;
+        //    }
+        //    set
+        //    {
+        //        _subCategories = value;
 
-                OnPropertyChanged(nameof(SubCategories));
-            }
-        }
+        //        OnPropertyChanged(nameof(SubCategories));
+        //    }
+        //}
 
-        ContentCategory _currentSubCategory;
-        public ContentCategory CurrentSubCategory
-        {
-            get
-            {
-                if (_currentSubCategory == null)
-                { _currentSubCategory = new ContentCategory(); }
+        //ContentCategory _currentSubCategory;
+        //public ContentCategory CurrentSubCategory
+        //{
+        //    get
+        //    {
+        //        if (_currentSubCategory == null)
+        //        { _currentSubCategory = new ContentCategory(); }
 
-                return _currentSubCategory;
-            }
-            set
-            {
-                _currentSubCategory = value;
-                DataContainers = null;
-                OnPropertyChanged(nameof(CurrentSubCategory));
-            }
-        }
+        //        return _currentSubCategory;
+        //    }
+        //    set
+        //    {
+        //        _currentSubCategory = value;
+        //        DataContainers = null;
+        //        OnPropertyChanged(nameof(CurrentSubCategory));
+        //    }
+        //}
 
 
 

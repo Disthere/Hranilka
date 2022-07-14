@@ -114,7 +114,7 @@ namespace Hranilka
             //TB1.Text = r;
             //FileSaveWay = r + "\\test.rtf"; 
         }
-               
+
 
         private void FileSaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -124,7 +124,7 @@ namespace Hranilka
 
             ContentCategory category = new ContentCategory(currentCategory.Id, currentCategory.Name);
             //category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentCategory.Name);
-            
+
             if (currentSubCategory != null)
             {
                 category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
@@ -134,7 +134,7 @@ namespace Hranilka
 
             if (isDataAdded)
             {
-                
+
                 DataContainerRepository.SaveTextDataContainerToDB(category, currentDescription);
 
                 CurrentDataContainer currentDataContainer = new CurrentDataContainer
@@ -147,7 +147,7 @@ namespace Hranilka
                 dataFile.SaveFileRTF(AddDataRichTextBox);
                 AddDataRichTextBox.Document.Blocks.Clear();
                 DescriptionBox.Clear();
-                                
+
             }
             else
                 MessageBox.Show("Не введены данные!!");
@@ -155,12 +155,20 @@ namespace Hranilka
 
         private void TextsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
-            //System.Threading.Thread.Sleep(1000);
-            //this.ReferenceSaveButton.Visibility = Visibility.Hidden;
-            //this.AddDataRichTextBox.Visibility = Visibility.Visible;
-            //this.FileSaveButton.Visibility = Visibility.Visible;
-            //this.ScreenshotButton.Visibility = Visibility.Visible;
+            if (ReferenceSaveButton != null)
+                ReferenceSaveButton.Visibility = Visibility.Hidden;
 
+            if (AddDataRichTextBox != null)
+                AddDataRichTextBox.Visibility = Visibility.Visible;
+
+            if (FileSaveButton != null)
+                FileSaveButton.Visibility = Visibility.Visible;
+
+            if (ScreenshotButton != null)
+                ScreenshotButton.Visibility = Visibility.Visible;
+
+
+            //System.Threading.Thread.Sleep(1000);
         }
 
         private void ReferencesRadioButton_Checked(object sender, RoutedEventArgs e)
@@ -169,6 +177,13 @@ namespace Hranilka
             AddDataRichTextBox.Visibility = Visibility.Hidden;
             FileSaveButton.Visibility = Visibility.Hidden;
             ScreenshotButton.Visibility = Visibility.Hidden;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.MainWindow.Close();
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
     }
 }

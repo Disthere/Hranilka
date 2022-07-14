@@ -14,8 +14,8 @@
                 VerticalAlignment="Top"
                 DisplayMemberPath="Name"
                 IsSynchronizedWithCurrentItem="True"
-                ItemsSource="{Binding Path=Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                SelectedItem="{Binding Path=CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+                ItemsSource="{Binding Path=ReferencesCategoryBlock.Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedItem="{Binding Path=ReferencesCategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
         </Grid>
     </ControlTemplate>
 
@@ -34,38 +34,34 @@
                 VerticalAlignment="Top"
                 DisplayMemberPath="Name"
                 IsSynchronizedWithCurrentItem="True"
-                ItemsSource="{Binding Path=SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                SelectedItem="{Binding Path=CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
+                ItemsSource="{Binding Path=ReferencesCategoryBlock.SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedItem="{Binding Path=ReferencesCategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
         </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="MainListViewTemplate" TargetType="ListView">
         <Grid VerticalAlignment="Top">
             <ListView
-                x:Name="MainListView"
-                
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                BorderThickness="2"
                 Cursor="Hand"
-                ItemsSource="{Binding Path=CategoryBlock.DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                SelectedIndex="{Binding Path=CategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                ItemsSource="{Binding Path=ReferencesCategoryBlock.DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                SelectedItem="{Binding Path=ReferencesCategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
 
                 <ListView.View>
                     <GridView>
 
                         <GridViewColumn
                             x:Name="DescriptionColumn"
-                            Width="500"
-                            
+                            Width="450"
                             DisplayMemberBinding="{Binding Path=Description}"
                             Header="Описание" />
 
-                        <GridViewColumn
-                            
-                            DisplayMemberBinding="{Binding Path=CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}"
-                            Header="Дата создания" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Author}" Header="Канал" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}" Header="Дата создания" />
+
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=OtherInformation}" Header="Cсылка" />
                     </GridView>
                 </ListView.View>
             </ListView>

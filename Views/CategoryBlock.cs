@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Hranilka.Views
 {
-   internal class CategoryForm : ViewModelBase
+   internal class CategoryBlock : ViewModelBase
     {
-        public CategoryForm(DataType dataType)
+        public CategoryBlock(DataType dataType)
         {
             this.DataType = dataType;
         }

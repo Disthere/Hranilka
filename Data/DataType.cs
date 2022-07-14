@@ -9,6 +9,6 @@ namespace Hranilka.Data
     public enum DataType
     {
         Texts,
-        Refrences
+        References
     }
 }

@@ -10,6 +10,12 @@ namespace Hranilka.Data
 {
     public class ContentCategory
     {
+        public ContentCategory()
+        {
+            this.DataContainer = new List<DataContainer>();
+        }
+        public ContentCategory(int id, string name) => (Id, Name) = (id, name);
+        
         public int Id { get; set; }
         public string Name { get; set; }
 
@@ -21,16 +27,10 @@ namespace Hranilka.Data
 
 
         public ICollection<DataContainer> DataContainer { get; set; }
-        public ContentCategory()
-        {
-            this.DataContainer = new List<DataContainer>(); 
-        }
 
-        public ContentCategory(int id, string name)
-        {
-            this.Id = id;
-            this.Name = name;
-        }
+
+
+
 
     }
 }

@@ -37,10 +37,10 @@ namespace Hranilka
 
             cmbFontFamily.ItemsSource = Fonts.SystemFontFamilies.OrderBy(f => f.Source);
             cmbFontSize.ItemsSource = new List<double>() { 8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72 };
-            SaveButton.IsEnabled = false;
-            DeleteButton.IsEnabled = false;
+            SaveButton.IsEnabled = true;
+            DeleteButton.IsEnabled = true;
             //base.DataContext = mainWindowViewModel;
-            hranilkaDbContext = new Context();
+            //hranilkaDbContext = new Context();
 
 
 
@@ -235,7 +235,7 @@ namespace Hranilka
 
                 //ICollectionView view = CollectionViewSource.GetDefaultView(this.MainListView.ItemsSource);
                 //view.Refresh();
-                
+
                 MainListView.ItemsSource = DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory, DataType.Texts);
 
 
@@ -246,6 +246,26 @@ namespace Hranilka
 
             DeleteButton.IsEnabled = false;
 
+        }
+
+        private void ReferencesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = (ListBox)sender;
+            var selectedItem = (CurrentDataContainer)item.SelectedItem;
+
+            //var name = (ReferencesListView.SelectedItem as CurrentDataContainer).Author;
+            var selectedItem1 = ReferencesListView.SelectedItem;
+
+
+            if (selectedItem != null)
+            {
+                ReferenceBox.Text = selectedItem.OtherInformation;
+            }
+            //string description = selectedItem.Description;
+            //                CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainerFromDB(description);
+            //                ReferenceBox.Text = currentDataContainer.OtherInformation;
+
+            //            SelectedItem((CurrentDataContainer)item.SelectedItem, ReferenceBox);
         }
 
 

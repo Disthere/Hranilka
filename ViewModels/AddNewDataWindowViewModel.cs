@@ -19,10 +19,10 @@ namespace Hranilka.ViewModels
 {
     internal class AddNewDataWindowViewModel : ViewModelBase
     {
-        public CategoryForm CategoryBlock { get; set; }
+        public CategoryBlock CategoryBlock { get; set; }
         public AddNewDataWindowViewModel()
         {
-            CategoryBlock = new CategoryForm(DataType.Texts);
+            CategoryBlock = new CategoryBlock(DataType.Texts);
             //OpenSaveCategoryWindowCommand = new LambdaCommand(OnOpenSaveCategoryWindowCommandExecuted, CanOpenSaveCategoryWindowCommandExecuted);
             //OpenSaveSubCategoryWindowCommand = new LambdaCommand(OnOpenSaveSubCategoryWindowCommandExecuted, CanOpenSaveSubCategoryWindowCommandExecuted);
         }
@@ -390,15 +390,8 @@ namespace Hranilka.ViewModels
             {
                 category = CategoryBlock.CurrentSubCategory;
             }
-            try
-            {
-                DataContainerRepository.SaveReferenceDataContainerToDB(category, CurrentDescription);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Некорректная ссылка");
-                throw;
-            }
+
+            DataContainerRepository.SaveReferenceDataContainerToDB(category, CurrentDescription);
 
             CurrentDescription = null;
         }

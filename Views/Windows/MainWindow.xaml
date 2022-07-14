@@ -36,16 +36,27 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl
+            Height="716"
+            Padding="0,0,0,0"
             HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Stretch"
             Background="Beige"
-            Cursor="Hand" Height="716" VerticalAlignment="Center" HorizontalContentAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch" FlowDirection="LeftToRight" Padding="0,0,0,0" UseLayoutRounding="True">
+            Cursor="Hand"
+            FlowDirection="LeftToRight"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            UseLayoutRounding="True">
             <TabItem
+                x:Name="Texts"
                 Width="220"
-                HorizontalAlignment="Left"
                 Margin="3,3,0,0"
-                Header="Текстовые данные"  >
+                HorizontalAlignment="Left"
+                Header="Текстовые данные"
+                IsSelected="{Binding Path=TextsChosen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <TabItem.Effect>
-                    <DropShadowEffect/>
+                    <DropShadowEffect />
                 </TabItem.Effect>
 
                 <Grid Background="Beige">
@@ -64,8 +75,8 @@
                         Grid.Row="0"
                         Grid.Column="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="1*"/>
-                            <RowDefinition Height="1.2*"/>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1.2*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -97,9 +108,10 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             DisplayMemberPath="Name"
+                            FontWeight="Bold"
                             IsSynchronizedWithCurrentItem="True"
                             ItemsSource="{Binding Path=CategoryBlock.Categories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" FontWeight="Bold" />
+                            SelectedItem="{Binding Path=CategoryBlock.CurrentCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
 
                         <ComboBox
                             x:Name="SubCategoryComboBox"
@@ -110,9 +122,10 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             DisplayMemberPath="Name"
+                            FontWeight="Bold"
                             IsSynchronizedWithCurrentItem="True"
                             ItemsSource="{Binding Path=CategoryBlock.SubCategories, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" FontWeight="Bold" />
+                            SelectedItem="{Binding Path=CategoryBlock.CurrentSubCategory, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" />
 
                         <Button
                             x:Name="AddButton"
@@ -225,22 +238,19 @@
                         x:Name="MainListView"
                         Grid.Row="1"
                         Grid.Column="0"
-                        
                         Margin="10,10"
                         HorizontalAlignment="Left"
                         Background="White"
                         BorderBrush="{DynamicResource PrimaryHueMidBrush}"
-                        BorderThickness="2"
                         Cursor="Hand"
                         ItemsSource="{Binding Path=CategoryBlock.DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        SelectedIndex="{Binding Path=CategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectedItem="{Binding Path=CategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         SelectionChanged="MainListBox_SelectionChanged">
 
                         <ListView.View>
                             <GridView>
 
                                 <GridViewColumn
-                                    
                                     x:Name="DescriptionColumn"
                                     Width="350"
                                     DisplayMemberBinding="{Binding Path=Description}"
@@ -284,24 +294,25 @@
 
             </TabItem>
             <TabItem
-                Margin="3,3,0,0"
+                x:Name="References"
                 Width="220"
+                Margin="3,3,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Header="Ссылки">
                 <TabItem.Effect>
-                    <DropShadowEffect/>
+                    <DropShadowEffect />
                 </TabItem.Effect>
                 <Grid VerticalAlignment="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
+                        
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="0.8*"/>
                     </Grid.ColumnDefinitions>
 
                     <UniformGrid
@@ -329,11 +340,60 @@
                     </UniformGrid>
 
                     <ListView
+                        x:Name="ReferencesListView"
                         Grid.Row="1"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
-                        Template="{DynamicResource MainListViewTemplate}" />
+                        Margin="10,10"
+                        
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+                        Cursor="Hand"
+                        ItemsSource="{Binding Path=ReferencesCategoryBlock.DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectedItem="{Binding Path=ReferencesCategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        SelectionChanged="ReferencesListView_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+
+                                <GridViewColumn
+                                    Width="450"
+                                    DisplayMemberBinding="{Binding Path=Description}"
+                                    Header="Описание" />
+
+                                <GridViewColumn Width="300" DisplayMemberBinding="{Binding Path=Author}" Header="Канал" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=CreateDate, ValidatesOnExceptions=True, StringFormat={}{0:u}}" Header="Дата создания" />
+                                
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <StackPanel Grid.Row="1"
+                        Grid.Column="2" Orientation="Vertical">
+                        <TextBlock 
+                            x:Name="RefTextBlock"
+                            Margin="10,10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Text="Ссылка"
+                            TextWrapping="Wrap" />
+                    
+                    <TextBox
+                        x:Name="ReferenceBox"
+                        Width="550"
+                        Height="80"
+                        Margin="10,10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Background="White"
+                        Cursor="Arrow"
+                        Text="{Binding ReferencesCategoryBlock.CurrentDataContainer.OtherInformation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        TextWrapping="Wrap" />
+                    </StackPanel>
+                    
                 </Grid>
+
+
             </TabItem>
 
         </TabControl>

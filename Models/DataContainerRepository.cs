@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Hranilka.Models
 {
@@ -109,9 +110,9 @@ namespace Hranilka.Models
                         .ToList();
 
                     containers = hranilkaDbContext.DataContainers
-                        .Where(p => childCategoriesIDs.Contains(p.CategoryId) 
-                        || p.CategoryId == parentCategoryId 
-                        || p.DataType == (int)dataType)
+                        .Where(p => childCategoriesIDs.Contains(p.CategoryId)
+                        && p.CategoryId == parentCategoryId
+                        && p.DataType == (int)dataType)
                         .ToList();
 
                     foreach (var item in containers)
@@ -120,7 +121,9 @@ namespace Hranilka.Models
                         {
                             Description = item.Description,
                             CreateDate = item.CreateDate,
-                            Category = categoryName
+                            Category = categoryName,
+                            OtherInformation = item.OtherInformation,
+                            Author = item.Author
                         };
 
                         currentContainers.Add(currentDataContainer);
@@ -156,7 +159,7 @@ namespace Hranilka.Models
                         .FirstOrDefault();
 
                     containers = hranilkaDbContext.DataContainers
-                        .Where(p => p.CategoryId == subCategoryIdForSelect)
+                        .Where(p => p.CategoryId == subCategoryIdForSelect && p.DataType == (int)dataType)
                         .ToList();
                 }
 
@@ -166,7 +169,9 @@ namespace Hranilka.Models
                     {
                         Description = item.Description,
                         CreateDate = item.CreateDate,
-                        Category = categoryName
+                        Category = categoryName,
+                        OtherInformation = item.OtherInformation,
+                        Author = item.Author
                     });
                 }
             }
@@ -197,33 +202,65 @@ namespace Hranilka.Models
 
         public static async void SaveReferenceDataContainerToDB(ContentCategory category, string url)
         {
-            string sourse;
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.UserAgent = "My applicartion name";
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default, true, 8192))
+            try
             {
-                sourse = reader.ReadToEnd();
-            }
-            
-            var config = Configuration.Default.WithDefaultLoader();
-            var context = BrowsingContext.New(config);
-            var document = await context.OpenAsync(req => req.Content(sourse));
+                string sourse;
 
-            var description = document.QuerySelector("title").TextContent;
-            using (Context hranilkaDbContext = new Context())
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.UserAgent = "My applicartion name";
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default, true, 8192))
+                {
+                    sourse = reader.ReadToEnd();
+                }
+
+                var config = Configuration.Default.WithDefaultLoader();
+                var context = BrowsingContext.New(config);
+                var document = await context.OpenAsync(req => req.Content(sourse));
+
+                var description = document.QuerySelector("title").TextContent;
+                string channelAuthor = "";
+                // Тег link с именем автора канала  расположен 23-м по счету на HTML страницы youtube
+                try
+                {
+                    channelAuthor = document.GetElementsByTagName("link")[23].OuterHtml.ToString();
+                    channelAuthor = channelAuthor.Split(new char[] { '"' })[3];
+                }
+                catch
+                {
+
+                    throw;
+                }
+
+                using (Context hranilkaDbContext = new Context())
+                {
+                    int categoryId = hranilkaDbContext
+                    .ContentCategories
+                    .Where(u => u.Name == category.Name)
+                    .Select(u => u.Id)
+                    .FirstOrDefault();
+
+                    hranilkaDbContext.DataContainers
+                        .Add(new DataContainer 
+                        { 
+                            Description = description, 
+                            CategoryId = categoryId, 
+                            OtherInformation = url, 
+                            DataType = (int)DataType.References,
+                            Author = channelAuthor
+                        });
+                    hranilkaDbContext.SaveChanges();
+
+                }
+            }
+            catch
             {
-                int categoryId = hranilkaDbContext
-                .ContentCategories
-                .Where(u => u.Name == category.Name)
-                .Select(u => u.Id)
-                .FirstOrDefault();
-
-                hranilkaDbContext.DataContainers.Add(new DataContainer { Description = description, CategoryId = categoryId, OtherInformation = url, DataType = (int)DataType.Refrences });
-                hranilkaDbContext.SaveChanges();
+                MessageBox.Show("Некорректная ссылка");
 
             }
+
+
+
         }
 
         public static void DeleteDataContainerFromDB(string description)
