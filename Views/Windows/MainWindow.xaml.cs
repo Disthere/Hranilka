@@ -268,6 +268,21 @@ namespace Hranilka
             //            SelectedItem((CurrentDataContainer)item.SelectedItem, ReferenceBox);
         }
 
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            //MainWindow newWindow = new MainWindow();
+            //Application.Current.MainWindow = newWindow;
+            //this.Close();
+            //newWindow.Show();
+
+
+            MainListView.Items.Refresh();
+            CategoryComboBox.Items.Refresh();
+            SubCategoryComboBox.Items.Refresh();
+
+            //DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory, DataType.Texts);
+        }
+
 
 
 

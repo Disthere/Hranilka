@@ -13,7 +13,7 @@
     Height="800"
     WindowStartupLocation="CenterScreen"
     WindowStyle="ThreeDBorderWindow"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Activated="Window_Activated">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -47,7 +47,7 @@
             FlowDirection="LeftToRight"
             ScrollViewer.HorizontalScrollBarVisibility="Auto"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
-            UseLayoutRounding="True">
+            UseLayoutRounding="True" TabStripPlacement="Top" Style="{DynamicResource MaterialDesignNavigatilRailTabControl}">
             <TabItem
                 x:Name="Texts"
                 Width="220"
@@ -131,12 +131,16 @@
                             x:Name="AddButton"
                             Grid.RowSpan="2"
                             Grid.Column="2"
-                            Margin="10,10"
-                            Padding="5"
+                            Margin="10,0"
+                            Height="80"
+                            Padding="1"
+                            Width="100"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
-                            Command="{Binding Path=OpenAddNewDataWindowCommand}"
-                            Content="Добавить текст" />
+                            Command="{Binding Path=OpenAddNewDataWindowCommand}" FontSize="13"
+                            >
+                            <TextBlock TextAlignment="Center" TextWrapping="Wrap">Добавить категорию, текст или ссылку</TextBlock>
+                        </Button>
                     </Grid>
 
                     <StackPanel
@@ -144,16 +148,7 @@
                         Grid.Column="1"
                         VerticalAlignment="Bottom"
                         Orientation="Horizontal">
-                        <Button
-                            x:Name="SaveButton"
-                            Margin="10,10"
-                            Padding="5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Click="SaveButton_Click"
-                            Command="{Binding Path=SaveChangedText}"
-                            Content="Сохранить"
-                            IsEnabled="False" />
+                        
 
                         <Button
                             x:Name="DeleteButton"
@@ -232,6 +227,16 @@
                             Command="{Binding Path=OpenScreenShoter}"
                             Content="Сделать скриншот"
                             Cursor="Hand" />
+                        <Button
+                            x:Name="SaveButton"
+                            Margin="10,10"
+                            Padding="5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Click="SaveButton_Click"
+                            Command="{Binding Path=SaveChangedText}"
+                            Content="Сохранить"
+                            IsEnabled="False" />
                     </StackPanel>
 
                     <ListView
@@ -245,7 +250,7 @@
                         Cursor="Hand"
                         ItemsSource="{Binding Path=CategoryBlock.DataContainers, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         SelectedItem="{Binding Path=CategoryBlock.CurrentDataContainer, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        SelectionChanged="MainListBox_SelectionChanged">
+                        SelectionChanged="MainListBox_SelectionChanged" Style="{DynamicResource MaterialDesignListView}">
 
                         <ListView.View>
                             <GridView>
@@ -274,7 +279,7 @@
                             BorderBrush="Brown"
                             Cursor="IBeam"
                             SelectionChanged="MainPageRichTextBox_SelectionChanged"
-                            TextChanged="MainPageRichTextBox_TextChanged">
+                            TextChanged="MainPageRichTextBox_TextChanged" Style="{DynamicResource MaterialDesignRichTextBox}">
                             <RichTextBox.Resources>
                                 <Style TargetType="{x:Type Paragraph}">
                                     <Setter Property="Margin" Value="0" />
@@ -380,15 +385,17 @@
                     
                     <TextBox
                         x:Name="ReferenceBox"
-                        Width="550"
-                        Height="80"
+                        Width="400"
+                        MinHeight="20"
                         Margin="10,10"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Background="White"
                         Cursor="Arrow"
                         Text="{Binding ReferencesCategoryBlock.CurrentDataContainer.OtherInformation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        TextWrapping="Wrap" />
+                        TextWrapping="Wrap"
+                        AcceptsReturn="True"
+                        />
                     </StackPanel>
                     
                 </Grid>

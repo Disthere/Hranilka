@@ -181,9 +181,14 @@ namespace Hranilka
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            MainWindow newWindow = new MainWindow();
             Application.Current.MainWindow.Close();
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
+            newWindow.Show();
+            //this.Close();
+            // var a = Application.Current.MainWindow.;
+
+            //MainWindow mainWindow = new MainWindow();
+            //mainWindow.Show();
         }
     }
 }

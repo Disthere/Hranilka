@@ -15,7 +15,7 @@ namespace Hranilka
         public string Description { get; set; }
 
         //[DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public string OtherInformation { get; set; }
         public int DataType { get; set; }
@@ -24,6 +24,7 @@ namespace Hranilka
         public string Author { get; set; }
 
         public int CategoryId { get; set; }
+
         public ContentCategory Category { get; set; }
     }
 }

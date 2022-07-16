@@ -200,67 +200,30 @@ namespace Hranilka.Models
             }
         }
 
-        public static async void SaveReferenceDataContainerToDB(ContentCategory category, string url)
+        public static void SaveReferenceDataContainerToDB(ContentCategory category, string url)
         {
-            try
+            WebsiteInfo websiteInfo = new WebsiteInfo(url);
+
+            using (Context hranilkaDbContext = new Context())
             {
-                string sourse;
+                int categoryId = hranilkaDbContext
+                .ContentCategories
+                .Where(u => u.Name == category.Name)
+                .Select(u => u.Id)
+                .FirstOrDefault();
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.UserAgent = "My applicartion name";
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default, true, 8192))
-                {
-                    sourse = reader.ReadToEnd();
-                }
+                hranilkaDbContext.DataContainers
+                    .Add(new DataContainer
+                    {
+                        Description = websiteInfo.Title,
+                        CategoryId = categoryId,
+                        OtherInformation = url,
+                        DataType = (int)DataType.References,
+                        Author = websiteInfo.Author
+                    });
 
-                var config = Configuration.Default.WithDefaultLoader();
-                var context = BrowsingContext.New(config);
-                var document = await context.OpenAsync(req => req.Content(sourse));
-
-                var description = document.QuerySelector("title").TextContent;
-                string channelAuthor = "";
-                // Тег link с именем автора канала  расположен 23-м по счету на HTML страницы youtube
-                try
-                {
-                    channelAuthor = document.GetElementsByTagName("link")[23].OuterHtml.ToString();
-                    channelAuthor = channelAuthor.Split(new char[] { '"' })[3];
-                }
-                catch
-                {
-
-                    throw;
-                }
-
-                using (Context hranilkaDbContext = new Context())
-                {
-                    int categoryId = hranilkaDbContext
-                    .ContentCategories
-                    .Where(u => u.Name == category.Name)
-                    .Select(u => u.Id)
-                    .FirstOrDefault();
-
-                    hranilkaDbContext.DataContainers
-                        .Add(new DataContainer 
-                        { 
-                            Description = description, 
-                            CategoryId = categoryId, 
-                            OtherInformation = url, 
-                            DataType = (int)DataType.References,
-                            Author = channelAuthor
-                        });
-                    hranilkaDbContext.SaveChanges();
-
-                }
+                hranilkaDbContext.SaveChanges();
             }
-            catch
-            {
-                MessageBox.Show("Некорректная ссылка");
-
-            }
-
-
-
         }
 
         public static void DeleteDataContainerFromDB(string description)
