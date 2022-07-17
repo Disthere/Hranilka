@@ -20,6 +20,7 @@ using Hranilka.Models;
 using Microsoft.Win32;
 using System.IO;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Hranilka
 {
@@ -254,18 +255,30 @@ namespace Hranilka
             var selectedItem = (CurrentDataContainer)item.SelectedItem;
 
             //var name = (ReferencesListView.SelectedItem as CurrentDataContainer).Author;
-            var selectedItem1 = ReferencesListView.SelectedItem;
+            //var selectedItem1 = ReferencesListView.SelectedItem;
 
 
             if (selectedItem != null)
             {
                 ReferenceBox.Text = selectedItem.OtherInformation;
+                WebsiteDescriptionTextBlock.Text = selectedItem.WebSiteDescription;
             }
+
+            
             //string description = selectedItem.Description;
             //                CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainerFromDB(description);
             //                ReferenceBox.Text = currentDataContainer.OtherInformation;
 
             //            SelectedItem((CurrentDataContainer)item.SelectedItem, ReferenceBox);
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            // for .NET Core you need to add UseShellExecute = true
+            // see https://docs.microsoft.com/dotnet/api/system.diagnostics.processstartinfo.useshellexecute#property-value
+            Process.Start(ReferenceBox.Text);
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -281,6 +294,11 @@ namespace Hranilka
             SubCategoryComboBox.Items.Refresh();
 
             //DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory, DataType.Texts);
+        }
+
+        private void Hyperlink_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(ReferenceBox.Text) { UseShellExecute = true });
         }
 
 

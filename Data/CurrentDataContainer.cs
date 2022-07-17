@@ -14,6 +14,7 @@ namespace Hranilka.Data
         public string OtherInformation { get; set; }
         public string Category { get; set; }
         public string Author { get; set; }
+        public string WebSiteDescription { get; set; }
 
         public CurrentDataContainer(DataContainer dataContainer)
         {
@@ -39,7 +40,8 @@ namespace Hranilka.Data
                         CreateDate = u.CreateDate,
                         Category = c.Name,
                         Author = u.Author,
-                        OtherInformation = u.OtherInformation
+                        OtherInformation = u.OtherInformation,
+                        WebSiteDescription = u.WebSiteDescription
                     }).Where(x => x.Id == dataContainer.Id).FirstOrDefault();
 
                 this.Id = currentDataContainer.Id;

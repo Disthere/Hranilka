@@ -123,7 +123,8 @@ namespace Hranilka.Models
                             CreateDate = item.CreateDate,
                             Category = categoryName,
                             OtherInformation = item.OtherInformation,
-                            Author = item.Author
+                            Author = item.Author,
+                            WebSiteDescription = item.WebSiteDescription
                         };
 
                         currentContainers.Add(currentDataContainer);
@@ -171,7 +172,9 @@ namespace Hranilka.Models
                         CreateDate = item.CreateDate,
                         Category = categoryName,
                         OtherInformation = item.OtherInformation,
-                        Author = item.Author
+                        Author = item.Author,
+                        WebSiteDescription= item.WebSiteDescription
+
                     });
                 }
             }
@@ -219,7 +222,8 @@ namespace Hranilka.Models
                         CategoryId = categoryId,
                         OtherInformation = url,
                         DataType = (int)DataType.References,
-                        Author = websiteInfo.Author
+                        Author = websiteInfo.Author,
+                        WebSiteDescription = websiteInfo.Description
                     });
 
                 hranilkaDbContext.SaveChanges();
