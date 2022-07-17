@@ -89,7 +89,7 @@ namespace Hranilka
             if (selectedItem != null)
             {
                 string description = selectedItem.Description;
-                CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainerFromDB(description);
+                CurrentDataContainer currentDataContainer = DataContainerRepository.GetCurrentDataContainerByDescription(description);
                 DataFileRTF dataFileFromListViewCurrentItem = new DataFileRTF(currentDataContainer);
                 dataFileFromListViewCurrentItem.LoadFileRTF(reachTextBoxObj);
                 SaveButton.IsEnabled = false;
@@ -172,7 +172,7 @@ namespace Hranilka
 
             if (currentSubCategory != null)
             {
-                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
+                category = ContentCategoryRepozitory.GetContentCategoryFromDBByName(currentSubCategory);
             }
 
             //bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.ContentStart != null;
@@ -183,7 +183,7 @@ namespace Hranilka
 
                 CurrentDataContainer currentDataContainer = new CurrentDataContainer
                 {
-                    Category = category.Name,
+                    CategoryName = category.Name,
                     Description = currentDescription
                 };
 
@@ -213,7 +213,7 @@ namespace Hranilka
 
             if (currentSubCategory != null)
             {
-                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
+                category = ContentCategoryRepozitory.GetContentCategoryFromDBByName(currentSubCategory);
             }
 
 
@@ -226,7 +226,7 @@ namespace Hranilka
 
                 CurrentDataContainer currentDataContainer = new CurrentDataContainer
                 {
-                    Category = category.Name,
+                    CategoryName = category.Name,
                     Description = currentDescription
                 };
 
@@ -237,7 +237,7 @@ namespace Hranilka
                 //ICollectionView view = CollectionViewSource.GetDefaultView(this.MainListView.ItemsSource);
                 //view.Refresh();
 
-                MainListView.ItemsSource = DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory, DataType.Texts);
+                MainListView.ItemsSource = DataContainerRepository.GetSelectedByCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory, DataType.Texts);
 
 
 
@@ -264,7 +264,7 @@ namespace Hranilka
                 WebsiteDescriptionTextBlock.Text = selectedItem.WebSiteDescription;
             }
 
-            
+
             //string description = selectedItem.Description;
             //                CurrentDataContainer currentDataContainer = DataContainerRepository.GetSelectDescriptionDataContainerFromDB(description);
             //                ReferenceBox.Text = currentDataContainer.OtherInformation;
@@ -280,25 +280,20 @@ namespace Hranilka
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
-
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            //MainWindow newWindow = new MainWindow();
-            //Application.Current.MainWindow = newWindow;
-            //this.Close();
-            //newWindow.Show();
-
-
-            MainListView.Items.Refresh();
-            CategoryComboBox.Items.Refresh();
-            SubCategoryComboBox.Items.Refresh();
-
-            //DataContainerRepository.GetSelectCategoryDataContainersFromDB(currentCategory.Name, currentSubCategory, DataType.Texts);
-        }
+              
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(ReferenceBox.Text) { UseShellExecute = true });
+            try
+            {
+                Process.Start(new ProcessStartInfo(ReferenceBox.Text) { UseShellExecute = true });
+            }
+            catch
+            {
+
+                throw;
+            }
+
         }
 
 

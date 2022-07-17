@@ -31,38 +31,16 @@ namespace Hranilka.Models
                         Id = u.Id,
                         Description = u.Description,
                         CreateDate = u.CreateDate,
-                        Category = c.Name
+                        CategoryName = c.Name
                     })
                     .ToList();
             }
-            //foreach (var item in cont)
-            //{
-            //    CurrentDataContainer current = new CurrentDataContainer
-            //    {
-            //        Id = item.Id,
-            //        Description = item.Description,
-            //        CreateDate = item.CreateDate,
-            //        Category = item.Category
-            //    };
-            //}
-
-
-            //containers = hranilkaDbContext.DataContainers
-            //    .Select(x => new DataContainer
-            //    {
-            //        Id = x.Id,
-            //        Description = x.Description,
-            //        CreateDate = x.CreateDate,
-            //        Category = x.Category,
-            //        OtherInformation = x.OtherInformation
-
-            //    }).ToList();
-
+            
             var allDataContainers = new ObservableCollection<CurrentDataContainer>(containers);
             return allDataContainers;
         }
 
-        public static CurrentDataContainer GetSelectDescriptionDataContainerFromDB(string description)
+        public static CurrentDataContainer GetCurrentDataContainerByDescription(string description)
         {
             using (Context hranilkaDbContext = new Context())
             {
@@ -74,7 +52,7 @@ namespace Hranilka.Models
             }
         }
 
-        public static DataContainer GetDataContainersFromDB(string description)
+        public static DataContainer GetDataContainerFromDBByDescription(string description)
         {
             using (Context hranilkaDbContext = new Context())
             {
@@ -86,13 +64,13 @@ namespace Hranilka.Models
             }
         }
 
-        internal static ObservableCollection<CurrentDataContainer> GetSelectCategoryDataContainersFromDB(string categoryName, string subCategoryName, DataType dataType)
+        internal static ObservableCollection<CurrentDataContainer> GetSelectedByCategoryDataContainersFromDB(string categoryName, string subCategoryName, DataType dataType)
         {
             string parentCategory = categoryName;
             int parentCategoryId;
             int subCategoryIdForSelect;
             List<DataContainer> containers;
-            List<CurrentDataContainer> currentContainers = new List<CurrentDataContainer>();
+            List<CurrentDataContainer> currentContainers = new();
 
             if (subCategoryName == null)
             {
@@ -121,7 +99,7 @@ namespace Hranilka.Models
                         {
                             Description = item.Description,
                             CreateDate = item.CreateDate,
-                            Category = categoryName,
+                            CategoryName = categoryName,
                             OtherInformation = item.OtherInformation,
                             Author = item.Author,
                             WebSiteDescription = item.WebSiteDescription
@@ -129,23 +107,7 @@ namespace Hranilka.Models
 
                         currentContainers.Add(currentDataContainer);
                     }
-
-                    //var categories = hranilkaDbContext.ContentCategories
-                    //    .Where(p => p.Id == categoryIdForSelect || p.ParentId == categoryIdForSelect)
-                    //    .ToList();
-
-                    //currentContainers = containers
-                    //    .Join(categories,
-                    //    u => u.CategoryId,
-                    //    c => c.Id,
-                    //    (u, c) => new CurrentDataContainer
-                    //    {
-
-                    //        Description = u.Description,
-                    //        CreateDate = u.CreateDate,
-                    //        Category = categoryName
-                    //    })
-                    //    .ToList();
+                                        
                 }
 
             }
@@ -170,7 +132,7 @@ namespace Hranilka.Models
                     {
                         Description = item.Description,
                         CreateDate = item.CreateDate,
-                        Category = categoryName,
+                        CategoryName = categoryName,
                         OtherInformation = item.OtherInformation,
                         Author = item.Author,
                         WebSiteDescription= item.WebSiteDescription
@@ -234,7 +196,7 @@ namespace Hranilka.Models
         {
             using (Context hranilkaDbContext = new Context())
             {
-                var deletingDataContainer = GetDataContainersFromDB(description);
+                var deletingDataContainer = GetDataContainerFromDBByDescription(description);
                 hranilkaDbContext.DataContainers.Remove(deletingDataContainer);
 
                 hranilkaDbContext.SaveChanges();

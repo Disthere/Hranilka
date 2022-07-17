@@ -247,7 +247,7 @@
             Padding="5"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Command="{Binding Path=RemoveCategory}"
+            Command="{Binding Path=OpenScreenShoter}"
             Content="Сделать скриншот" />
         <Button
             x:Name="FileSaveButton"

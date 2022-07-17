@@ -23,7 +23,7 @@ namespace Hranilka.Views
             get
             {
                 if (_dataContainers == null)
-                    _dataContainers = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name, DataType);
+                    _dataContainers = DataContainerRepository.GetSelectedByCategoryDataContainersFromDB(CurrentCategory.Name, CurrentSubCategory.Name, DataType);
                 return _dataContainers;
             }
 

@@ -127,7 +127,7 @@ namespace Hranilka
 
             if (currentSubCategory != null)
             {
-                category = ContentCategoryRepozitory.GetContentCategoryForNameFromDB(currentSubCategory);
+                category = ContentCategoryRepozitory.GetContentCategoryFromDBByName(currentSubCategory);
             }
 
             bool isDataAdded = currentDescription != string.Empty && AddDataRichTextBox.Document.ContentStart != null;
@@ -139,7 +139,7 @@ namespace Hranilka
 
                 CurrentDataContainer currentDataContainer = new CurrentDataContainer
                 {
-                    Category = category.Name,
+                    CategoryName = category.Name,
                     Description = currentDescription
                 };
 

@@ -8,10 +8,9 @@
     xmlns:local="clr-namespace:Hranilka"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:Hranilka.ViewModels"
-    Title="{Binding Path=Title}"
+    Title="Hranilka V1.0"
     Width="1600"
     Height="900"
-    Activated="Window_Activated"
     WindowStartupLocation="CenterScreen"
     WindowStyle="ThreeDBorderWindow"
     mc:Ignorable="d">
@@ -349,6 +348,16 @@
                         <ComboBox Template="{DynamicResource SubCategoryComboBoxTemplate}" />
                     </UniformGrid>
 
+                    <Button Grid.Row="0"
+                        Grid.Column="1"
+                            x:Name="DeleteReferenceButton"
+                            Margin="10,10"
+                            Padding="5"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Content="Удалить ссылку"
+                            Command="{Binding Path=RemoveReference}" Cursor="Hand"/>
+                    
                     <ListView
                         x:Name="ReferencesListView"
                         Grid.Row="1"
@@ -386,7 +395,7 @@
                         Orientation="Vertical">
                         <TextBlock
                                 x:Name="WebsiteDescriptionTextBlock"
-                                Margin="0,10"
+                                Margin="10,10"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Text="{Binding Path=ReferencesCategoryBlock.CurrentDataContainer.WebSiteDescription}"

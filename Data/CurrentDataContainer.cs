@@ -6,25 +6,18 @@ using System.Threading.Tasks;
 
 namespace Hranilka.Data
 {
-    public class CurrentDataContainer
+    public class CurrentDataContainer : DataContainer
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public DateTime CreateDate { get; set; } = DateTime.Now;
-        public string OtherInformation { get; set; }
-        public string Category { get; set; }
-        public string Author { get; set; }
-        public string WebSiteDescription { get; set; }
+        public CurrentDataContainer()
+        {
 
+        }
         public CurrentDataContainer(DataContainer dataContainer)
         {
             SetCurrentDataContainerProperties(dataContainer);
         }
 
-        public CurrentDataContainer()
-        {
-
-        }
+        public string CategoryName { get; set; }
 
         private void SetCurrentDataContainerProperties(DataContainer dataContainer)
         {
@@ -47,10 +40,10 @@ namespace Hranilka.Data
                 this.Id = currentDataContainer.Id;
                 this.Description = currentDataContainer.Description;
                 this.CreateDate = currentDataContainer.CreateDate;
-                this.Category = currentDataContainer.Category;
+                this.CategoryName = currentDataContainer.Category;
                 this.OtherInformation = currentDataContainer.OtherInformation;
                 this.Author = currentDataContainer.Author;
-                
+
             }
         }
 

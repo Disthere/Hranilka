@@ -76,28 +76,7 @@ namespace Hranilka.ViewModels
         //    }
         //}
 
-        //private DataType GetDataType()
-        //{
-        //    foreach (var item in _dataTypes)
-        //    {
-        //        if (item.Value == true)
-        //            return item.Key;
-
-        //    }
-        //    return DataType.Texts;
-        //}
-
-        #region Заголовок окна
-        /// <summary>Заголовок окна</summary>
-        private string title = "Hranilka V1.0";
-
-        public string Title
-        {
-            get => title;
-            set => Set(ref title, value);
-
-        }
-        #endregion
+               
 
         #region Команда на выход из приложения в меню
         public ICommand CloseApplicationCommand { get; }
@@ -108,22 +87,7 @@ namespace Hranilka.ViewModels
         {
             Application.Current.Shutdown();
         }
-
-
-
-        //private bool _isChanged;
-        //public bool IsChanged
-        //{
-        //    get => _isChanged;
-        //    set
-        //    {
-        //        if (value == _isChanged) return;
-        //        _isChanged = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
-
+        
         #endregion
 
         #region Команда на открытие окна добавления данных AddNewDataWindow
@@ -201,6 +165,41 @@ namespace Hranilka.ViewModels
 
         #endregion
 
+        #region Команда на удаление контейнера с веб ссылкой из базы
+
+        LambdaCommand _removeReference;
+
+        public ICommand RemoveReference
+        {
+            get
+            {
+                if (_removeReference == null)
+                    _removeReference = new LambdaCommand(OnRemoveReferenceCommand, CanExecuteRemoveReferenceCommand);
+                return _removeReference;
+            }
+        }
+        public bool CanExecuteRemoveReferenceCommand(object parameter)
+        {
+            return (ReferencesCategoryBlock.CurrentDataContainer != null) ? true : false;
+        }
+        public void OnRemoveReferenceCommand(object parameter)
+        {
+            
+            
+                string removeReferencesMessage = "Удалить ссылку?";
+                MessageBoxResult result = MessageBox.Show(removeReferencesMessage, "My app", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    DataContainerRepository.DeleteDataContainerFromDB(ReferencesCategoryBlock.CurrentDataContainer.Description);
+                ReferencesCategoryBlock.DataContainers = null;
+                }
+                else
+                    return;
+        }
+
+        #endregion
+
         #region Команда вызова скриншотера
         LambdaCommand _openScreenShoter;
 
@@ -234,7 +233,7 @@ namespace Hranilka.ViewModels
             get
             {
                 if (_dataContainersForReferences == null)
-                    _dataContainersForReferences = DataContainerRepository.GetSelectCategoryDataContainersFromDB(CategoryBlock.CurrentCategory.Name, CategoryBlock.CurrentSubCategory.Name, DataType.References);
+                    _dataContainersForReferences = DataContainerRepository.GetSelectedByCategoryDataContainersFromDB(CategoryBlock.CurrentCategory.Name, CategoryBlock.CurrentSubCategory.Name, DataType.References);
                 return _dataContainersForReferences;
             }
 

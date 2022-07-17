@@ -30,7 +30,7 @@ namespace Hranilka
         {
             var appLocation = AppDomain.CurrentDomain.BaseDirectory;
 
-            this.FileDirectory = appLocation + @"\rtf file storage\" + sample.Category;
+            this.FileDirectory = appLocation + @"\rtf file storage\" + sample.CategoryName;
 
             string fileDirectoryFullWay = FileDirectory + @"\" + sample.Description + @".rtf";
 

@@ -11,6 +11,19 @@ namespace Hranilka.Models
 {
     internal static class ContentCategoryRepozitory
     {
+        public static int GetCategoryIdByName(string name)
+        {
+            int categoryId;
+            using (Context hranilkaDbContext = new Context())
+            {
+                categoryId = hranilkaDbContext
+                .ContentCategories
+                .Where(u => u.Name == name)
+                .Select(u => u.Id)
+                .FirstOrDefault();
+            }
+            return categoryId;
+        }
         public static ObservableCollection<ContentCategory> GetAllParentCategoriesFromDB()
         {
 
@@ -23,20 +36,9 @@ namespace Hranilka.Models
                 return allCategories;
             }
 
-            //contentCategories.DataContainers.Join(hranilkaDbContext.ContentCategories,
-            //        u => u.CategoryId,
-            //        c => c.Id,
-            //        (u, c) => new CurrentDataContainer
-            //        {
-            //            Id = u.Id,
-            //            Description = u.Description,
-            //            CreateDate = u.CreateDate,
-            //            Category = c.Name
-            //        }).ToList();
-
         }
 
-        public static ContentCategory GetContentCategoryForNameFromDB(string categoryName)
+        public static ContentCategory GetContentCategoryFromDBByName(string categoryName)
         {
 
             using (Context hranilkaDbContext = new Context())
@@ -124,10 +126,10 @@ namespace Hranilka.Models
         {
             using (Context hranilkaDbContext = new Context())
             {
-                var updatingCategory = GetContentCategoryForNameFromDB(categoryName);
+                var updatingCategory = GetContentCategoryFromDBByName(categoryName);
                 updatingCategory.Name = updatingcategoryName;
                 hranilkaDbContext.ContentCategories.Update(updatingCategory);
-                       
+
                 hranilkaDbContext.SaveChanges();
             }
         }
@@ -136,7 +138,7 @@ namespace Hranilka.Models
         {
             using (Context hranilkaDbContext = new Context())
             {
-                var deletingCategory = GetContentCategoryForNameFromDB(categoryName);
+                var deletingCategory = GetContentCategoryFromDBByName(categoryName);
                 hranilkaDbContext.ContentCategories.Remove(deletingCategory);
 
                 hranilkaDbContext.SaveChanges();
