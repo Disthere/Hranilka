@@ -35,7 +35,7 @@ namespace Hranilka.Models
                     })
                     .ToList();
             }
-            
+
             var allDataContainers = new ObservableCollection<CurrentDataContainer>(containers);
             return allDataContainers;
         }
@@ -66,23 +66,17 @@ namespace Hranilka.Models
 
         internal static ObservableCollection<CurrentDataContainer> GetSelectedByCategoryDataContainersFromDB(string categoryName, string subCategoryName, DataType dataType)
         {
-            string parentCategory = categoryName;
-            int parentCategoryId;
-            int subCategoryIdForSelect;
             List<DataContainer> containers;
             List<CurrentDataContainer> currentContainers = new();
 
             if (subCategoryName == null)
             {
+                int parentCategoryId = ContentCategoryRepozitory.GetCategoryIdByName(categoryName);
+
                 using (Context hranilkaDbContext = new Context())
                 {
-                    parentCategoryId = hranilkaDbContext
-                        .ContentCategories
-                        .Where(u => u.Name == parentCategory)
-                        .Select(u => u.Id)
-                        .FirstOrDefault();
 
-                    var childCategoriesIDs = hranilkaDbContext.ContentCategories
+                    List<int> childCategoriesIDs = hranilkaDbContext.ContentCategories
                         .Where(p => p.ParentId == parentCategoryId && p.ParentId != 0)
                         .Select(p => p.Id)
                         .ToList();
@@ -95,49 +89,47 @@ namespace Hranilka.Models
 
                     foreach (var item in containers)
                     {
-                        CurrentDataContainer currentDataContainer = new CurrentDataContainer
-                        {
-                            Description = item.Description,
-                            CreateDate = item.CreateDate,
-                            CategoryName = categoryName,
-                            OtherInformation = item.OtherInformation,
-                            Author = item.Author,
-                            WebSiteDescription = item.WebSiteDescription
-                        };
+                        currentContainers.Add(new CurrentDataContainer(item));
+                        
+                        //CurrentDataContainer currentDataContainer = new CurrentDataContainer(item);
+                        //{
+                        //    Description = item.Description,
+                        //    CreateDate = item.CreateDate,
+                        //    CategoryName = categoryName,
+                        //    OtherInformation = item.OtherInformation,
+                        //    Author = item.Author,
+                        //    WebSiteDescription = item.WebSiteDescription
+                        //};
 
-                        currentContainers.Add(currentDataContainer);
+                        
                     }
-                                        
+
                 }
 
             }
             else
             {
+                int subCategoryIdForSelect = ContentCategoryRepozitory.GetCategoryIdByName(subCategoryName);
+
                 using (Context hranilkaDbContext = new Context())
                 {
-                    subCategoryIdForSelect = hranilkaDbContext
-                        .ContentCategories
-                        .Where(u => u.Name == subCategoryName)
-                        .Select(u => u.Id)
-                        .FirstOrDefault();
-
-                    containers = hranilkaDbContext.DataContainers
+                         containers = hranilkaDbContext.DataContainers
                         .Where(p => p.CategoryId == subCategoryIdForSelect && p.DataType == (int)dataType)
                         .ToList();
                 }
 
                 foreach (var item in containers)
                 {
-                    currentContainers.Add(new CurrentDataContainer
-                    {
-                        Description = item.Description,
-                        CreateDate = item.CreateDate,
-                        CategoryName = categoryName,
-                        OtherInformation = item.OtherInformation,
-                        Author = item.Author,
-                        WebSiteDescription= item.WebSiteDescription
+                    currentContainers.Add(new CurrentDataContainer(item));
+                    //{
+                    //    Description = item.Description,
+                    //    CreateDate = item.CreateDate,
+                    //    CategoryName = categoryName,
+                    //    OtherInformation = item.OtherInformation,
+                    //    Author = item.Author,
+                    //    WebSiteDescription = item.WebSiteDescription
 
-                    });
+                    //}); ; 
                 }
             }
 
@@ -146,20 +138,20 @@ namespace Hranilka.Models
 
         }
 
-
-
-
         public static void SaveTextDataContainerToDB(ContentCategory category, string description)
         {
+            int categoryId = ContentCategoryRepozitory.GetCategoryIdByName(category.Name);
+
             using (Context hranilkaDbContext = new Context())
             {
-                int categoryId = hranilkaDbContext
-                .ContentCategories
-                .Where(u => u.Name == category.Name)
-                .Select(u => u.Id)
-                .FirstOrDefault();
+                hranilkaDbContext.DataContainers
+                    .Add(new DataContainer
+                    {
+                        Description = description,
+                        CategoryId = categoryId,
+                        DataType = (int)DataType.Texts
+                    });
 
-                hranilkaDbContext.DataContainers.Add(new DataContainer { Description = description, CategoryId = categoryId, DataType = (int)DataType.Texts });
                 hranilkaDbContext.SaveChanges();
 
             }
@@ -169,14 +161,10 @@ namespace Hranilka.Models
         {
             WebsiteInfo websiteInfo = new WebsiteInfo(url);
 
+            int categoryId = ContentCategoryRepozitory.GetCategoryIdByName(category.Name);
+
             using (Context hranilkaDbContext = new Context())
             {
-                int categoryId = hranilkaDbContext
-                .ContentCategories
-                .Where(u => u.Name == category.Name)
-                .Select(u => u.Id)
-                .FirstOrDefault();
-
                 hranilkaDbContext.DataContainers
                     .Add(new DataContainer
                     {

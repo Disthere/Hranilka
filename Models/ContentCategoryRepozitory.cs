@@ -13,17 +13,38 @@ namespace Hranilka.Models
     {
         public static int GetCategoryIdByName(string name)
         {
-            int categoryId;
-            using (Context hranilkaDbContext = new Context())
+            int categoryId = 0;
+            if (IsCategoriesContains(name))
             {
-                categoryId = hranilkaDbContext
-                .ContentCategories
-                .Where(u => u.Name == name)
-                .Select(u => u.Id)
-                .FirstOrDefault();
+                using (Context hranilkaDbContext = new Context())
+                {
+                    categoryId = hranilkaDbContext
+                    .ContentCategories
+                    .Where(u => u.Name == name)
+                    .Select(u => u.Id)
+                    .FirstOrDefault();
+                }
             }
+
             return categoryId;
         }
+
+        public static string GetCategoryNameById(int id)
+        {
+            string categoryName = null;
+            
+                using (Context hranilkaDbContext = new Context())
+                {
+                    categoryName = hranilkaDbContext
+                    .ContentCategories
+                    .Where(u => u.Id == id)
+                    .Select(u => u.Name)
+                    .FirstOrDefault();
+                }
+           
+            return categoryName;
+        }
+
         public static ObservableCollection<ContentCategory> GetAllParentCategoriesFromDB()
         {
 
@@ -40,44 +61,32 @@ namespace Hranilka.Models
 
         public static ContentCategory GetContentCategoryFromDBByName(string categoryName)
         {
-
             using (Context hranilkaDbContext = new Context())
             {
                 ContentCategory category = new ContentCategory();
                 category = hranilkaDbContext.ContentCategories.FirstOrDefault(r => r.Name == categoryName);
                 return category;
             }
-
-            //contentCategories.DataContainers.Join(hranilkaDbContext.ContentCategories,
-            //        u => u.CategoryId,
-            //        c => c.Id,
-            //        (u, c) => new CurrentDataContainer
-            //        {
-            //            Id = u.Id,
-            //            Description = u.Description,
-            //            CreateDate = u.CreateDate,
-            //            Category = c.Name
-            //        }).ToList();
-
         }
 
         public static ObservableCollection<ContentCategory> GetSubCategoriesFromDB(ContentCategory parentCategory)
         {
             if (parentCategory != null)
             {
+                int parentId = GetCategoryIdByName(parentCategory.Name);
+
                 using (Context hranilkaDbContext = new Context())
                 {
-                    int parentId = hranilkaDbContext
-                    .ContentCategories
-                    .Where(u => u.Name == parentCategory.Name)
-                    .Select(u => u.Id)
-                    .FirstOrDefault();
-
-                    var subCategories = hranilkaDbContext.ContentCategories.Where(c => c.ParentId == parentId).Where(y => y.ParentId != 0).ToList();
+                    var subCategories = hranilkaDbContext.ContentCategories
+                   .Where(c => c.ParentId == parentId)
+                   .Where(y => y.ParentId != 0)
+                   .ToList();
                     var allSubCategories = new ObservableCollection<ContentCategory>(subCategories);
                     return allSubCategories;
                 }
+
             }
+
             return new ObservableCollection<ContentCategory>();
         }
 
@@ -92,17 +101,12 @@ namespace Hranilka.Models
 
         public static void SaveSubCategoryToDB(string parentCategoryName, string subCategoryName)
         {
+            int parentId = GetCategoryIdByName(parentCategoryName);
+
             using (Context hranilkaDbContext = new Context())
             {
-                int parentId = hranilkaDbContext
-                .ContentCategories
-                .Where(u => u.Name == parentCategoryName)
-                .Select(u => u.Id)
-                .FirstOrDefault();
-
                 hranilkaDbContext.ContentCategories.Add(new ContentCategory { Name = subCategoryName, ParentId = parentId });
                 hranilkaDbContext.SaveChanges();
-
             }
         }
 
